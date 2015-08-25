@@ -1,0 +1,450 @@
+
+@media (min-width:768px) and (max-width:900px)
+{
+	
+body{ width:100% !important;
+	height:650px;
+background-color:#dcdcdc;
+margin:0 auto !important;
+}
+
+
+table{
+font-size:12px;
+}
+
+.form_pad{
+padding:20px;
+}
+
+select{
+width:16%;
+height: 30px;
+background-color: white;
+opacity: 1;
+color:grey;
+}
+
+input::-webkit-input-placeholder { /* WebKit browsers */
+  
+  margin-left:5px;
+  color:grey;
+}
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+ padding-left:5px;
+}
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  padding-left:5px;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10+ */
+  padding-left:5px;
+}
+  
+.loginbox{
+background-color:#ba0032;width:100%;height:85px;
+}
+
+.top-login{
+  width: 100%;
+  margin: 0 auto;
+  }
+  
+  .logo{
+  padding-top: 2.5%;
+    width: 20%;
+	  float: left;
+	  margin-left:1%;
+  }
+  .right-loginbox-1{display:none !important;}
+  
+  .right-loginbox{display:block !important;
+  float:right;
+  padding-top:1%;
+   color: white;
+  font-family: helvetica;
+  margin-right:1%;
+  }
+  .inputtext,.inputpass{
+   border: 1px solid #5e0019;
+  border-color: #5e0019;
+  margin: 0;
+  width: 100%;
+  height: 20px;
+  }
+  
+.magic{
+padding:0px 15px 6px 0px !important;
+}
+
+.magic2{
+padding:0px 0px 6px 0px !important;
+}
+
+.uiInputLabelLabel {
+color:#dcdcdc;
+}
+.uiInputLabelCheckbox{
+    margin:0px;
+}
+
+.magic a{
+color:#dcdcdc;
+text-decoration:none;
+}
+
+.loginbutton{
+  height: 23px;
+
+    background-color: #cc0033;
+  border-color: #9e042d;
+  color: white;
+  border: 1px solid #9e042d;
+    cursor: pointer;
+}
+
+
+.body_signup{
+background-image:url(../images/slms_bg.png);
+width:100%;
+height:500px;
+}
+
+.signupbox{
+    height: auto;
+  background: rgba(186,0,50,.7);
+  float: right;
+  margin:30px 8px 0px 0px ;
+  width: 50%;
+  
+}
+.signup_container{
+width:100%;
+margin:0 auto;
+}
+
+
+.signup_head{
+  border-bottom: 1px solid whitesmoke;
+  }
+  
+.signup_head h3{
+  color: white;
+  text-align: center;
+  font-family: helvetica;
+  font-size: 17px;
+  font-weight: 500;
+  }
+  
+ .signupinput-m{
+  width: 35%;
+  height: 24px;
+  margin-left: 12px;
+  padding-left: 5px;
+  }
+  
+  .signupinput-l{
+    width: 97.3%;
+  height: 24px;
+  /* margin-left: 12px; */
+  padding-left: 5px;
+  margin-top: 12px;
+  }
+  .signup_select{
+  margin-top:12px;
+  width: 100%;
+  }
+  .signupbutton{
+   height: 30px;
+  width: 100%;
+  margin-top: 12px;
+  background-color: #cc0033;
+  border-color: #9e042d;
+  color: white;
+  border: 1px solid #9e042d;
+  cursor: pointer;
+}
+
+.footer_bottom{
+width:100%;
+margin:0 auto;
+height:50px;
+}
+
+.foot_menu a{
+text-decoration: none;
+  list-style: none;
+  color: #ba0032;
+  float: left;
+  padding-right:60px;
+  padding-top:7px;
+  }
+
+.fbicon{
+  width: 1.03%;
+  position: absolute;
+  /* top: 34px; */
+  margin-left: 5px;
+  margin-top: 5px;
+  }
+  
+  #image_logo1{ width:90% !important;
+  				height:30px;
+				margin:2% 6%;}
+.btn-pad-height{ padding:1px 5px !important;}
+
+}
+
+
+ /* CSS for Mobile */
+
+@media (max-width:600px)
+{
+
+
+.form_pad{
+padding:0px;
+width:100%;
+margin:0%;
+height:auto;
+}
+
+select{width:18%;
+height: 26px;
+background-color: white;
+opacity: 1;
+color:grey;
+margin:1%;
+padding:0%;
+}
+
+input::-webkit-input-placeholder { /* WebKit browsers */
+  
+  margin-left:5px;
+  color:grey;
+}
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+ padding-left:5px;
+}
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  padding-left:5px;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10+ */
+  padding-left:5px;
+}
+  
+.loginbox{
+
+width:auto !important;height:auto !important;
+margin:0% !important;
+padding:0% !important;
+background-color:#ba0032 !important;
+}
+
+.top-login{
+  width: 100%;
+  margin: 0%;
+  padding:0%;
+  height:50px;
+  
+  }
+  
+  .logo{
+       width: 100%;
+	  float: left;
+	  padding:0%;
+	  height:50px;
+	   }
+  
+  #image_logo{ width:30%;
+  				height:30px;
+				margin:2% 32%;}
+  
+  .right-loginbox-1{ display:block !important;
+  					float:left;
+					width:89%;
+					height:auto;}
+					
+	#mob_view{ width:100%;
+				height:auto;
+				margin:10% 5% 2%;
+				border:1px solid gray;
+				border-radius:4px;}
+
+	
+	#mob_viewip{ width:98%;
+				height:24px;
+				margin:0%;
+				padding-left:1%;
+				 }
+				
+	#mob_submit{ width:90%;
+				height:26px;
+				font-family:helvetica;
+				font-size:12px;
+				font-weight:normal;
+				margin:2% 5%;
+				 background-color: #cc0033;
+				 border:none;
+				 border-radius:4px;
+				 color:white;
+				}
+					
+	#forgot_pass{ margin:0% 12% 4%;
+				width:100%;
+				height:auto;
+				text-align:center;}
+	
+	#forgot_pass a{
+color:white;
+font-family:helvetica;
+font-size:14px;
+font-weight:bold;
+text-decoration:none;
+}
+	
+  .right-loginbox{display:none !important;
+  float:left;
+  padding-top:1%;
+   color: white;
+  font-family: helvetica;
+  margin-right:1%;
+  }
+  .inputtext,.inputpass{
+   border: 1px solid #5e0019;
+  border-color: #5e0019;
+  margin: 0;
+  width: 100%;
+  height: 20px;
+  }
+  
+.magic{
+padding:0px 15px 6px 0px !important;
+float:left;
+}
+
+.magic2{
+padding:0px 0px 6px 0px !important;
+}
+
+.uiInputLabelLabel {
+color:#dcdcdc;
+}
+.uiInputLabelCheckbox{
+    margin:0px;
+}
+
+.magic a{
+color:#dcdcdc;
+text-decoration:none;
+}
+
+.loginbutton{
+  height: 23px;
+
+    background-color: #cc0033;
+  border-color: #9e042d;
+  color: white;
+  border: 1px solid #9e042d;
+    cursor: pointer;
+}
+
+.loginfb{
+  height: 23px;
+  background-color: #cc0033;
+  border-color: #9e042d;
+  color: white;
+  border: 1px solid #9e042d;
+  cursor: pointer;
+}
+
+.body_signup{
+background-image:url(../images/slms_bg.png);
+width:100%;
+height:575px;
+}
+
+.signupbox{
+    height: auto;
+  background: rgba(186,0,50,.7);
+  float: right;
+  margin:0% 4%;
+  width: 92%;
+  border-radius:4px;
+}
+.signup_container{
+width:100%;
+margin:0 auto;
+
+}
+
+
+.signup_head{
+  border-bottom: 1px solid whitesmoke;
+  }
+  
+.signup_head h3{
+  color: white;
+  text-align: center;
+  font-family: helvetica;
+  font-size: 17px;
+  font-weight: 500;
+  }
+  
+ .signupinput-m{
+  width: 33%;
+  height: 24px;
+  padding-left:1%;
+  margin:1%;
+  }
+  
+  .signupinput-l{
+    width: 95%;
+  height: 20px;
+  margin: 1%;
+  padding:4px;}
+  
+  .signup_select{
+  margin:1%;
+  height:30px;
+  width: 98%;
+  }
+  .signupbutton{
+   height: 30px;
+  width: 96%;
+  margin:2%;
+  background-color: #cc0033;
+  border-color: #9e042d;
+  color: white;
+  border: 1px solid #9e042d;
+  cursor: pointer;
+  border-radius:4px;
+}
+
+.footer_bottom{
+width:100%;
+height:auto;
+margin:0%;
+padding:0%;
+}
+
+
+
+.foot_menu a{
+text-decoration: none;
+  list-style: none;
+  color: #ba0032;
+  float: left;
+  padding:0% 4% 6%;
+    }
+
+.fbicon{
+  width: 1.03%;
+  position: absolute;
+  /* top: 34px; */
+  margin-left: 5px;
+  margin-top: 5px;
+  }
+
+
+}
+
