@@ -95,10 +95,10 @@ text-decoration:none;
 .loginbutton{
   height: 23px;
 
-    background-color: #cc0033;
-  border-color: #9e042d;
+    background-color: #ba0032;
+  border-color: #72142d;
   color: white;
-  border: 1px solid #9e042d;
+  border: 1px solid #72142d;
     cursor: pointer;
 }
 
@@ -157,10 +157,10 @@ margin:0 auto;
    height: 30px;
   width: 100%;
   margin-top: 12px;
-  background-color: #cc0033;
-  border-color: #9e042d;
+  background-color: #ba0032;
+  border-color: #72142d;
   color: white;
-  border: 1px solid #9e042d;
+  border: 1px solid #72142d;
   cursor: pointer;
 }
 
@@ -283,7 +283,7 @@ background-color:#ba0032 !important;
 				font-size:12px;
 				font-weight:normal;
 				margin:2% 5%;
-				 background-color: #cc0033;
+				 background-color: #ba0032;
 				 border:none;
 				 border-radius:4px;
 				 color:white;
@@ -341,19 +341,19 @@ text-decoration:none;
 .loginbutton{
   height: 23px;
 
-    background-color: #cc0033;
-  border-color: #9e042d;
+    background-color: #ba0032;
+  border-color: #72142d;
   color: white;
-  border: 1px solid #9e042d;
+  border: 1px solid #72142d;
     cursor: pointer;
 }
 
 .loginfb{
   height: 23px;
-  background-color: #cc0033;
-  border-color: #9e042d;
+  background-color: #ba0032;
+  border-color: #72142d;
   color: white;
-  border: 1px solid #9e042d;
+  border: 1px solid #72142d;
   cursor: pointer;
 }
 
@@ -412,10 +412,10 @@ margin:0 auto;
    height: 30px;
   width: 96%;
   margin:2%;
-  background-color: #cc0033;
-  border-color: #9e042d;
+  background-color: #ba0032;
+  border-color: #72142d;
   color: white;
-  border: 1px solid #9e042d;
+  border: 1px solid #72142d;
   cursor: pointer;
   border-radius:4px;
 }

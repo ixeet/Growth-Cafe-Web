@@ -26,7 +26,23 @@ public interface CourseReportDao {
 	public List<DashBoardReportVo> getcourseDataList(
 			DashBoardReportVo dashBoardReportVo);
 
-	public List<DashBoardReportVo> getShowList(
+	public String getShowList(
 			DashBoardReportVo dashBoardReportVo);
+
+	public List<DashBoardReportVo> getClassNameList(
+			DashBoardReportVo dashBoardReportVo);
+
+	public List<DashBoardReportVo> getHomeRoomList(
+			DashBoardReportVo dashBoardReportVo);
+
+	public String getCourse(DashBoardReportVo dashBoardReportVo);
+
+
+	public String getChangeStatus(DashBoardReportVo dashBoardReportVo);
+
+	public String getSchoolList(DashBoardReportVo dashBoardReportVo);
+
+	public String getShowFilterData(DashBoardReportVo dashBoardReportVo);
+
 
 }

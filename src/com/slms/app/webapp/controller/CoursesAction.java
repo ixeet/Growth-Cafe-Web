@@ -9,6 +9,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.json.JSONResult;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -27,7 +29,7 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	Logger logger = LoggerFactory.getLogger(CoursesAction.class);
 	CoursesVo coursesVo;
 	CoursesVo moduleDescription;
 	CoursesServiceIface coursesServiceIface;
@@ -49,6 +51,7 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 	 */
 	public String courses(){
 		try {
+			logger.debug("CoursesAction method:-courses ");
 			HttpServletRequest request = ServletActionContext.getRequest();
 			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(registrationVo !=null){
@@ -112,7 +115,7 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("CoursesAction method:-courses error:-"+e.getMessage());
 		}
 		getServletRequest().getSession().setAttribute("selectedTab","coursesTabId");
 		return SUCCESS;
@@ -125,6 +128,7 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 	 */
 	public String getModules(){
 		try {
+			logger.debug("CoursesAction method:-getModules ");
 			HttpServletRequest request = ServletActionContext.getRequest();
 			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(registrationVo !=null){
@@ -164,6 +168,7 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 										CoursesVo resource = new CoursesVo();
 										resource.setAuthorName(jsonResObj.getString("authorName"));
 										resource.setResourceId(jsonResObj.getInt("resourceId"));
+										resource.setResourceName(jsonResObj.getString("resourceName"));
 										resourcesList.add(resource);
 									}
 								}
@@ -176,7 +181,7 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("CoursesAction method:-getModules error:-"+e.getMessage());
 		}
 		getServletRequest().getSession().setAttribute("selectedTab","coursesTabId");
 		return SUCCESS;
@@ -184,8 +189,9 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 	
 	
 	public String moduleDescription() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("CoursesAction method:-moduleDescription ");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest();
 			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(registrationVo !=null){
 			coursesServiceIface = new CoursesServiceImpl();
@@ -231,25 +237,26 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 					JSONArray jsonCommentArr = jsonResObj.getJSONArray("commentList");
 					ArrayList<CommentVo> commentsList = new ArrayList<CommentVo>();
 					for(int j=0;j<jsonCommentArr.length();j++){
-						JSONObject jsonCommenttObj = jsonCommentArr.getJSONObject(j);
+						JSONObject jsonCommentObj = jsonCommentArr.getJSONObject(j);
 						CommentVo comment = new CommentVo();
-						comment.setCommentId(jsonCommenttObj.getInt("commentId"));
-						if(jsonCommenttObj.has("likeCounts")){
-						comment.setLikeCounts(jsonCommenttObj.getInt("likeCounts"));
+						comment.setCommentId(jsonCommentObj.getInt("commentId"));
+						if(jsonCommentObj.has("likeCounts")){
+						comment.setLikeCounts(jsonCommentObj.getInt("likeCounts"));
 						}
 						if(jsonResObj.has("commentCounts")){
-						comment.setCommentCounts(jsonCommenttObj.getInt("commentCounts"));
+						comment.setCommentCounts(jsonCommentObj.getInt("commentCounts"));
 						}
-						comment.setShareCounts(jsonCommenttObj.getInt("shareCounts"));
-						comment.setParentCommentId(jsonCommenttObj.getInt("parentCommentId"));
-						if(jsonCommenttObj.has("isLiked")){
-						comment.setLikeStatus(jsonCommenttObj.getBoolean("isLiked"));
+						comment.setShareCounts(jsonCommentObj.getInt("shareCounts"));
+						comment.setParentCommentId(jsonCommentObj.getInt("parentCommentId"));
+						if(jsonCommentObj.has("isLiked")){
+						comment.setLikeStatus(jsonCommentObj.getBoolean("isLiked"));
 						}
-						comment.setCommentBy(jsonCommenttObj.getString("commentBy"));
-						comment.setCommentById(jsonCommenttObj.getInt("commentById"));
-						comment.setCommentTxt(jsonCommenttObj.getString("commentTxt"));
-						comment.setCommentDate(Utility.getBeforeTime(jsonCommenttObj.getString("commentDate")));
-						 JSONArray jsonSubCommArr = jsonCommenttObj.getJSONArray("subComments");
+						comment.setCommentBy(jsonCommentObj.getString("commentBy"));
+						comment.setCommentById(jsonCommentObj.getInt("commentById"));
+						comment.setCommentTxt(jsonCommentObj.getString("commentTxt"));
+						comment.setCommentByImg(jsonCommentObj.getString("commentByImage"));
+						comment.setCommentDate(Utility.getBeforeTime(jsonCommentObj.getString("commentDate")));
+						 JSONArray jsonSubCommArr = jsonCommentObj.getJSONArray("subComments");
 						 ArrayList<CommentVo> subCommentList = new ArrayList<CommentVo>();
 						 for(int y=0;y<jsonSubCommArr.length();y++){
 							 JSONObject jsonSubCommObj = jsonSubCommArr.getJSONObject(y);
@@ -257,6 +264,7 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 							 subCommentObj.setLikeStatus(jsonSubCommObj.getBoolean("isLiked"));
 							 subCommentObj.setCommentId(jsonSubCommObj.getInt("commentId"));
 							 subCommentObj.setCommentBy(jsonSubCommObj.getString("commentBy"));
+							 subCommentObj.setCommentByImg(jsonSubCommObj.getString("commentByImage"));
 							 subCommentObj.setCommentTxt(jsonSubCommObj.getString("commentTxt"));
 							 subCommentObj.setCommentById(jsonSubCommObj.getInt("commentById"));
 							 subCommentObj.setLikeCounts(jsonSubCommObj.getInt("likeCounts"));
@@ -277,6 +285,7 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 						video.setResourceId(jsonVedio.getInt("resourceId"));
 						video.setResourceName(jsonVedio.getString("resourceName"));
 						video.setResourceDesc(jsonVedio.getString("resourceDesc"));
+						video.setResourceUrl(jsonVedio.getString("resourceUrl"));
 						String[] uploadedDate = jsonVedio.getString("uploadedDate").split(" ");
 						if(Utility.isValidDate(uploadedDate[0])){
 							video.setUploadedDate(Utility.getDisplayDate(uploadedDate[0]));
@@ -285,7 +294,6 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 						videoList.add(video);
 					}
 					resourceObj.setRelatedVideoList(videoList);
-					
 					resourcesList.add(resourceObj);
 					if(coursesVo.getResourceId()==0){
 						moduleDescription = resourcesList.get(0);
@@ -325,8 +333,9 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 			
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("CoursesAction method:-moduleDescription error:-"+e.getMessage());
 		}
+		request.getSession().setAttribute("relatedVideos", moduleDescription.getRelatedVideoList());
 		getServletRequest().getSession().setAttribute("selectedTab","coursesTabId");
 		return SUCCESS;	
 	}
@@ -334,6 +343,7 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 	
 	public String likeResource(){
 		try{
+			logger.debug("CoursesAction method:-likeResource ");
 			HttpServletRequest request = ServletActionContext.getRequest();
 			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(registrationVo !=null){
@@ -342,13 +352,14 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 				moduleDescription();
 			}
 			}catch (Exception e) {
-				e.printStackTrace();
+				logger.error("CoursesAction method:-likeResource error:-"+e.getMessage());
 			}
 		return SUCCESS;
 	}
 	
 	public String commentOnResource(){
 		try{
+			logger.debug("CoursesAction method:-commentOnResource ");
 			HttpServletRequest request = ServletActionContext.getRequest();
 			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(registrationVo !=null){
@@ -357,13 +368,14 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 				moduleDescription();
 			}
 			}catch (Exception e) {
-				e.printStackTrace();
+				logger.error("CoursesAction method:-commentOnResource error:-"+e.getMessage());
 			}
 		return SUCCESS;
 	}
 	
 	public String commentOnComment(){
 		try{
+			logger.debug("CoursesAction method:-commentOnComment ");
 			HttpServletRequest request = ServletActionContext.getRequest();
 			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(registrationVo !=null){
@@ -372,13 +384,14 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 				moduleDescription();
 			}
 			}catch (Exception e) {
-				e.printStackTrace();
+				logger.error("CoursesAction method:-commentOnComment error:-"+e.getMessage());
 			}
 		return SUCCESS;
 	}
 	
 	public String likeOnComment(){
 		try{
+			logger.debug("CoursesAction method:-likeOnComment ");
 			HttpServletRequest request = ServletActionContext.getRequest();
 			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(registrationVo !=null){
@@ -387,7 +400,30 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 				moduleDescription();
 			}
 			}catch (Exception e) {
-				e.printStackTrace();
+				logger.error("CoursesAction method:-likeOnComment error:-"+e.getMessage());
+			}
+		return SUCCESS;
+	}
+	
+	public String relatedVideo(){
+		try{
+			logger.debug("CoursesAction method:-relatedVideo ");
+			HttpServletRequest request = ServletActionContext.getRequest();
+			ArrayList<CoursesVo> relatedVideoList = (ArrayList<CoursesVo>) request.getSession().getAttribute("relatedVideos");
+			if(relatedVideoList !=null){
+				for(CoursesVo resource :relatedVideoList){
+					if(resource.getResourceId() == coursesVo.getResourceId()){
+						coursesVo.setResourceDesc(resource.getResourceDesc());
+						coursesVo.setResourceName(resource.getResourceName());
+						coursesVo.setResourceUrl(resource.getResourceUrl());
+						break;
+					}
+				}
+				
+			}
+			
+			}catch (Exception e) {
+				logger.error("CoursesAction method:-relatedVideo error:-"+e.getMessage());
 			}
 		return SUCCESS;
 	}

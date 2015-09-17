@@ -12,7 +12,6 @@ function sendforgetPassword(){
 		var userName = $("#fpuserNameId").val();
 		if(userName ==""){
 				showSuccessMessage("Email field can't be empty, please enter a registered email id to get password");
-			alert(" ");
 		}else if(!ValidateEmail(userName)){
 			showSuccessMessage("Enter a valid email id including '@' and '.'");
 		}else{
@@ -22,7 +21,6 @@ function sendforgetPassword(){
 		/* $.get("sendforgetPassword",dataString,
 		function(data,status){
 			var response = JSON.parse(data);
-            //alert("Data: " + data + "\nStatus: " + status);
             if(response.statusMessage=='success'){
 						showSuccessMessage("Your password is sent to "+userName+", please check SPAM folder if not received in inbox");
 						setTimeout(function() {homeClick();},2250);
@@ -41,7 +39,6 @@ function sendforgetPassword(){
 			},
 			success : function(data){
 				var response = JSON.parse(data);
-            //alert("Data: " + data + "\nStatus: " + status);
             if(response.statusMessage=='success'){
 						showSuccessMessage("Your password is sent to "+userName+", please check SPAM folder if not received in inbox");
 						setTimeout(function() {homeClick();},2250);

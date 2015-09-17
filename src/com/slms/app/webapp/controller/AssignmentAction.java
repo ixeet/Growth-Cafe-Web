@@ -1,35 +1,19 @@
 package com.slms.app.webapp.controller;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import com.slms.app.domain.utility.MultipartFileUploader;
 import com.slms.app.domain.utility.Utility;
 import com.slms.app.domain.vo.AssignmentVo;
 import com.slms.app.domain.vo.CoursesVo;
@@ -43,6 +27,7 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	Logger logger = LoggerFactory.getLogger(AssignmentAction.class);
 	HttpServletRequest servletRequest;
 	AssignmentVo assignmentVo;
 	CoursesVo moduleDetail;
@@ -71,6 +56,7 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 	
 	public String  execute() {
 		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("AssignmentAction method:-execute ");
 		try {
 				RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 				if(loginDetail !=null){
@@ -98,8 +84,8 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 								if(jsonAssignmentObj.has("assignmentDueDate")){
 									assignment.setAssignmentDueDate((Utility.getDisplayDate(jsonAssignmentObj.getString("assignmentDueDate"))));
 									}
-								if(assignment.getAssignmentStatus()==1 && assignment.getAssignmentSubmittedDate() !=null){
-									int status = Utility.checkDateIsPreDate(assignment.getAssignmentSubmittedDate());
+								if(assignment.getAssignmentStatus()==1 && assignment.getAssignmentDueDate() !=null){
+									int status = Utility.checkDateIsPreDate(assignment.getAssignmentDueDate());
 									assignment.setAssignmentStatus(status);
 								}
 								if(jsonAssignmentObj.has("attachedResources")){
@@ -128,13 +114,14 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 						}
 				}
 			}catch (Exception e) {
-				e.printStackTrace();
+				logger.error("AssignmentAction method:-execute "+e.getMessage());
 			}
 		getServletRequest().getSession().setAttribute("selectedTab","assignmentsTabId");
 		return SUCCESS;
 	}
 	
 	public String submitAssignment() {
+		logger.debug("AssignmentAction method:-submitAssignment ");
 		HttpServletRequest request = ServletActionContext.getRequest();
 		try {
 			ArrayList<AssignmentVo> assignments = (ArrayList<AssignmentVo>) request.getSession().getAttribute("assignmentList");
@@ -163,67 +150,21 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 				}
 			}
 			} catch (Exception e) {
-			e.printStackTrace();
+				logger.error("AssignmentAction method:-submitAssignment "+e.getMessage());
 		}
 		getServletRequest().getSession().setAttribute("selectedTab","assignmentsTabId");
 		return SUCCESS;
 	}
 	
 	public void uploadAssignment() throws IOException {
+		logger.debug("AssignmentAction method:-uploadAssignment ");
 		HttpServletRequest request = ServletActionContext.getRequest();
 		RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
-		
+		try{
 		if(loginDetail !=null){
-		 CloseableHttpClient httpclient = HttpClients.createDefault();
-	        try {
-	        		if(assignmentVo.getAssignmentRes() != null){
-			        File fileToCreate = new File("E:/", assignmentVo.getAssignmentResFileName());  
-			        FileUtils.copyFile(assignmentVo.getAssignmentRes(), fileToCreate);
-			        HttpPost httppost = new HttpPost("http://191.239.57.54:8080/SLMS/rest/course/uploadResourceDetail");
-			        FileBody fileName = new FileBody(new File("E:/"+assignmentVo.getAssignmentResFileName()));
-		            StringBody resourceName = new StringBody(assignmentVo.getAssignmentName(), ContentType.TEXT_PLAIN);
-		            StringBody resourceAuthor = new StringBody(loginDetail.getFirstName()+" "+loginDetail.getLastName(), ContentType.TEXT_PLAIN);
-		            StringBody userName = new StringBody(loginDetail.getUserName(), ContentType.TEXT_PLAIN);
-		            StringBody uploadedUrl = new StringBody(assignmentVo.getAssignmentLink(), ContentType.TEXT_PLAIN);
-		            StringBody assignmentId = new StringBody(""+assignmentVo.getAssignmentId(), ContentType.TEXT_PLAIN);
-		            StringBody descTxt = new StringBody(""+assignmentVo.getAssignmentDesc(), ContentType.TEXT_PLAIN);
-		            HttpEntity reqEntity = MultipartEntityBuilder.create()
-	                    .addPart("fileName", fileName) //File
-	                    .addPart("resourceName", resourceName)
-	                    .addPart("resourceAuthor", resourceAuthor)
-	                    .addPart("userName", userName)
-	                    .addPart("uploadedUrl", uploadedUrl)
-	                    .addPart("assignmentId", assignmentId)
-	                    .addPart("descTxt", descTxt)
-	                    .build();
-		            	httppost.setEntity(reqEntity);
-		            System.out.println("executing request " + httppost.getRequestLine());
-		            CloseableHttpResponse serverResponse = httpclient.execute(httppost);
-	            try {
-/*	                System.out.println("----------------------------------------");
-	                System.out.println(serverResponse.getStatusLine());
-*/	                HttpEntity resEntity = serverResponse.getEntity();
-	                if (resEntity != null) {
-	                    BufferedReader reader = new BufferedReader(new InputStreamReader(resEntity.getContent()));
-	                    StringBuilder out = new StringBuilder();
-	                    String line;
-	                    while ((line = reader.readLine()) != null) {
-	                        out.append(line);
-	                    }
-	                    response = out.toString();   //Prints the string content read from input stream
-	                    reader.close();
-	                }
-	                EntityUtils.consume(resEntity);
-	            } finally {
-	            	serverResponse.close();
-	            }
-	          }
-	        	}catch (Exception e) {
-					e.printStackTrace();
-				}
-		       finally {
-		            httpclient.close();
-		        }
+			AssignmentServiceIface assignmentServiceIface = new AssignmentServiceImpl();
+			response = assignmentServiceIface.uploadAssignment(assignmentVo,loginDetail);
+		
 	        }
 		if(response !=null){
 		JSONObject jsonResponse = new JSONObject(response);
@@ -236,11 +177,18 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 				this.getServletResponse().getWriter().print(jsonResponse);
 			}
 		}
+		}catch (Exception e) {
+			logger.error("AssignmentAction method:-uploadAssignment "+e.getMessage());
+		}
 		getServletRequest().getSession().setAttribute("selectedTab","assignmentsTabId");
 	}
 	
+	
+	
+	
 	public String viewAssignment() {
 		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("AssignmentAction method:-viewAssignment ");
 		try {
 		ArrayList<AssignmentVo> assignments = (ArrayList<AssignmentVo>) request.getSession().getAttribute("assignmentList");
 		for(AssignmentVo assignmentObj : assignments){
@@ -268,7 +216,7 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 			}
 		}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("AssignmentAction method:-viewAssignment "+e.getMessage());
 		}
 		getServletRequest().getSession().setAttribute("selectedTab","assignmentsTabId");
 		return SUCCESS;

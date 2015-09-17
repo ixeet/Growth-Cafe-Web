@@ -9,6 +9,8 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.slms.app.domain.utility.Utility;
@@ -30,7 +32,9 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	Logger logger = LoggerFactory.getLogger(UpdatesAction.class);
 	HttpServletResponse servletResponse;
+	int offset;
 	String response;
 	public ArrayList<FeedVo> feedList;
 	public ArrayList<CommentVo> commentList;
@@ -53,12 +57,17 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 	ArrayList<AssignmentVo> assignmentsList;
 	CoursesVo moduleDescription;
 	public String execute() {
+		
 		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("UpdatesAction method:-execute ");
 		try {
 			RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(loginDetail !=null){
 			UpdatesServiceIface updatesServiceIface = new UpdatesServiceImpl();
-			response = updatesServiceIface.updates(loginDetail);
+			if(request.getSession().getAttribute("offset") !=null && offset>0){
+			offset = (Integer) request.getSession().getAttribute("offset");
+			}
+			response = updatesServiceIface.updates(loginDetail,offset);
 			JSONObject jsonResponseObj = new JSONObject(response);
 			if(jsonResponseObj.getString("statusMessage").equalsIgnoreCase("success")){
 				JSONArray jsonFeedList = jsonResponseObj.getJSONArray("feedList");
@@ -90,16 +99,21 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 						JSONArray feedTextContentArr = jsonFeedObj.getJSONArray("feedTextArray");
 						//String[] content = new String[feedTextContentArr.length()];
 						feedText="";
+						String feedTextPost="";
 						for(int j=0;j<feedTextContentArr.length();j++){
 							JSONObject jsonFeedContentObj = feedTextContentArr.getJSONObject(j);
 							String type=jsonFeedContentObj.getString("type");
 							String value=jsonFeedContentObj.getString("value");
-							feedText=feedText+feedTextArr[j]+"<a href='javaScript:;' onclick=\"clickableResource("+feedObj.getFeedId()+",'"+type+"');\">"+value+"</a>";
+							int key=jsonFeedContentObj.getInt("key");
+							feedText=feedText+feedTextArr[j]+"<a href='javaScript:;' onclick=\"clickableResource("+feedObj.getFeedId()+",'"+type+"',"+key+");\">"+value+"</a>";
+							feedTextPost=feedTextPost+feedTextArr[j]+value;
 							}
 						if(feedTextArr.length > feedTextContentArr.length() && feedTextArr[feedTextContentArr.length()] != null){
 							feedText=feedText+feedTextArr[feedTextContentArr.length()];
+							feedTextPost=feedTextPost+feedTextArr[feedTextContentArr.length()];
 						}
 							feedObj.setFeedText(feedText);
+							feedObj.setFeedTextPost(feedTextPost);
 						}
 					}
 					/**
@@ -109,7 +123,9 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 						RegistrationVo user = new RegistrationVo();
 						user.setUserId(jsonUserObj.getInt("userId"));
 						user.setUserName(jsonUserObj.getString("userName"));
+						if(jsonUserObj.has("userFbId")){
 						user.setUserFbId(jsonUserObj.getString("userFbId"));
+						}
 						user.setFirstName(jsonUserObj.getString("firstName"));
 						user.setLastName(jsonUserObj.getString("lastName"));
 						if(jsonUserObj.has("title")){
@@ -153,11 +169,9 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 							 comment.setCommentTxt(jsonCommentObj.getString("commentTxt"));
 							 comment.setCommentCounts(jsonCommentObj.getInt("commentCounts"));
 							 comment.setLikeCounts(jsonCommentObj.getInt("likeCounts"));
-							 /*if(jsonCommentObj.getString("commentByImage") != null){
+							 if(jsonCommentObj.getString("commentByImage") != null){
 							 comment.setCommentByImg(jsonCommentObj.getString("commentByImage"));
-							 }else {
-								 comment.setCommentByImg("");
-							}*/
+							 }
 							 comment.setLikeStatus(jsonCommentObj.getBoolean("isLiked"));
 							 comment.setCommentById(jsonCommentObj.getInt("commentById"));
 							 comment.setCommentDate(Utility.getBeforeTime(jsonCommentObj.getString("commentDate")));
@@ -172,6 +186,7 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 								 subCommentObj.setCommentId(jsonSubCommObj.getInt("commentId"));
 								 subCommentObj.setLikeCounts(jsonSubCommObj.getInt("likeCounts"));
 								 subCommentObj.setLikeStatus(jsonSubCommObj.getBoolean("isLiked"));
+								 subCommentObj.setCommentByImg(jsonSubCommObj.getString("commentByImage"));
 								 subCommentObj.setCommentDate(Utility.getBeforeTime(jsonSubCommObj.getString("commentDate")));
 								 subCommentList.add(subCommentObj);
 							 }
@@ -182,15 +197,27 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 								 }
 					feedList.add(feedObj);
 				}
-				
+				if(offset==0){
 				request.getSession().setAttribute("feedList", feedList);
+				}
+				if(offset>0 && feedList.size()>0){
+					offset=offset+feedList.size();
+					request.getSession().setAttribute("offset", offset);
+					return SUCCESS;
+				}else if(feedList.size()>0){
+					offset=feedList.size();
+					request.getSession().setAttribute("offset", offset);
+				}
+				
+				
+				
 			}
 			
 			/**
 			 * CoursesList
 			 */
-			coursesList = (ArrayList<CoursesVo>) request.getSession().getAttribute("courseList");
-			if(coursesList == null){
+			/*coursesList = (ArrayList<CoursesVo>) request.getSession().getAttribute("courseList");
+			if(coursesList == null){*/
 			CoursesServiceIface coursesServiceIface = new CoursesServiceImpl();
 			response = coursesServiceIface.courses(loginDetail);
 			JSONObject jsonResObject = new JSONObject(response);
@@ -243,7 +270,7 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 					}
 				}
 				 request.getSession().setAttribute("courseList",coursesList);
-			}
+			/*}*/
 			
 				/**
 				 * AssignmentList
@@ -267,14 +294,16 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 							assignment.setAssignmentId(jsonAssignmentObj.getInt("assignmentId"));
 							assignment.setAssignmentName(jsonAssignmentObj.getString("assignmentName"));
 							assignment.setAssignmentStatus(Integer.parseInt(jsonAssignmentObj.getString("assignmentStatus")));
+							assignment.setAssignmentDesc(jsonAssignmentObj.getString("assignmentDesc"));
 							if(jsonAssignmentObj.has("assignmentSubmittedDate")){
-							assignment.setAssignmentSubmittedDate(Utility.getDisplayDate(jsonAssignmentObj.getString("assignmentSubmittedDate")));
-							}if(assignment.getAssignmentStatus()==1 && assignment.getAssignmentSubmittedDate() !=null){
-								int status = Utility.checkDateIsPreDate(assignment.getAssignmentSubmittedDate());
-								assignment.setAssignmentStatus(status);
-							}
-							if(jsonAssignmentObj.has("assignmentDueDate")){
-								assignment.setAssignmentDueDate((Utility.getDisplayDate(jsonAssignmentObj.getString("assignmentDueDate"))));
+								assignment.setAssignmentSubmittedDate(Utility.getDisplayDate(jsonAssignmentObj.getString("assignmentSubmittedDate")));
+								}
+								if(jsonAssignmentObj.has("assignmentDueDate")){
+									assignment.setAssignmentDueDate((Utility.getDisplayDate(jsonAssignmentObj.getString("assignmentDueDate"))));
+									}
+								if(assignment.getAssignmentStatus()==1 && assignment.getAssignmentDueDate() !=null){
+									int status = Utility.checkDateIsPreDate(assignment.getAssignmentDueDate());
+									assignment.setAssignmentStatus(status);
 								}
 							if(jsonAssignmentObj.has("attachedResources")){
 								JSONArray attachedResourcesArr = jsonAssignmentObj.getJSONArray("attachedResources");
@@ -303,13 +332,20 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 			}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("UpdatesAction method:-execute error:-"+e.getMessage());
 		}
-		
 		request.getSession().setAttribute("selectedTab","updatesTabId");
 		return SUCCESS;
 	}
 	
+	public ArrayList<FeedVo> getFeedList() {
+		return feedList;
+	}
+
+	public void setFeedList(ArrayList<FeedVo> feedList) {
+		this.feedList = feedList;
+	}
+
 	public ArrayList<FeedVo> updateSupport() {
 		execute();
 		return feedList;
@@ -318,6 +354,7 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 	
 	public String commentOnFeed() {
 		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("UpdatesAction method:-commentOnFeed ");
 		try {
 			RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(loginDetail !=null){
@@ -325,7 +362,9 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 				int feedId = Integer.parseInt(request.getParameter("feedId"));
 				String commentTxt = request.getParameter("commentTxt");
 				response = updatesServiceIface.commentOnFeed(loginDetail,feedId,commentTxt);
-				execute();
+				response = updatesServiceIface.getFeedDetail(feedId,loginDetail.getUserId());
+				getFeedDetail();
+				/*execute();
 				if(feedList !=null){
 					for(FeedVo feed : feedList){
 						if(feed.getFeedId()==feedId){
@@ -334,15 +373,16 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 						}
 					}
 					
-				}
+				}*/
 				}
 			}catch (Exception e) {
-				e.printStackTrace();
+				logger.error("UpdatesAction method:-commentOnFeed error:-"+e.getMessage());
 			}
 		return SUCCESS;
 	}
 	
 	public String commentOnFeedComment() {
+		logger.debug("UpdatesAction method:-commentOnFeedComment ");
 		HttpServletRequest request = ServletActionContext.getRequest();
 		try {
 			RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
@@ -352,22 +392,24 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 				int feedId = Integer.parseInt(request.getParameter("feedId"));
 				String commentTxt = request.getParameter("commentTxt");
 				response = updatesServiceIface.commentOnFeedComment(loginDetail,commentId,commentTxt);
-				execute();
+				response = updatesServiceIface.getFeedDetail(feedId,loginDetail.getUserId());
+				getFeedDetail();
+				/*execute();
 				if(feedList !=null){
 					for(FeedVo feed : feedList){
 						if(feed.getFeedId()==feedId){
 							feedDetails =feed;
 							break;
-							/*likeCounts =feed.getLikeCounts();
+							likeCounts =feed.getLikeCounts();
 							commentCounts = feed.getCommentCounts();
-							commentList= feed.getCommentList();*/
+							commentList= feed.getCommentList();
 						}
 					}
 					
-				}
+				}*/
 				}
 			}catch (Exception e) {
-				e.printStackTrace();
+				logger.error("UpdatesAction method:-commentOnFeedComment error:-"+e.getMessage());
 			}
 		return SUCCESS;
 	}
@@ -375,33 +417,37 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 	
 	public String likeOnFeed() {
 		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("UpdatesAction method:-likeOnFeed ");
 		try {
 			RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(loginDetail !=null){
 				UpdatesServiceIface updatesServiceIface = new UpdatesServiceImpl();
 				int feedId = Integer.parseInt(request.getParameter("feedId"));
 				response = updatesServiceIface.likeOnFeed(loginDetail,feedId);
-				execute();
+				response = updatesServiceIface.getFeedDetail(feedId,loginDetail.getUserId());
+				getFeedDetail();
+				/*execute();
 				if(feedList !=null){
 					for(FeedVo feed : feedList){
 						if(feed.getFeedId()==feedId){
 							feedDetails =feed;
 							break;
-							/*likeCounts =feed.getLikeCounts();
+							likeCounts =feed.getLikeCounts();
 							commentCounts = feed.getCommentCounts();
-							commentList= feed.getCommentList();*/
+							commentList= feed.getCommentList();
 						}
 					}
-				}
+				}*/
 				}
 			}catch (Exception e) {
-				e.printStackTrace();
+				logger.error("UpdatesAction method:-likeOnFeed error:-"+e.getMessage());
 			}
 		return SUCCESS;
 	}
 	
 	public String likeOnFeedComment() {
 		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("UpdatesAction method:-likeOnFeedComment ");
 		try {
 			RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(loginDetail !=null){
@@ -409,27 +455,30 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 				int commentId = Integer.parseInt(request.getParameter("commentId"));
 				int feedId = Integer.parseInt(request.getParameter("feedId"));
 				response = updatesServiceIface.likeOnFeedComment(loginDetail,commentId);
-				execute();
+				response = updatesServiceIface.getFeedDetail(feedId,loginDetail.getUserId());
+				getFeedDetail();
+				/*execute();
 				if(feedList !=null){
 					for(FeedVo feed : feedList){
 						if(feed.getFeedId()==feedId){
 							feedDetails =feed;
 							break;
-							/*likeCounts =feed.getLikeCounts();
+							likeCounts =feed.getLikeCounts();
 							commentCounts = feed.getCommentCounts();
-							commentList= feed.getCommentList();*/
+							commentList= feed.getCommentList();
 						}
 					}
-				}
+				}*/
 				}
 			}catch (Exception e) {
-				e.printStackTrace();
+				logger.error("UpdatesAction method:-likeOnFeedComment error:-"+e.getMessage());
 			}
 		return SUCCESS;
 	}
 	
 	public String getCourseFromFeed() {
 		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("UpdatesAction method:-getCourseFromFeed ");
 		try {
 			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(registrationVo !=null){
@@ -471,7 +520,7 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("UpdatesAction method:-getCourseFromFeed error:-"+e.getMessage());
 		}
 		request.getSession().setAttribute("selectedTab","coursesTabId");
 		return SUCCESS;
@@ -479,6 +528,7 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 	
 	public String getModuleFromFeed() {
 		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("UpdatesAction method:-getModuleFromFeed ");
 		try {
 			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 			if(registrationVo !=null){
@@ -528,6 +578,7 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 						comment.setParentCommentId(jsonCommenttObj.getInt("parentCommentId"));
 						comment.setLikeStatus(jsonCommenttObj.getBoolean("isLiked"));
 						comment.setCommentBy(jsonCommenttObj.getString("commentBy"));
+						comment.setCommentByImg(jsonCommenttObj.getString("commentByImage"));
 						comment.setCommentTxt(jsonCommenttObj.getString("commentTxt"));
 						comment.setCommentDate(Utility.getBeforeTime(jsonCommenttObj.getString("commentDate")));
 						JSONArray jsonSubCommArr = jsonCommenttObj.getJSONArray("subComments");
@@ -536,6 +587,7 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 							 JSONObject jsonSubCommObj = jsonSubCommArr.getJSONObject(y);
 							 CommentVo subCommentObj = new CommentVo();
 							 subCommentObj.setCommentBy(jsonSubCommObj.getString("commentBy"));
+							 subCommentObj.setCommentByImg(jsonSubCommObj.getString("commentByImage"));
 							 subCommentObj.setCommentTxt(jsonSubCommObj.getString("commentTxt"));
 							 subCommentObj.setCommentById(jsonSubCommObj.getInt("commentById"));
 							 subCommentObj.setCommentDate(Utility.getBeforeTime(jsonSubCommObj.getString("commentDate")));
@@ -554,6 +606,7 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 						video.setResourceId(jsonVedio.getInt("resourceId"));
 						video.setResourceName(jsonVedio.getString("resourceName"));
 						video.setResourceDesc(jsonVedio.getString("resourceDesc"));
+						video.setResourceUrl(jsonVedio.getString("resourceUrl"));
 						String[] uploadedDate = jsonVedio.getString("uploadedDate").split(" ");
 						if(Utility.isValidDate(uploadedDate[0])){
 							video.setUploadedDate(Utility.getDisplayDate(uploadedDate[0]));
@@ -601,14 +654,141 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 			
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("UpdatesAction method:-getModuleFromFeed error:-"+e.getMessage());
 		}
+		request.getSession().setAttribute("relatedVideos", moduleDescription.getRelatedVideoList());
 		request.getSession().setAttribute("selectedTab","coursesTabId");
 		return SUCCESS;	
 	}
 		
 	
-	
+	public void getFeedDetail(){
+		
+		JSONObject jsonResponseObj = new JSONObject(response);
+		if(jsonResponseObj.getString("statusMessage").equalsIgnoreCase("success")){
+			JSONObject jsonFeedObj = jsonResponseObj.getJSONObject("feedDetail");
+				FeedVo feedObj = new FeedVo();
+				if(jsonFeedObj.has("commentCounts")){
+				feedObj.setCommentCounts(jsonFeedObj.getInt("commentCounts"));
+				}
+				if(jsonFeedObj.has("feedId")){
+				feedObj.setFeedId(jsonFeedObj.getInt("feedId"));
+				} 
+				if(jsonFeedObj.has("feedOn")){
+					feedObj.setFeedOn(Utility.getBeforeTime(jsonFeedObj.getString("feedOn")));
+					} 
+				if(jsonFeedObj.has("likeCounts")){
+					feedObj.setLikeCounts(jsonFeedObj.getInt("likeCounts"));
+					}
+				if(jsonFeedObj.has("isLiked")){
+				feedObj.setLikeStatus(jsonFeedObj.getBoolean("isLiked"));
+				}if(jsonFeedObj.has("feedText")){
+					String feedText=jsonFeedObj.getString("feedText");
+					if(feedText.contains("$")){
+					String[] feedTextArr =feedText.split("\\$");
+					JSONArray feedTextContentArr = jsonFeedObj.getJSONArray("feedTextArray");
+					//String[] content = new String[feedTextContentArr.length()];
+					feedText="";
+					String feedTextPost="";
+					for(int j=0;j<feedTextContentArr.length();j++){
+						JSONObject jsonFeedContentObj = feedTextContentArr.getJSONObject(j);
+						String type=jsonFeedContentObj.getString("type");
+						String value=jsonFeedContentObj.getString("value");
+						int key=jsonFeedContentObj.getInt("key");
+						feedText=feedText+feedTextArr[j]+"<a href='javaScript:;' onclick=\"clickableResource("+feedObj.getFeedId()+",'"+type+"',"+key+");\">"+value+"</a>";
+						feedTextPost=feedTextPost+feedTextArr[j]+value;
+					}
+					if(feedTextArr.length > feedTextContentArr.length() && feedTextArr[feedTextContentArr.length()] != null){
+						feedText=feedText+feedTextArr[feedTextContentArr.length()];
+						feedTextPost=feedTextPost+feedTextArr[feedTextContentArr.length()];
+					}
+						feedObj.setFeedText(feedText);
+						feedObj.setFeedTextPost(feedTextPost);
+					}
+				}
+				/**
+				 * user detail
+				 */if(jsonFeedObj.has("user")){
+					JSONObject jsonUserObj = jsonFeedObj.getJSONObject("user");
+					RegistrationVo user = new RegistrationVo();
+					user.setUserId(jsonUserObj.getInt("userId"));
+					user.setUserName(jsonUserObj.getString("userName"));
+					if(jsonUserObj.has("userFbId")){
+					user.setUserFbId(jsonUserObj.getString("userFbId"));
+					}
+					user.setFirstName(jsonUserObj.getString("firstName"));
+					user.setLastName(jsonUserObj.getString("lastName"));
+					if(jsonUserObj.has("title")){
+					user.setTitle(jsonUserObj.getString("title"));
+				 	}
+					user.setProfilePhotoFileName(jsonUserObj.getString("profileImage"));
+					user.setEmailId(jsonUserObj.getString("emailId"));
+					feedObj.setUser(user);
+				 }
+				
+				 
+				 /**
+					 * resource detail
+					 */if(jsonFeedObj.has("resource")){
+						JSONObject jsonResourceObj = jsonFeedObj.getJSONObject("resource");
+						CoursesVo resource = new CoursesVo();
+						resource.setResourceId(jsonResourceObj.getInt("resourceId"));
+						resource.setResourceName(jsonResourceObj.getString("resourceName"));
+						resource.setResourceUrl(jsonResourceObj.getString("resourceUrl"));
+						resource.setResourceDesc(jsonResourceObj.getString("resourceDesc"));
+						resource.setAuthorName(jsonResourceObj.getString("authorName"));
+						resource.setAuthorImg(jsonResourceObj.getString("authorImg"));
+						resource.setThumbImg(jsonResourceObj.getString("thumbImg"));
+						feedObj.setResource(resource);
+					 }
+					 
+					 /**
+						 * comment detail
+						 */
+					 if(jsonFeedObj.has("feedCommentsList")){
+					 JSONArray jsonFeedCommentsArr = jsonFeedObj.getJSONArray("feedCommentsList");
+					 ArrayList<CommentVo> commentList=null;
+					 if(jsonFeedCommentsArr.length()>0){
+					  commentList = new ArrayList<CommentVo>();
+					 }
+					 for(int x=0;x<jsonFeedCommentsArr.length();x++){
+						 JSONObject jsonCommentObj = (JSONObject) jsonFeedCommentsArr.get(x);
+						 CommentVo comment = new CommentVo();
+						 comment.setCommentId(jsonCommentObj.getInt("commentId"));
+						 comment.setCommentBy(jsonCommentObj.getString("commentBy"));
+						 comment.setCommentTxt(jsonCommentObj.getString("commentTxt"));
+						 comment.setCommentCounts(jsonCommentObj.getInt("commentCounts"));
+						 comment.setLikeCounts(jsonCommentObj.getInt("likeCounts"));
+						 if(jsonCommentObj.getString("commentByImage") != null){
+						 comment.setCommentByImg(jsonCommentObj.getString("commentByImage"));
+						 }
+						 comment.setLikeStatus(jsonCommentObj.getBoolean("isLiked"));
+						 comment.setCommentById(jsonCommentObj.getInt("commentById"));
+						 comment.setCommentDate(Utility.getBeforeTime(jsonCommentObj.getString("commentDate")));
+						 JSONArray jsonSubCommArr = jsonCommentObj.getJSONArray("subComments");
+						 ArrayList<CommentVo> subCommentList = new ArrayList<CommentVo>();
+						 for(int y=0;y<jsonSubCommArr.length();y++){
+							 JSONObject jsonSubCommObj = jsonSubCommArr.getJSONObject(y);
+							 CommentVo subCommentObj = new CommentVo();
+							 subCommentObj.setCommentBy(jsonSubCommObj.getString("commentBy"));
+							 subCommentObj.setCommentTxt(jsonSubCommObj.getString("commentTxt"));
+							 subCommentObj.setCommentById(jsonSubCommObj.getInt("commentById"));
+							 subCommentObj.setCommentId(jsonSubCommObj.getInt("commentId"));
+							 subCommentObj.setLikeCounts(jsonSubCommObj.getInt("likeCounts"));
+							 subCommentObj.setLikeStatus(jsonSubCommObj.getBoolean("isLiked"));
+							 subCommentObj.setCommentByImg(jsonSubCommObj.getString("commentByImage"));
+							 subCommentObj.setCommentDate(Utility.getBeforeTime(jsonSubCommObj.getString("commentDate")));
+							 subCommentList.add(subCommentObj);
+						 }
+						 comment.setSubCommentList(subCommentList);
+						 commentList.add(comment);
+					 }
+					 feedObj.setCommentList(commentList);
+							 }
+					 feedDetails =feedObj;
+		}
+		
+	}
 	
 
 	
@@ -763,6 +943,14 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 
 	public void setResourceId(int resourceId) {
 		this.resourceId = resourceId;
+	}
+	
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 	
 }

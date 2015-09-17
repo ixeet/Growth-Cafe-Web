@@ -4,7 +4,7 @@ import com.slms.app.domain.vo.RegistrationVo;
 
 public interface UpdatesServiceIface {
 
-	public String updates(RegistrationVo loginDetail);
+	public String updates(RegistrationVo loginDetail, int offset);
 
 	public String commentOnFeed(RegistrationVo loginDetail, int feedId,
 			String commentTxt);
@@ -19,5 +19,7 @@ public interface UpdatesServiceIface {
 	public String getModuleFromFeed(int feedId);
 
 	public String likeOnFeedComment(RegistrationVo loginDetail, int commentId);
+
+	public String getFeedDetail(int feedId, int userId);
 
 }

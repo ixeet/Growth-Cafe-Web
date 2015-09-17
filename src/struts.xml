@@ -2,12 +2,16 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
 		
-
+	<constant name="struts.multipart.maxSize" value="1000000000" />
 	<package name="default" namespace="/" extends="struts-default">
 	
 		<result-types>
             <result-type name="tiles"  class="org.apache.struts2.views.tiles.TilesResult" />
         </result-types>
+	
+		<interceptors>  
+			<interceptor name="loginCheck" class="LoginCheckInterceptor"></interceptor>  
+		</interceptors>
 	
 		<action name="welcome" class="com.slms.app.webapp.controller.HomeAction">
 			<result name="success" type="tiles">/home</result>
@@ -40,7 +44,9 @@
 		<action name="getClassDetails" class="com.slms.app.webapp.controller.HomeAction" method="getClassDetails">
 		</action>
 		<action name="courses" class="com.slms.app.webapp.controller.CoursesAction" method="courses">
+			<interceptor-ref name="loginCheck"></interceptor-ref> 
 			<result name="success" type="tiles">/course</result>
+			<result name="login" type="chain">welcome</result>
 		</action>
 		<action name="getModules" class="com.slms.app.webapp.controller.CoursesAction" method="getModules">
 			<result name="success" type="tiles">/getModule</result>
@@ -71,12 +77,21 @@
 			<result name="success" type="tiles">/userProfile</result>
 		</action>
 		<action name="updates" class="com.slms.app.webapp.controller.UpdatesAction">
+			<interceptor-ref name="loginCheck"></interceptor-ref> 
 			<result name="success" type="tiles">/updates</result>
+			<result name="login" type="chain">welcome</result>
+		</action>
+		<action name="paginationUpdates" class="com.slms.app.webapp.controller.UpdatesAction">
+			<result name="success">view/jsp/paginationUpdates.jsp</result>
 		</action>
 		<action name="getCourseFromFeed" class="com.slms.app.webapp.controller.UpdatesAction" method="getCourseFromFeed">
+			<interceptor-ref name="loginCheck"></interceptor-ref>
+			<result name="login" type="chain">welcome</result>
 			<result name="success" type="tiles">/getModule</result>
 		</action>
 		<action name="getModuleFromFeed" class="com.slms.app.webapp.controller.UpdatesAction" method="getModuleFromFeed">
+			<interceptor-ref name="loginCheck"></interceptor-ref>
+			<result name="login" type="chain">welcome</result>
 			<result name="success" type="tiles">/getModuleDesc</result>
 		</action>
 		<action name="commentOnFeed" class="com.slms.app.webapp.controller.UpdatesAction" method="commentOnFeed">
@@ -95,9 +110,13 @@
 			<result name="success">view/jsp/pages/feedComments.jsp</result>
 		</action>
 		<action name="assignments" class="com.slms.app.webapp.controller.AssignmentAction">
+			<interceptor-ref name="loginCheck"></interceptor-ref>
+			<result name="login" type="chain">welcome</result>
 			<result name="success" type="tiles">/assignment</result>
 		</action>
 		<action name="submitAssignment" class="com.slms.app.webapp.controller.AssignmentAction" method="submitAssignment">
+			<interceptor-ref name="loginCheck"></interceptor-ref>
+			<result name="login" type="chain">welcome</result>
 			<result name="success" type="tiles">/submitAssignment</result>
 		</action>
 		<action name="uploadAssignment" class="com.slms.app.webapp.controller.AssignmentAction" method="uploadAssignment">
@@ -105,12 +124,20 @@
 		</action>
 		
 		<action name="viewAssignment" class="com.slms.app.webapp.controller.AssignmentAction" method="viewAssignment">
+			<interceptor-ref name="loginCheck"></interceptor-ref>
+			<result name="login" type="chain">welcome</result>
 			<result name="success" type="tiles">/viewAssignment</result>
 		</action>
 		<action name="personalProfile" class="com.slms.app.webapp.controller.HomeAction" method="personalProfile">
+			<interceptor-ref name="loginCheck"></interceptor-ref>
+			<result name="login" type="chain">welcome</result>
 			<result name="success" type="tiles">/personalProfile</result>
 		</action>
-		
+		<action name="relatedVideo" class="com.slms.app.webapp.controller.CoursesAction" method="relatedVideo">
+			<interceptor-ref name="loginCheck"></interceptor-ref>
+			<result name="login" type="chain">welcome</result>
+			<result name="success" type="tiles">/relatedVideo</result>
+		</action>
 		
 		
 	</package>
@@ -135,12 +162,10 @@
 				<result name="success" type="tiles">/schoolDetail</result>
 		</action>
 		
-		<action name="filterSchoolDetails" class="com.slms.webapp.controller.SchoolReportAction" method="schoolDetails">
+		<action name="filterSchoolDetails" class="com.slms.webapp.controller.SchoolReportAction" method="filterSchoolDetails">
 			<result name="success">/view/teacher/pages/schoolReportDiaplayTable.jsp</result>
 		</action>
 		
-		<action name="classDetail" class="com.slms.webapp.controller.SchoolReportAction" method="classDetail"/>
-		<action name="homeRoomDetail" class="com.slms.webapp.controller.SchoolReportAction" method="homeRoomDetail"/> 
 		
 								<!-- course Detail  -->		
 		<action name="courseDetail" class="com.slms.webapp.controller.CourseReportAction" method="courseDetail">
@@ -152,18 +177,35 @@
 		</action>
 		
 		<action name="viewListDetail" class="com.slms.webapp.controller.CourseReportAction" method="viewListDetail">
-			<result name="success">/view/teacher/pages/PopupShow.jsp</result>
+			<result name="success" type="tiles">/viewDetail</result>
+		</action>
+		
+		<action name="changeWorkStatus" class="com.slms.webapp.controller.CourseReportAction" method="changeWorkStatus">
+			<result name="success">/view/teacher/pages/StatusChangeByTeacher.jsp</result>
+		</action>
+		
+		<action name="changeDetailTeach" class="com.slms.webapp.controller.CourseReportAction" method="changeDetailTeach">
+			<result name="success">/view/teacher/pages/CoursesDisplayTable.jsp</result>
 		</action>
 		
 		<action name="courseDetailList" class="com.slms.webapp.controller.CourseReportAction" method="courseDetailList"/>
+		
+		<action name="homeRoom" class="com.slms.webapp.controller.CourseReportAction" method="homeRoom"/>
+		
+		<action name="loadClassMethod" class="com.slms.webapp.controller.CourseReportAction" method="loadClassMethod"/>
 		
 								<!-- Assignment Detail  -->		
 		<action name="assignmentDetail" class="com.slms.webapp.controller.AssignmentReportAction" method="assignmentDetail">
 			<result name="success" type="tiles">/assignmentDetail</result>
 		</action>
-		<action name="loadClassMethod" class="com.slms.webapp.controller.AssignmentReportAction" method="loadClassMethod"/>
+		
+		<action name="studentAssignmentViewDetail" class="com.slms.webapp.controller.AssignmentReportAction" method="studentAssignmentViewDetail">
+			<result name="success" type="tiles">/assignmentResourceDetail</result>
+		</action>
+		
+		<action name="loadClassMethodDetails" class="com.slms.webapp.controller.CourseReportAction" method="loadClassMethod"/>
 	
-		<action name="homeRoom" class="com.slms.webapp.controller.AssignmentReportAction" method="homeRoom"/>
+		<!-- <action name="homeRoom" class="com.slms.webapp.controller.AssignmentReportAction" method="homeRoom"/> -->
 		
 		<action name="courseDetailMethod" class="com.slms.webapp.controller.AssignmentReportAction" method="courseDetailMethod"/>
 		
@@ -172,7 +214,7 @@
 		<action name="submitDate" class="com.slms.webapp.controller.AssignmentReportAction" method="submitDate"/>
 		
 		<action name="showDateDetail" class="com.slms.webapp.controller.AssignmentReportAction" method="showDateDetail">
-			<result name="success">view/teacher/pages/AssignmentReportDisplayTable.jsp</result>
+			<result name="success">/view/teacher/pages/AssignmentReportDisplayTable.jsp</result>
 		</action>
 								<!-- LeaderBoard Detail  -->		
 		<action name="leaderBoard" class="com.slms.webapp.controller.LeaderBoardReportAction" method="leaderBoardDetail">
@@ -185,6 +227,11 @@
 		
 		<action name="leaderShowDetails" class="com.slms.webapp.controller.LeaderBoardReportAction" method="leaderShowDetails">
 			<result name="success">/view/teacher/pages/LeaderBoardReportDisplayTable.jsp</result>
+		</action>
+		
+		
+		<action name="personalProfile" class="com.slms.app.webapp.controller.HomeAction" method="personalProfile">
+			<result name="success" type="tiles">/teacherPersonalProfile</result>
 		</action>
 		
         </package>

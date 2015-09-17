@@ -10,6 +10,13 @@ public class FeedVo {
 	private int commentCounts;
 	private boolean likeStatus;
 	private String feedText;
+	private String feedTextPost;
+	public String getFeedTextPost() {
+		return feedTextPost;
+	}
+	public void setFeedTextPost(String feedTextPost) {
+		this.feedTextPost = feedTextPost;
+	}
 	private String feedOn;
 	public String getFeedOn() {
 		return feedOn;

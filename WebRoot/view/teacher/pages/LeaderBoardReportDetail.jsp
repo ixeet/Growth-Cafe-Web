@@ -14,7 +14,7 @@
 			sendBefore		:	function(){},
 			success			:	function(result){
 			var container = $("#loadClassDetail");
-			var HTMLAppand = "<select name='classId' id='classIdDiv' class='form-control outLine' onchange='loadRoomTypess();'><option value='-1'>SELECT ClASS</option>";
+			var HTMLAppand = "<select name='classId' id='classIdDiv' class='form-control outLine' onchange='loadRoomTypess();'><option value='-1'>DEPARTMENT (ALL)</option>";
 				for(var i=0; i<result.length; i++){
 					HTMLAppand=HTMLAppand+"<option value='"+result[i].id+"'>"+result[i].scName+"</option >";
 				}
@@ -39,7 +39,7 @@
 			semdBefore	:	function(){},
 			success		:	function(result){
 			var container = $("#loadHomeRoomDetail");
-			var HTMLAppand = "<select name='homeRoomId' id='homeRoomIds' class='form-control outLine' onchange='showbtnId();' onchange='courseDetail();'><option value='-1'>SELECT HOOM ROOM</option>";
+			var HTMLAppand = "<select name='homeRoomId' id='homeRoomIds' class='form-control outLine' onchange='showbtnId();' onchange='courseDetail();'><option value='-1'>GROUP (ALL)</option>";
 				for(var i=0; i<result.length; i++){
 					HTMLAppand=HTMLAppand+"<option value='"+result[i].id+"'>"+result[i].hrName+"</option >";
 				}
@@ -101,14 +101,14 @@
 <div>&nbsp;</div>
 	<div class="col-md-4 ">
 		<s:select list="schoolNameList" listValue="schoolName" cssClass="form-control outLine"
-			listKey="schoolId" headerKey="-1" headerValue="SELECT SCHOOL"
+			listKey="schoolId" headerKey="-1" headerValue="ORGANIZATION (ALL)"
 			name="schoolId" id="schoolIdDiv"
 			onchange="return loadClassMethodShow();"></s:select>
 	</div>
 	<div class="col-md-4 " >
 	<div id="loadClassDetail">
 		<select class="form-control outLine">
-			 <option value="-1">SELECT ClASS</option>
+			 <option value="-1">DEPARTMENT (ALL)</option>
 		</select>
 	</div>
 	</div>
@@ -116,7 +116,7 @@
 	<div class="col-md-4 " >
 	<div id="loadHomeRoomDetail">
 		<select class="form-control outLine">
-			 <option value="-1">SELECT HOOM ROOM</option>
+			 <option value="-1">GROUP (ALL)</option>
 		</select>
 	</div>
 	</div>

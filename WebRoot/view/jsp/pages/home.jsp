@@ -1,6 +1,29 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script>
+
+$(document).ready(function(){ 
+     var userName=readCookie("userName");
+     var userpassword =readCookie("userPassword");
+		if(userName !="" && userName !=null && userpassword!="" && userpassword!=null){
+		var data="userName="+userName+"&userPassword="+userpassword;
+		$.post("login",data,
+			function(data,status){
+			var response = JSON.parse(data);
+				 if(response.statusMessage=="success" && response.userType==2){
+							teacherLogin();
+						}
+					else if(response.statusMessage=="success" && response.userType==3){
+							studentLogin();
+						}else{
+							showErrorMessage("Email and password doesn't match with database");
+							}
+						});
+	    }
+});
+
+
+
 function ValidateEmail(email) {
       var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
         return expr.test(email);
@@ -15,11 +38,9 @@ function validPassword(password){
 		var userName = document.getElementById("forgetUserNameId").value;
 		if(userName==""){
 	$("#forgetUserNameId").addClass("fieldFill").attr("placeholder", "Please enter email");
-		/* alert("Please enter email"); */
 	}
 	else if(!ValidateEmail(userName)){
 		$("#emailshowforget").show();
-		//alert("Enter a valid email id including '@' and '.'");
 	}
 	else if(ValidateEmail(userName)){
 		$("#emailshowforget").hide();
@@ -34,7 +55,6 @@ function validPassword(password){
 			},
 			success : function(data){
 				var response = JSON.parse(data);
-            //alert("Data: " + data + "\nStatus: " + status);
             if(response.statusMessage=='success'){
 						showSuccessMessage("Your password is sent to "+userName+", please check SPAM folder if not received in inbox");
 						setTimeout(function() {homeClick();},2250);
@@ -62,12 +82,10 @@ function getHomeDetails(classid){
 	var homeSelect = "";
 	var schoolid = $("#schoolId").val();
 	if(schoolid==0){
-	showSuccessMessage("please select school first");
-		//alert("please select school first");
+	showErrorMessage("Please select organization first");
 	}else{
 	$.post("getClassDetails",data,
 			function(data,status){
-	        //alert("Data: "+schoolid+"\nStatus: " + status);
 	            var jsonResponse = JSON.parse(data);
 	            var schoolsArray = jsonResponse.schoolList;
 	            for(var i=0;i<schoolsArray.length;i++){
@@ -76,7 +94,7 @@ function getHomeDetails(classid){
 	            		for(var j=0;j<classesArray.length;j++){
 	            			if(classesArray[j].classId==classid){
 		            		var homeArray = classesArray[0].homeRoomList;
-		            		homeSelect=homeSelect+"<select name='homeRoomId' class='input width_100p' id='homeRoomId'><option value='0'>Select home room</option>";
+		            		homeSelect=homeSelect+"<select name='homeRoomId' class='input width_100p' id='homeRoomId' onchange='checkOrgAndDepart();'><option value='0'>Select Group</option>";
 		            		for(var j=0;j<homeArray.length;j++){
 			            		homeSelect=homeSelect+"<option value='"+homeArray[j].homeRoomId+"'>"+homeArray[j].homeRoomName+"</option>";
 		            		}
@@ -100,13 +118,12 @@ function getClassDetails(schoolid){
 	var homeSelect = "";
 	$.post("getClassDetails",data,
 			function(data,status){
-	           //alert("Data: "+data+"\nStatus: " + status);
 	            var jsonResponse = JSON.parse(data);
 	            var schoolsArray = jsonResponse.schoolList;
 	            for(var i=0;i<schoolsArray.length;i++){
 	            	if(schoolsArray[i].schoolId==schoolid){
 	            		var classesArray = schoolsArray[i].classList;
-	            		classesSelect=classesSelect+"<select name='classId' onchange='getHomeDetails(this.value)' id='classId' class='input width_100p'><option value='0'>Class</option>";
+	            		classesSelect=classesSelect+"<select name='classId' onchange='getHomeDetails(this.value)' id='classId' class='input width_100p'><option value='0'>Select Department</option>";
 	            		for(var j=0;j<classesArray.length;j++){
 		            		classesSelect=classesSelect+"<option value='"+classesArray[j].classId+"'>"+classesArray[j].className+"</option>";
 	            		}
@@ -115,7 +132,7 @@ function getClassDetails(schoolid){
 	            		
 	            		
 	            		var homeArray = classesArray[0].homeRoomList;
-	            		homeSelect=homeSelect+"<select id='homeRoomId' name='homeRoomId' class='input width_100p'><option value='0'>Home</option>";
+	            		homeSelect=homeSelect+"<select id='homeRoomId' name='homeRoomId' class='input width_100p' onchange='checkOrgAndDepart();'><option value='0'>Select Group</option>";
 	            		for(var j=0;j<homeArray.length;j++){
 		            		homeSelect=homeSelect+"<option value='"+homeArray[j].homeRoomId+"'>"+homeArray[j].homeRoomName+"</option>";
 	            		}
@@ -131,55 +148,74 @@ function getClassDetails(schoolid){
 	         
 }
 
+
+function checkOrgAndDepart(){
+
+	var schoolId = $("#schoolId").val();
+	var classId = $("#classId").val();
+	if(schoolId==0 || classId==0){
+		showErrorMessage("Please select organization and department first");
+	}
+
+}
+
 	function login(){
-	var userName = document.getElementById("loginUserNameId").value;
-	var userPassword = document.getElementById("loginUserPasswordId").value;
-	if(userName==""){
-	$("#loginUserNameId").addClass("fieldFill").attr("placeholder", "Please enter email");
-		/* alert("Please enter email"); */
-	}
-	else if(!ValidateEmail(userName)){
-		$("#emailshow").show();
-		//alert("Enter a valid email id including '@' and '.'");
-	}
-	else if(ValidateEmail(userName)){
-		$("#emailshow").hide();
-			$("#loginUserNameId").removeClass("fieldFill");
-		//alert("Enter a valid email id including '@' and '.'");
-	}
+	var status=false;
+    status= navigator.onLine;
+	if(status== true)
+    {
+		var userName = document.getElementById("loginUserNameId").value;
+		var userPassword = document.getElementById("loginUserPasswordId").value;
+		if(userName==""){
+		$("#loginUserNameId").addClass("fieldFill").attr("placeholder", "Please enter email");
+		}
+		else if(!ValidateEmail(userName)){
+			$("#emailshow").show();
+		}
+		else if(ValidateEmail(userName)){
+			$("#emailshow").hide();
+				$("#loginUserNameId").removeClass("fieldFill");
+		}
+		
+		if(userPassword==""){
+			$("#loginUserPasswordId").addClass("fieldFill").attr("placeholder", "Please enter user password");
+		}
+		
+		else if(!validPassword(userPassword)){
+			$("#lengthDiv").show();
+		}
+		
 	
-	if(userPassword==""){
-		$("#loginUserPasswordId").addClass("fieldFill").attr("placeholder", "Please enter user Password");
-	}
+		
+		else if(userPassword.length<8){
+			$("#lengthDiv").show();
+		}
+		else if(userPassword.length>=8){
+			$("#lengthDiv").hide();
+		$("#loginUserPasswordId").removeClass("fieldFill");
+		}
 	
-	else if(!validPassword(userPassword)){
-		$("#lengthDiv").show();
-	}
-	
-
-	
-	else if(userPassword.length<8){
-		$("#lengthDiv").show();
-	}
-	else if(userPassword.length>=8){
-		$("#lengthDiv").hide();
-	$("#loginUserPasswordId").removeClass("fieldFill");
-	}
-
-	if(ValidateEmail(userName) && userPassword.length>=8 && validPassword(userPassword)){
-		var data = $("#loginFormId").serialize();
-		$.post("login",data,
-		function(data,status){
-			var response = JSON.parse(data);
-			 if(response.statusMessage=="success" && response.userType==2){
-						teacherLogin();
-					}
-				else if(response.statusMessage=="success" && response.userType==3){
-						studentLogin();
-					}else{
-						showErrorMessage("Email and password doesn't match with database");
-					}
-        });
+		if(ValidateEmail(userName) && userPassword.length>=8 && validPassword(userPassword)){
+			var data = $("#loginFormId").serialize();
+			if($('#remeberMeId').is(':checked')){
+				setCookie("userName",userName,30);
+				setCookie("userPassword",userPassword,30);
+			}
+			$.post("login",data,
+			function(data,status){
+				var response = JSON.parse(data);
+				 if(response.statusMessage=="success" && response.userType==2){
+							teacherLogin();
+						}
+					else if(response.statusMessage=="success" && response.userType==3){
+							studentLogin();
+						}else{
+							showErrorMessage("Email and password doesn't match with database");
+						}
+	        });
+		}
+	}else{
+		showErrorMessage("Sorry, unable to login. Please check your internet connection or try again later");
 	}
 	return false;
 }
@@ -209,10 +245,12 @@ var title = $("#titleId").val();
 	var homeRoomId = $("#homeRoomId").val();
 	//var homeRoomName = document.getElementById("homeRoomNameId").value;
 	var adminEmailId = $("#adminEmailId").val();
-	var userPassword =  $("#userPasswordId").val(); 
+	var userPassword =  $("#userPasswordId").val();
 	var conUserPassword =  $("#conUserPasswordId").val();  
 	if(title==null){
 		$("#titleId").addClass("fieldFill");
+		$("#titleSelect").show();
+		
 	}
 	else if(title!=null){
 		$("#titleId").removeClass("fieldFill");
@@ -245,9 +283,8 @@ var title = $("#titleId").val();
 	}
 	
 	 if(userPassword==""){
-		$("#userPasswordId").addClass("fieldFill").attr("placeholder", "Enter your Password");
-		$("#conUserPasswordId").addClass("fieldFill").attr("placeholder", "Confirm Password");
-		//alert("please enter userPassword");
+		$("#userPasswordId").addClass("fieldFill").attr("placeholder", "Enter your password");
+		$("#conUserPasswordId").addClass("fieldFill").attr("placeholder", "Confirm password");
 	}
 	
 	else if(!validPassword(userPassword)){
@@ -260,16 +297,14 @@ var title = $("#titleId").val();
 		
 	}
 	
-	else if(userPassword.length<8){
-		$("#passwordIds").show();
+	if(userPassword.length< 8 || userPassword.length>16){
+		$("#lengthDivshow").show();
 	
-		//alert("Enter a password with 8 characters including one letter and number.");
 	}
 	
-	else if(userPassword.length>=8){
-		$("#passwordIds").hide();
+	else if(userPassword.length>=8 && userPassword.length<=16){
+		$("#lengthDivshow").hide();
 	$("#userPasswordId").removeClass("fieldFill");
-		//alert("Enter a password with 8 characters including one letter and number.");
 	}
 	
 
@@ -277,7 +312,6 @@ var title = $("#titleId").val();
 	
 	 if(conUserPassword !=userPassword && conUserPassword != null){
 		$("#confPasswords").show();
-		//alert("Confirm Password field doesn't match with password");
 	}
 	
 	
@@ -285,63 +319,55 @@ var title = $("#titleId").val();
 		$("#confPasswords").hide();
 		$("#userPasswordId").removeClass("fieldFill");
 		$("#conUserPasswordId").removeClass("fieldFill");
-		//alert("Confirm Password field does n't match with password");
 	}
 	
 	if(schoolId==0){
 		$("#schoolId").addClass("fieldFill");
 		$("#schoolSelect").show();
 	
-		//alert("School is not selected");
 	}
 	else if(schoolId!=0){
 		$("#schoolId").removeClass("fieldFill");
 		$("#schoolSelect").hide();
 	}
 	 if(adminEmailId==""){
-	 $("#adminEmailId").addClass("fieldFill").attr("placeholder", "Please enter School Email");
+	 $("#adminEmailId").addClass("fieldFill").attr("placeholder", "Please enter organization email");
 	 
-		//alert("School email seems to be incorrect, Enter a valid email id  including '@' and '.'");
 	}else if(!ValidateEmail(adminEmailId)){
 	$("#schoolEmId").show();
-		//alert("Enter a valid email id including '@' and '.'");
 	}
 	
 	else if(ValidateEmail(adminEmailId)){
 	$("#schoolEmId").hide();
 	$("#adminEmailId").removeClass("fieldFill");
-		//alert("Enter a valid email id including '@' and '.'");
 	}
 	 if(classId==0){
 	$("#classId").addClass("fieldFill");
 	$("#selectClassId").show();
-		//alert("Class is not selected");
 	}
 	else if(classId!=0){
 	$("#classId").removeClass("fieldFill");
 	$("#selectClassId").hide();
-		//alert("Class is not selected");
 	}
 	 if(homeRoomId==0){
 		$("#homeRoomId").addClass("fieldFill");
 	$("#homeDivIdMsg").show();
 	
-		//alert("Home room is not selected");
 	}
 	else if(homeRoomId!=0){
 		$("#homeRoomId").removeClass("fieldFill");
 		$("#homeDivIdMsg").hide();
 	}
 	
-	if(homeRoomId!=0 && classId!=0 && ValidateEmail(adminEmailId) && schoolId!=0 && conUserPassword == userPassword && conUserPassword !="" && ValidateEmail(userName) && title!="Title" && firstName!="" && lastName!="")
+	if(homeRoomId!=0 && classId!=0 && ValidateEmail(adminEmailId) && schoolId!=0 && conUserPassword == userPassword && userPassword !="" && userPassword.length>=8 && userPassword.length<=16 && ValidateEmail(userName) && title!="Title" && firstName!="" && lastName!="")
 	{
+		
 		var data = $("#registrationFormId").serialize();
 		$.post("registration",data,
 		function(data,status){
 			var responseMessage =JSON.parse(data);
-            //alert("Data: " + responseMessage.statusMessage + "\nStatus: " + status);
             if(responseMessage.statusMessage =='success'){
-            	 showSuccessMessage("Thank you for registering with Growth Cafe, Your registration is pending for approval from school admin.");
+            	 showSuccessMessage("Thank you for registering with Growth Cafe, Your registration is pending for approval from organization admin.");
             	 document.getElementById('registrationFormId').reset();
             }else{
             	showErrorMessage(responseMessage.statusMessage);
@@ -363,7 +389,7 @@ var title = $("#titleId").val();
 
 
 <script>
- // This is called with the results from from FB.getLoginStatus().
+  // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
     console.log(response);
@@ -386,14 +412,13 @@ var title = $("#titleId").val();
     }
   }
 
-
   // This function is called when someone finishes with the Login
   // Button.  See the onlogin handler attached to it in the sample
   // code below.
   function checkLoginState() {
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
-    },{scope: 'public_profile,email'});
+    });
   }
 
   window.fbAsyncInit = function() {
@@ -416,6 +441,7 @@ var title = $("#titleId").val();
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
+
 
 
   // Here we run a very simple test of the Graph API after login is
@@ -463,7 +489,7 @@ var title = $("#titleId").val();
 
 body{font-family: helvetica; color:#666; font-size:14px; color:white !important;}
 li,ul,body,input{margin:0; padding:0; list-style:none}
-#login-form{width:350px;margin:0 auto; margin-top:5px; background:rgba(179,100,121,0.5); overflow:hidden; border-radius:7px}
+#login-form{width:350px;margin:0 auto; background:rgba(179,100,121,0.5); overflow:hidden; border-radius:7px}
 .form-header{display:table;border-bottom: 1px solid white; clear:both}
 label{font-weight:500 !important;cursor: pointer;}
 .labeln{font-weight:500 !important;    cursor: auto !important;position:relative; top:-5px; 
@@ -518,6 +544,13 @@ display:block !important;
 select option:disabled {
     color: #808080;
 }
+
+
+.signup-section{
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
 <!---------Changes made by Praveen on 13Aug2015------->
 
 </style>
@@ -564,9 +597,9 @@ select option:disabled {
 					<div id="emailshow" class="msgShow">Enter a valid email id including '@' and '.'</div>
 					<label class="labeln" for ="password">Password</label>
 					<li><input type="password" class="input" onkeypress="if(event.keyCode==13){login();}"  name="userPassword" id="loginUserPasswordId" placeholder="Enter your password"/></li>
-				<div id="lengthDiv" class="msgShow">Enter a password with 8 characters including one letter and number</div>
+				<div id="lengthDiv" class="msgShow">Enter a password with 8-16 characters including one letter and number</div>
 				
-					<li><span class="remember"><input type="checkbox" id="check" class="left"/> 
+					<li><span class="remember"><input id="remeberMeId" type="checkbox" id="check" class="left"/> 
 					<label class="left" for="check">&nbsp;Remember Me</label></span></li>
 					<li class="center"><input type="button" onclick="return login();" value="SIGN IN" class="buttons"></li>
 					
@@ -596,8 +629,10 @@ select option:disabled {
 					<div class="social-login">
 					
 						<label id="loginfb"  for="login">
-							<div  class="fb-login-button loginfb" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();">
-							Login</i></a></div>
+						
+								
+														<div onlogin="checkLoginState();" class="fb-login-button loginfb3" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false">Login</div>
+													
 						</label>
 					</div>
 					</section>
@@ -618,10 +653,10 @@ select option:disabled {
 					<label class="labeln" for ="email">Title</label>
 					<li><select name="title" id="titleId" class="cursor input width_100p" >
 					<option value="" disabled selected style="display:none;">Title</option>
-					<option value="1">Mr.</option>
-					<option value="2">Mrs.</option>
-					<option value="3">Ms.</option>
-					<option value="4">Dr.</option>
+					<option value="Mr.">Mr.</option>
+					<option value="Mrs.">Mrs.</option>
+					<option value="Ms.">Ms.</option>
+					<option value="Dr.">Dr.</option>
 					</select></li>
 					</div>
 					
@@ -638,11 +673,11 @@ select option:disabled {
 					<label class="labeln" for ="lname">Last Name</label>
 					<li ><input type="text" name="lastName" id="lastNameId" class="input width_100p" placeholder="Last name"/></li>
 					</div>
-					
+					<div id="titleSelect" class="msgShow">Title not selected</div>
 					
 					
 					<label class="labeln" for ="email">Email</label>
-					<li><input type="email" name="userName" id="userNameId" class="input" placeholder="Enter you email address"/></li>
+					<li><input type="email" name="userName" id="userNameId" class="input" placeholder="Enter your email address"/></li>
 					<div id="emailshowshow" class="msgShow">Enter a valid email id including '@' and '.'</div>
 					
 					<div class="width_50p left">
@@ -655,7 +690,7 @@ select option:disabled {
 					<li><input type="password" name="conUserPassword" id="conUserPasswordId" value="" class="input width_100p" placeholder="Enter your password"/></li>
 					</div>
 					<li>
-					<div id="lengthDivshow" class="msgShow">Short passwords are easy to guess. Try one with at least 8 characters including a alphabet and a number.</div>
+					<div id="lengthDivshow" class="msgShow">Short passwords are easy to guess. Try one with at least 8-16 characters including a alphabet and a number.</div>
 					</li>
 					<li>
 					<div id="confPasswords" class="msgShow">Confirm Password field doesn't match with password</div>
@@ -663,62 +698,62 @@ select option:disabled {
 					
 					
 					<li>
-					<label class="labeln" for ="pwd">School Name</label>
+					<label class="labeln" for ="pwd">Organization</label>
 					<s:if test="schoolsList !=null">
 					
 				<s:select  cssClass="input" name="schoolId" id="schoolId" 
-				list="schoolsList" headerKey="0" headerValue="Select your school" listKey="schoolId" listValue="schoolName"
+				list="schoolsList" headerKey="0" headerValue="Select Organization" listKey="schoolId" listValue="schoolName"
 				 onchange="getClassDetails(this.value)"></s:select><br/>
-				<div id="schoolSelect" class="msgShow">School name not selected</div>
+				<div id="schoolSelect" class="msgShow">Organization name not selected</div>
 				</s:if>
 				<s:else>
-				<select  class="input" name="schoolId"><option value="0">Select your school</option></select><br/>
+				<select  class="input" name="schoolId"><option value="0">Select your Organization</option></select><br/>
 				</s:else>
 					</li>
 					
 					
 					
 					
-					<label class="labeln" for ="pwd">School Email</label>
-					<li><input type="email" name="adminEmailId" id="adminEmailId" class="input" placeholder="Enter school email address"/></li>
-					<div id="schoolEmId" class="msgShow">School email seems to be incorrect, Enter a valid email id  including '@' and '.'</div>	
+					<label class="labeln" for ="pwd">Organization Email</label>
+					<li><input type="email" name="adminEmailId" id="adminEmailId" class="input" placeholder="Enter organization email address"/></li>
+					<div id="schoolEmId" class="msgShow">Organization email seems to be incorrect, Enter a valid email id  including '@' and '.'</div>	
 					
 					
 					<div class="width_50p left">
-					<label class="labeln" for ="classId">Class</label>
+					<label class="labeln" for ="classId">Department</label>
 					<li>
 					
 					<div id="classDivId">
 				<s:if test="classesList !=null">
-				<s:select cssClass="input width_100p" headerKey="0" headerValue="Select your class" name="classId" list="classesList" listKey="classId" listValue="className" onchange="getHomeDetails(this.value)"></s:select><br/>
+				<s:select cssClass="input width_100p" headerKey="0" headerValue="Select Department" name="classId" list="classesList" listKey="classId" listValue="className" onchange="getHomeDetails(this.value)"></s:select><br/>
 				
 				
 				</s:if>
-				<s:else><select class="input width_100p" name="classId"><option value="0">Select class</option></select><br/></s:else>
+				<s:else><select class="input width_100p" name="classId"><option value="0">Select Department</option></select><br/></s:else>
 				</div>
 				
 				
 					</li>
-					<div id="selectClassId" class="msgShow">Class not selected</div>
+					<div id="selectClassId" class="msgShow">Department not selected</div>
 					</div>
 					
 					
 					
 					<div class="width_50p left">
 					<li>
-					<label class="labeln" for ="homeRoomId">Home Room</label>
+					<label class="labeln" for ="homeRoomId">Group</label>
 					<div id="homeDivId">
 					<s:if test="homesList !=null">
-						<s:select cssClass="input width_100p" headerKey="0" headerValue="Select home room" name="homeRoomId" list="homesList" listKey="homeRoomId" listValue="homeRoomName"></s:select><br/>
+						<s:select cssClass="input width_100p" headerKey="0" headerValue="Select Group" onchange="checkOrgAndDepart();" name="homeRoomId" list="homesList" listKey="homeRoomId" listValue="homeRoomName"></s:select><br/>
 						
 						</s:if>
-						<s:else><select class="input width_100p" name="homeRoomId"><option value="0">Select home room</option></select><br/>
+						<s:else><select class="input width_100p" name="homeRoomId" onchange="checkOrgAndDepart();"><option value="0">Select Group</option></select><br/>
 						</s:else>
 						
 					</div>
 					
 					</li>
-					<div id="homeDivIdMsg" class="msgShow">Homeroom not selected</div>
+					<div id="homeDivIdMsg" class="msgShow">Group not selected</div>
 					</div>
 					
 				
@@ -768,7 +803,8 @@ select option:disabled {
 	color: white;
     font-family: helvetica;
     font-size: 12px;
-    margin-left: 10px;
+   	position:relative;
+   	top : -10px;
     display:none;
 }
 
