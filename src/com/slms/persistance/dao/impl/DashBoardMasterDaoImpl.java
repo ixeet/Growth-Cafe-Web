@@ -10,7 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.json.JSONObject;
+import com.slms.app.domain.utility.PostJsonObject;
+import com.slms.app.domain.utility.Utility;
+import com.slms.app.domain.vo.RegistrationVo;
 import com.slms.domain.vo.DashBoardReportVo;
 import com.slms.persistance.dao.iface.DashBoardMasterDao;
 import com.slms.persistance.factory.LmsDaoAbstract;
@@ -21,6 +24,9 @@ import com.slms.persistance.factory.LmsDaoAbstract;
  */
 public class DashBoardMasterDaoImpl extends LmsDaoAbstract implements DashBoardMasterDao {
 
+	String baseUrl=Utility.getProperties("application.properties").getProperty("loginbaseUrl");
+	String response=null;
+	
 	@Override
 	public List<DashBoardReportVo> getDashBoardDetailList(
 			DashBoardReportVo dashBoardReportVo) {
@@ -92,7 +98,24 @@ public class DashBoardMasterDaoImpl extends LmsDaoAbstract implements DashBoardM
 	}
 
 	 
-   
+	@Override
+	public String updates(RegistrationVo loginDetail , int offset) {
+		try {
+			String url=baseUrl+"rest/common/getFeeds";
+			
+			JSONObject regJsonObject = new JSONObject();
+			regJsonObject.put("userId", 22);
+			regJsonObject.put("searchText", "");
+			regJsonObject.put("offset", offset);
+			regJsonObject.put("noOfRecords", 10);
+			System.out.println("DashBoardMasterDaoImpl method:-updates Request:-"+regJsonObject);
+			response = PostJsonObject.postJson(regJsonObject, url);
+		} catch (Exception e) {
+			System.out.println("UpdatesServiceImpl method:-updates "+e.getMessage());
+		}
+		System.out.println("DashBoardMasterDaoImpl method:-updates Response:-"+response);
+		return response;
+	}
     
     
 }//end of class

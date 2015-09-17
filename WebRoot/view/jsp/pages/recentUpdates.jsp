@@ -1,8 +1,8 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <div class="col-md-3">
                     <div class="panel panel-default" data-toggle="panel-collapse" data-open="true">
-                        <div class="panel-heading bgntext panel-collapse-trigger">
-                            <h4 class="text-white">Recent Updates</h4>
+                        <div class="panel-heading panel-collapse-trigger">
+                            <h5 class="h5_color margin_left5m">Recent Updates</h5>
                         </div>
                         <div class="panel-body list-group pad_0">
                            <ul class="list-group relative paper-shadow" data-hover-z="0.5" data-animated>
@@ -10,8 +10,14 @@
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             <div class="media-left">
+                                             <span class="text-caption text-light font_size11"><s:property value="feedOn" /> </span>
                                                 <a href="javaScript:;" onclick="personalProfile(<s:property value="user.userId" />);">
-                                                    <img src="view/helper/images/people/50/guy-6.jpg" alt="person" class="img-circle width-40" />
+                                                    <s:if test="user.profilePhotoFileName !=null && user.profilePhotoFileName!=''">
+						                           	 <img src='<s:property value="user.profilePhotoFileName" />' class="media-object img-circle width-40">
+						                            </s:if>
+						                            <s:else>
+						                            	<img src='view/helper/images/people/50/guy-6.jpg' class="media-object img-circle width-40">
+						                            </s:else>
                                                 </a>
                                             </div>
                                             <div class="media-body">
@@ -21,11 +27,11 @@
                                                 </div>
                                                 
                                             </div>
-                                            <div class="media-right">
+                                            <%-- <div class="media-right">
                                                 <div class="width-60 text-right">
                                                     <span class="text-caption text-light"><s:property value="feedOn" /> </span>
                                                 </div>
-                                            </div>
+                                            </div> --%>
                                         </div>
                                     </li>
                                     </s:iterator>

@@ -19,20 +19,7 @@ function getModules(courseId){
 </script>
 
 
-<div class="parallax overflow-hidden  page-section third margin-section">
-        <div class="container parallax-layer" data-opacity="true" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
-            <div class="media v-middle">
-                
-                <div class="media-body">
-                    <h3 class="text-black text-display-1 margin-v-0">Courses</h3>
-                  
-                </div>
-               
-            </div>
-        </div>
-    </div>
-
- <div class="container">
+ <div class="container margin_topm22">
         <div class="page-section">
             <div class="row">
                 <div class="col-md-9">
@@ -41,47 +28,35 @@ function getModules(courseId){
 <s:iterator value="coursesList">
 <!-- course -->
 <div class="item col-xs-12 col-sm-6 col-lg-4">
-                            <div class="panel panel-default paper-shadow" data-z="0.5">
-                                <div class="panel-heading bgcolor">
+                            <div class="panel panel-default paper-shadow height_250" data-z="0.5">
+                                <div class="panel-heading pad_modal1">
                                     <div class="media media-clearfix-xs-min v-middle">
                                         <div class="media-body text-caption text-white">
-                                           <h4 class="text-white"><s:property value="courseName"/></h4>
+                                           <h5 class="h5_color auto_dots250"><s:property value="courseName"/></h5>
                                         </div>
                                         
                                     </div>
                                 </div>
-                                <div class="panel-heading">
-                                    <div class="media media-clearfix-xs-min v-middle">
-                                    <s:if test="completedPerStatus == 100">
-                                     <div class=" center green media-body text-caption">
-                                            <h4 class="green"> Completed </h4>
-                                        </div>
-                                    </s:if>
-                                    <s:else>
-                                        <div class="media-body text-caption text-light">
-                                        
-                                            Module  Completed <s:property value="completedPerStatus"/> %
-                                        </div>
-                                        <div class="media-right">
-                                            <div class="progress progress-mini width-100 margin-none">
-                                                <div class="progress-bar progress-bar-blue-300" role="progressbar" aria-valuenow="<s:property value="completedPerStatus"/>" aria-valuemin="0" aria-valuemax="100" style="width:30%;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                      </s:else>
+                                <div class="panel-heading height_36">
+                                    <div class="">
+                                    <div class="progress_n1">
+														    <span class="progress-val_n1"><s:property value="completedPerStatus"/>%</span>
+														    <span class="progress-bar_n1"><span class="progress-in_n1" style="width:<s:property value="completedPerStatus"/>%;"></span></span>
+														  </div>
+                                   
                                     </div>
                                 </div>
-								    <div class="panel-heading">
+								    <div class="panel-heading height_110 pad_head">
                                <div class="media-body text-caption">
-                                           <h4 class="black-text center">Modules included</h4>
-										   <ul>
+                                           <h5 class="black-text">Modules</h5>
+										   <ul class="pad_0">
 										   <s:if test="modulesList.size()>0">
 										   <s:iterator value="modulesList">
-										   	<li class="module-li"><s:property value="moduleName"/> </li>
+										   	<li class="module-li auto_dots195"><s:property value="moduleName"/> </li>
 										   </s:iterator>
 										  </s:if>
 										  <s:if test="modulesList.size()>0">
-											<li class="module-li">And <a href="javaScript:;" onclick="getModules(<s:property value="courseId"/>)">More...</a></li>
+											<p class="module-li"> <a href="javaScript:;" onclick="getModules(<s:property value="courseId"/>)">More...</a></p>
 											</s:if>
 											<s:else>
 				                                	<b style="text-align: center;">There is no data</b>
@@ -93,12 +68,17 @@ function getModules(courseId){
                                         
                                 <hr class="margin-none">
                                 <div class="panel-body">
+									<div class="media-left panel-left">
 									
-									 <h5><i data-toggle="tooltip" title="Start Date" class="fa fa-calendar fa-fw"></i><s:property value="startedOn"/></h5>
+									 <!-- <i data-toggle="tooltip" title="Start Date" class="fa fa-calendar fa-fw margin_top9"></i> -->Scheduled Start: <s:property value="startedOn"/>&nbsp;&nbsp;&nbsp;<br/>
 									 <s:if test="completedOn !=null">
-									 <h5><i data-toggle="tooltip" title="Completed Date" class="fa fa-calendar fa-fw"></i><s:property value="completedOn"/></h5>
+									<!-- <i data-toggle="tooltip" title="Completed Date" class="fa fa-calendar fa-fw margin_top9"></i> -->Scheduled End: <s:property value="completedOn"/>
 									 </s:if>
-                                    <a style="margin-top: -41px;" class="btn-pad loginbutton btn-height btn-pad-height" data-z="0" data-hover-z="1" data-animated="" href="javaScript:;" onclick="getModules(<s:property value="courseId"/>)">Modules</a>
+									 </div>
+									 
+									 <div class="media-right">
+                                    <a class="btn-pad normalbutton btn-height margin_bot1 margin_topm10" data-z="0" data-hover-z="1" data-animated="" href="javaScript:;" onclick="getModules(<s:property value="courseId"/>)">Modules</a>
+                                    </div>
                                 </div>
                             </div>
                         </div><!-- course ends-->

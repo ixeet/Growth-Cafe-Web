@@ -1,4 +1,25 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<div id="fb-root"></div>
+<script>
+window.fbAsyncInit = function() {
+FB.init({
+appId : '1658101907755550',
+status : true, // check login status
+cookie : true, // enable cookies to allow the server to access the session
+xfbml : true // parse XFBML
+});
+};
+ 
+(function() {
+var e = document.createElement('script');
+e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+e.async = true;
+document.getElementById('fb-root').appendChild(e);
+}());
+</script>
+
+
+
 <script type="text/javascript">
 
 $(document).on('click','.t', function(){
@@ -19,7 +40,7 @@ window.location="moduleDescription?moduleId="+moduleId+"&courseId="+courseId+"&r
 var courseId ='${courseId}';
 var moduleId ='${moduleId}';
 var resourceId ='${resourceId}';
-
+var commentStaus=true;
 function getModules(){
 	//window.location="courses";
 	$.ajax({
@@ -39,7 +60,8 @@ function getModules(){
 
 function commentOnResource(comment) { 
 	 // var comment = $('#commentTextFieldId').val();
-	 if(comment!=''){
+	 if(comment!='' && commentStaus){
+	 commentStaus = false;
 	    $.ajax({
 			url : "commentOnResource",
 			type :"post",
@@ -48,6 +70,7 @@ function commentOnResource(comment) {
 				//showErrorMessage("looading");
 			},
 			success : function(data){
+			commentStaus = true;
 			$("#CommentJspDivId").html(data);
 			},
         });
@@ -55,8 +78,12 @@ function commentOnResource(comment) {
         return false;  
 	  }
 
+var likeStaus=true;
 function likeResource(){
 	//window.location="courses";
+	
+	if(likeStaus){
+	likeStaus=false;
 	$.ajax({
 			url : "likeResource",
 			type :"post",
@@ -65,9 +92,11 @@ function likeResource(){
 				//showErrorMessage("looading");
 			},
 			success : function(data){
+			likeStaus=true;
 			$("#CommentJspDivId").html(data);
 			},
         });
+      }
         
 }
 
@@ -95,7 +124,8 @@ function moreComments() {
 }
 
 function commentOnComment(commentId, commentTxt){
-	if(commentTxt!=""){
+	if(commentTxt!="" && commentStaus){
+	commentStaus=false;
 	$.ajax({
 			url : "commentOnComment",
 			type :"post",
@@ -104,6 +134,7 @@ function commentOnComment(commentId, commentTxt){
 				//showErrorMessage("looading");
 			},
 			success : function(data){
+			commentStaus=true;
 			$("#CommentJspDivId").html(data);
 			},
         });
@@ -113,6 +144,8 @@ function commentOnComment(commentId, commentTxt){
 
 
 function likeOnComment(commentId){
+	if(likeStaus){
+	likeStaus=false;
 	$.ajax({
 			url : "likeOnComment",
 			type :"post",
@@ -121,9 +154,11 @@ function likeOnComment(commentId){
 				//showErrorMessage("looading");
 			},
 			success : function(data){
+			likeStaus=true;
 			$("#CommentJspDivId").html(data);
 			},
         });
+       }
         return false;  
 }
 
@@ -133,7 +168,13 @@ function likeOnComment(commentId){
 
  <style type="text/css">
 	 
-	 
+	 @media(min-width:768px) and (max-width:900px){
+	
+
+#slider1_container{
+	width:480px !important;
+}
+}
             /* jssor slider thumbnail navigator skin 01 css */
             /*
             .jssort01 .p            (normal)
@@ -351,7 +392,7 @@ function likeOnComment(commentId){
             function ScaleSlider() {
                 var parentWidth = jssor_slider1.$Elmt.parentNode.clientWidth;
                 if (parentWidth)
-                    jssor_slider1.$ScaleWidth(Math.max(Math.min(parentWidth, 800), 300));
+                    jssor_slider1.$ScaleWidth(Math.max(Math.min(parentWidth, 573), 250));
                 else
                     window.setTimeout(ScaleSlider, 30);
             }
@@ -368,32 +409,37 @@ function likeOnComment(commentId){
 
 
 
-<div class="parallax overflow-hidden  page-section third margin-section-module">
-        <div class="container parallax-layer" data-opacity="true" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
-            <div class="media v-middle">
-                
-                <div class="media-body">
-                    <h3 class="text-black margin-v-0"><a class="transf" href="courses">Courses</a>
-					<a class="transf" href="javaScript:;" onclick="getModules();">/ Modules</a> / ${moduleDescription.resourceName}</h3>					
-                  
-                </div>
-               
-            </div>
-        </div>
-    </div>
+ <script type="text/javascript">
+					$(document).ready(function(){
+					$('#share_button').on('click', function(e){
+					e.preventDefault();
+					FB.ui(
+					{
+					method: 'feed',
+					name: '${moduleDescription.resourceName}',
+					link: '${moduleDescription.resourceUrl}',
+					picture: '${moduleDescription.thumbImg}',
+					caption: '',
+					description: '${moduleDescription.resourceDesc}'
+					
+					});
+					});
+					});
+			</script>
 
 
-
-<div class="container">
+<div class="container margin_topm22">
         <div class="page-section">
             <div class="row">
-                <div class="col-lg-6 col-md-8">
-					<div class="page-section">
+                <div class="col-md-6">
+					<div class="row" data-toggle="isotope">
                     
-                    
-						<div class="panel-heading bgcolor">
-                            <h4 class="text-white">Module video 1</h4>
+                    	<div class="item col-xs-12 col-sm-12 col-lg-12">
+                    	<div class="panel-default">
+						<div class="panel-heading border_toplr pad_modal1">
+                            <h5 class="h5_color">Module videos</h5>
                         </div> 
+                        </div>
 						 <div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: 580px !important;
 							height: 456px; background: #191919; overflow: hidden;">
 		
@@ -462,24 +508,11 @@ function likeOnComment(commentId){
 							
 						</div><!-- slider container off -->
 						<br/>
-						 <div class="col-sm-12">
-						 <br/>
+						 <div class="margin_topm25">
 						 
 						 <div class="timeline-block">
                  			 <div class="panel panel-default ">
 				                 <div class="panel-body list-group" style="padding: 10px;">
-							<ul class="mdesc_ul">
-								<s:if test="%{moduleDescription.likeStatus}">
-									<li class="mdesc_li"><a href="javaScript:;" onclick="likeResource()"><i class="fa fa-fw fa-thumbs-up"></i>Like</a></li>
-								</s:if>
-								<s:else>
-									<li class="mdesc_li"><a href="javaScript:;" onclick="likeResource()"><i class="fa fa-fw fa-thumbs-o-up"></i>Like</a></li>
-								</s:else>
-								<!-- <li class="mdesc_li"><a href="#"><i class="fa fa-fw fa-comments-o"></i>Comment</a></li>
-								<li class="mdesc_li"><a href="#"><i class="fa fa-fw fa-share-square-o"></i>Share</a></li> -->
-								
-							</ul><br/>
-						
 							<div id="CommentJspDivId">
 								<s:include value="comment.jsp"></s:include>
 							</div>
@@ -489,25 +522,25 @@ function likeOnComment(commentId){
 							</div>
 						</div>
 				
-	
+				</div>
 						
 				</div>
                </div>
 				
-              <div class="col-lg-3 col-md-4">
+              <div class="col-lg-3 col-md-3">
 			  
-                <div class="page-section">
+              
                     <!-- .panel -->
-					<div class="col-lg-12">
+				
                     <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated>
-                        <div class="panel-heading bgcolor">
-                            <h4 class="text-white">Module Information</h4>
+                        <div class="panel-heading pad_modal1">
+                            <h5 class="h5_color">Module Information</h5>
                         </div>
                         <div class="panel-body">
-                            <p class="text-caption">
-                              <s:if test="moduleDescription.timeDuration !=null"> <i data-toggle="tooltip" title="Time duration"class="fa fa-clock-o fa-fw"></i> ${moduleDescription.timeDuration} days &nbsp;<br/></s:if>
-                              <s:if test="moduleDescription.startedOn !=null"><i data-toggle="tooltip" title="Start Date" class="fa fa-calendar fa-fw"></i> ${moduleDescription.startedOn} &nbsp;</s:if> 
-							  <s:if test="moduleDescription.completedOn !=null"> <i data-toggle="tooltip" title="Complete Date" class="fa fa-calendar fa-fw"></i> ${moduleDescription.completedOn}</s:if>
+                            <p class="text-caption text_default">
+                              <s:if test="moduleDescription.timeDuration !=null"> <!-- <i data-toggle="tooltip" title="Time duration"class="fa fa-clock-o fa-fw"></i> -->Course Duration :${moduleDescription.timeDuration} days &nbsp;<br/></s:if>
+                              <s:if test="moduleDescription.startedOn !=null"><!-- <i data-toggle="tooltip" title="Start Date" class="fa fa-calendar fa-fw"></i> -->Scheduled Start : ${moduleDescription.startedOn} &nbsp;</s:if> <br/>
+							  <s:if test="moduleDescription.completedOn !=null"> <!-- <i data-toggle="tooltip" title="Complete Date" class="fa fa-calendar fa-fw"></i> -->Scheduled End : ${moduleDescription.completedOn}</s:if>
                                 <br/>
                                 <i data-toggle="tooltip" title="Author" class="fa fa-user fa-fw"></i> ${moduleDescription.authorName}
                                 <br/>
@@ -518,10 +551,10 @@ function likeOnComment(commentId){
                        
                       
                     </div>
-					</div>
+					
                     <!-- // END .panel -->
                     <!-- .panel -->
-					<div class="col-lg-12">
+					<%-- <div>
                     <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated>
                         <div class="panel-body">
                             <div class="media v-middle">
@@ -530,7 +563,7 @@ function likeOnComment(commentId){
                                 </div>
                                 <div class="media-body">
                                     <h4 class="text-title margin-none"><a href="#">${moduleDescription.authorName}</a></h4>
-                                    <%-- <span class="caption text-light">Biography</span> --%>
+                                    <span class="caption text-light">Biography</span>
                                 </div>
                             </div>
                             <br/>
@@ -541,41 +574,38 @@ function likeOnComment(commentId){
                             </div> -->
                         </div>
                     </div>
-					</div>
+					</div> --%>
 					
                     <!-- // END .panel -->
-                </div>
+               
                 <!-- // END .page-section -->
             </div> <!-- ends right side columns -->
 			
-			<div class="col-lg-3 col-md-4">
+			<div class="col-lg-3 col-md-3">
 			  
-                <div class="page-section">
-                    <!-- .panel -->
-					<div class="col-lg-12">
-                    <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated>
-                        <div class="panel-heading bgcolor">
-                            <h4 class="text-white">Assignments for this module</h4>
+                   <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated>
+                        <div class="panel-heading pad_modal1">
+                            <h5 class="h5_color">Assignments for this module</h5>
                         </div>
 							<ul class="list-group">
 							<s:if test="assignmentsList !=null && assignmentsList.size()>0">
 							<s:iterator value="assignmentsList">
 								<s:if test="assignmentStatus==2 || assignmentStatus==3">
                                     <li class="list-group-item media v-middle">
-                                        <div class="media-body">
-                                            <h4 class="text-subhead margin-none">
+                                        <div class="panel-body pad_l5">
+                                            <h5 class="margin-none text_default">
                                                 <s:property value="assignmentName"/> has been submitted
-                                            </h4>
+                                            </h5>
                                             <div class="caption">
                                              <p class="text-caption">
                                              <s:if test="assignmentSubmittedDate != null">
-                                                 <i data-toggle="tooltip" title="Submitted On" class="fa fa-calendar fa-fw"></i>&nbsp;<s:property value="assignmentSubmittedDate" />&nbsp;
+                                                 <!-- <i data-toggle="tooltip" title="Submitted On" class="fa fa-calendar fa-fw"></i> -->Submitted On :&nbsp;<s:property value="assignmentSubmittedDate" />&nbsp;
                                                 </s:if>
                                                 <s:if test="assignmentDueDate != null">
-                                                 <i data-toggle="tooltip" title="Last submission date" class="fa fa-calendar fa-fw"></i>&nbsp;<s:property value="assignmentDueDate" />
+                                                 <!-- <i data-toggle="tooltip" title="Last submission date" class="fa fa-calendar fa-fw"></i> -->Due Date :&nbsp;<s:property value="assignmentDueDate" />
                                                  </s:if>
                                                  <br/>
-                                                <a href="viewAssignment?assignmentId=<s:property value="assignmentId" />">View</a>
+                                                <a class="btn-pad normalbutton btn-height margin_bot1" href="viewAssignment?assignmentId=<s:property value="assignmentId" />">View</a>
                                                 </p>
                                             </div>
                                         </div>
@@ -584,15 +614,15 @@ function likeOnComment(commentId){
                                     </s:if>
                                     <s:else>
                                      <li class="list-group-item media v-middle">
-                                        <div class="media-body">
-                                            <h4 class="text-subhead margin-none">
+                                        <div class="panel-body">
+                                            <h5 class="margin-none text_default">
                                                 <s:property value="assignmentName"/> is pending
-                                            </h4>
+                                            </h5>
                                             <div class="caption">
                                                 
                                                 
-											 <i data-toggle="tooltip" title="Last submission date" class="fa fa-calendar fa-fw"></i><s:property value="assignmentDueDate" /><br/>
-											<a href="submitAssignment?assignmentId=<s:property value="assignmentId" />">Submit now</a>
+											 <!-- <i data-toggle="tooltip" title="Last submission date" class="fa fa-calendar fa-fw"></i> -->Due Date :&nbsp;<s:property value="assignmentDueDate" /><br/>
+											<a class="btn-pad normalbutton btn-height margin_bot1" href="submitAssignment?assignmentId=<s:property value="assignmentId" />">Submit now</a>
                                             </div>
                                         </div>
                                         
@@ -600,25 +630,27 @@ function likeOnComment(commentId){
                                     </s:else>
                                     </s:iterator>
 									</s:if>
+									<s:else>
+									 <div class="panel-body">
+                                            <h5 class="margin-none">
+											There is no assignment
+											</h5>
+											</div>
+									</s:else>
                                 </ul>
                         <hr class="margin-none" />
                        
                       
                     </div>
-					</div>
-                    <!-- // END .panel -->
-                    <!-- .panel -->
 					
 					
-                    <!-- // END .panel -->
-                </div>
-                <!-- // END .page-section -->
+               
             </div> <!-- ends right side columns -->
 			
 			
 			<!-- module description starts  -->
 			<div class="col-lg-6">
-			<p class="justify">
+			<p class="justify font14">
 					${moduleDescription.resourceDesc}<br/>
                         <%-- <strong>Lorem ipsum</strong> dolor sit amet, consectetur adipisicing elit. Ad aperiam autem cumque deleniti dicta iusto laboriosam laudantium omnis, possimus praesentium provident quam quas, sapiente sint, ut! Adipisci aliquid assumenda consequuntur cupiditate deleniti dicta dolore dolorem
                         <strong>dolores enim </strong>eos hic illo inventore iure libero magnam minima minus obcaecati optio pariatur porro quibusdam quos reiciendis, sapiente sint veritatis. Eveniet in magni sunt?
@@ -633,11 +665,11 @@ function likeOnComment(commentId){
 			<!-- related videos starts  -->
 			<div class="col-lg-6">
 			
-					<div class="text-center">
-						<h3 class="text-display-1">Related Resources</h3>
-						<p class="lead text-muted">Some useful videos for this module</p>
-					</div>
-					<br/>
+				<div class="panel panel-default paper-shadow">
+					<div class="panel-heading">
+                            <h5 class="h5_color">Suggested Resources</h5>
+                        </div>
+				
 					<div class="slick-basic slick-slider" data-items="2" data-items-lg="3" data-items-md="2" data-items-sm="1" data-items-xs="1">
 						
 						<s:if test="moduleDescription.relatedVideoList !=null && moduleDescription.relatedVideoList.size()>0">
@@ -648,11 +680,11 @@ function likeOnComment(commentId){
 									<div class="media media-clearfix-xs">
 										<div class="media-left">
 											<div class="cover width-90 width-100pc-xs overlay cover-image-full hover">
-												<a href="#"><img src="view/helper/img/alila/thumb-01.jpg" /></a>
+												<a href="relatedVideo?resourceId=<s:property value="resourceId"/>"><img style="height: 90px; width: 90px;" src="<s:property value="thumbImg"/>" /></a>
 											</div>
 										</div>
 										<div class="media-body">
-											<h4 class="media-heading margin-v-5-3"><a href="#">${resourceName}</a></h4>
+											<h4 class="media-heading margin-v-5-3"><a href="relatedVideo?resourceId=<s:property value="resourceId"/>">${resourceName}</a></h4>
 											
 										</div>
 									</div>
@@ -664,6 +696,7 @@ function likeOnComment(commentId){
 						
 						
 					</div>
+				</div>
 						
 			</div> <!-- related videos ends -->
 			

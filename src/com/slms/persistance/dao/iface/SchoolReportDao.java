@@ -28,6 +28,12 @@ public interface SchoolReportDao {
 	public List<DashBoardReportVo> getHomeRoomList(
 			DashBoardReportVo dashBoardReportVo);
 
+	public String getSchoolList(DashBoardReportVo dashBoardReportVo);
+
+	public String getModuleDetail(DashBoardReportVo dashBoardReportVo);
+
+
+
 
 	 
 

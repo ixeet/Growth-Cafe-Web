@@ -5,6 +5,7 @@
  */
 package com.slms.persistance.dao.iface;
 
+import com.slms.app.domain.vo.RegistrationVo;
 import com.slms.domain.vo.DashBoardReportVo;
 
 import java.util.List;
@@ -18,5 +19,7 @@ public interface DashBoardMasterDao {
 
 	public List<DashBoardReportVo> getDashBoardDetailList(
 			DashBoardReportVo dashBoardReportVo);
+
+	String updates(RegistrationVo loginDetail, int offset);
 
 }

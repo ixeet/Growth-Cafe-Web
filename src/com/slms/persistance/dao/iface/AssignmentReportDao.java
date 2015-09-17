@@ -38,7 +38,7 @@ public interface AssignmentReportDao {
 	public List<DashBoardReportVo> getSubmitDetail(
 			DashBoardReportVo dashBoardReportVo);
 
-	public List<DashBoardReportVo> getShowDataDetail(
-			DashBoardReportVo dashBoardReportVo);
+	
+	public String getShowFilterData(DashBoardReportVo dashBoardReportVo);
 
 }

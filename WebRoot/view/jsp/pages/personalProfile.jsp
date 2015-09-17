@@ -1,36 +1,36 @@
  <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<div class="parallax overflow-hidden  page-section third margin-section">
+<%-- <div class="parallax overflow-hidden  page-section third margin-section">
         <div class="container parallax-layer" data-opacity="true" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
             <div class="media v-middle">
                 
                 <div class="media-body">
-                    <h3 class="text-black margin-v-0"><a class="transf" href="#">Profile </a> / ${firstName } ${lastName }</h3>
+                    <h5 class="text-black margin-v-0"><a class="transf" href="#">Profile </a> / ${firstName } ${lastName }</h5>
 					
                   
                 </div>
                
             </div>
         </div>
-    </div>
-   <div class="container">
+    </div> --%>
+   <div class="container margin_topm22">
         <div class="page-section">
             <div class="row">
                 <div class="col-md-9">
                     <!-- Tabbable Widget -->
                     <div class="panel panel-default" >
-                        <div class="panel-heading bgntext ">
-                            <h4 class="text-white">Personal Profile </h4>
+                        <div class="panel-heading ">
+                            <h5 class="h5_color">Personal Profile </h5>
                         </div>
 					
                         <div class="panel-body list-group">
-							<div class="col-md-10">
+							<div class="col-md-9">
                            <ul class="list-group relative paper-shadow" data-hover-z="0.5" data-animated>
 									<li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
                                             <div class="media-body">
-                                               <h4 style="color:#ba0032">Full Name :  <a href="#" class="text-subhead link-text-color">${firstName } ${lastName }</a></h4>
+                                               <h5 style="color:#ba0032">Full Name :  <a href="#" class="text-subhead link-text-color">${firstName } ${lastName }</a></h5>
                                                 
                                             </div>
                                            
@@ -40,7 +40,7 @@
                                         <div class="media v-middle">
                                             
                                             <div class="media-body">
-                                               <h4 style="color:#ba0032">Email :  <a href="#" class="text-subhead link-text-color">${emailId }</a></h4>
+                                               <h5 style="color:#ba0032">Email :  <a href="#" class="text-subhead link-text-color">${emailId }</a></h5>
                                                 
                                             </div>
                                            
@@ -51,7 +51,7 @@
                                         <div class="media v-middle">
                                             
                                             <div class="media-body">
-                                               <h4 style="color:#ba0032">School :  <a href="#" class="text-subhead link-text-color">${schoolName }</a></h4>
+                                               <h5 style="color:#ba0032">Organization :  <a href="#" class="text-subhead link-text-color">${schoolName }</a></h5>
                                                 
                                             </div>
                                            
@@ -61,7 +61,7 @@
                                         <div class="media v-middle">
                                             
                                             <div class="media-body">
-                                                <h4 style="color:#ba0032">Class :  <a href="#" class="text-subhead link-text-color">${className }</a></h4>
+                                                <h5 style="color:#ba0032">Department :  <a href="#" class="text-subhead link-text-color">${className }</a></h5>
                                                 
                                             </div>
                                            
@@ -71,7 +71,7 @@
                                         <div class="media v-middle">
                                             
                                             <div class="media-body">
-                                                <h4 style="color:#ba0032">Home Room :  <a href="#" class="text-subhead link-text-color">${homeRoomName }</a></h4>
+                                                <h5 style="color:#ba0032">Group :  <a href="#" class="text-subhead link-text-color">${homeRoomName }</a></h5>
                                                 
                                             </div>
                                            
@@ -81,9 +81,13 @@
                                 </ul>
                         </div><!-- div left closed-->
 						
-						<div class="col-md-2">
-					<img src="view/helper/images/people/50/guy-6.jpg" alt="person" class="img-circle width-130">
-					
+						<div class="col-md-3">
+						<s:if test="profilePhotoFileName !=null && profilePhotoFileName !=''">
+							<img src="${profilePhotoFileName }" alt="person" class="img-circle width-140">
+							</s:if>
+							<s:else>
+								<img src="view/helper/images/people/50/guy-6.jpg" alt="person" class="img-circle width-140">
+							</s:else>
 						</div> <!-- div right pic closed-->		
 					</div>
 						

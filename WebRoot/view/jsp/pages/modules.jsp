@@ -50,23 +50,22 @@ function getResourceDetial(resourceId,moduleId){
          */
 }
 
+
+
+</script>
+<script>
+
+var p=$('#fog p');
+var divh=$('#fog').height();
+while ($(p).outerHeight()>divh) {
+    $(p).text(function (index, text) {
+        return text.replace(/\W*\s(\S)*$/, '...');
+    });
+}
 </script>
 
 
-<div class="parallax overflow-hidden  page-section third margin-section">
-        <div class="container parallax-layer" data-opacity="true" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
-            <div class="media v-middle">
-                
-                <div class="media-body">
-                    <h3 class="text-black margin-v-0"><a class="transf" href="courses">Courses</a> / Modules</h3>
-                  
-                </div>
-               
-            </div>
-        </div>
-    </div>
-
- <div class="container">
+ <div class="container margin_topm22">
         <div class="page-section">
             <div class="row">
                 <div class="col-md-9">
@@ -75,65 +74,65 @@ function getResourceDetial(resourceId,moduleId){
 <s:iterator value="moduleList" id="status">
 <!-- course -->
 <div class="item col-xs-12 col-sm-6 col-lg-4">
-                            <div class="panel panel-default paper-shadow" data-z="0.5">
-                                <div class="panel-heading bgcolor">
+                            <div class="panel panel-default paper-shadow height_250" data-z="0.5">
+                                <div class="panel-heading pad_modal1">
                                     <div class="media media-clearfix-xs-min v-middle">
                                         <div class="media-body text-caption text-white">
-                                           <h4 class="text-white"><s:property value="moduleName"/></h4>
+                                           <h5 class="h5_color auto_dots250"><s:property value="moduleName"/></h5>
                                         </div>
                                         
                                     </div>
                                 </div>
-                                <div class="panel-heading">
-                                    <s:if test="completedPerStatus == 100">
-                                     <div class=" center green media-body text-caption">
-                                            <h4 class="green"> Completed </h4>
-                                        </div>
-                                    </s:if>
-                                    <s:else>
-                                        <div class="media-body text-caption text-light">
-                                        
-                                            Module  Completed <s:property value="completedPerStatus"/> %
-                                        </div>
-                                        <div class="media-right">
-                                            <div class="progress progress-mini width-100 margin-none">
-                                                <div class="progress-bar progress-bar-blue-300" role="progressbar" aria-valuenow="<s:property value="completedPerStatus"/>" aria-valuemin="0" aria-valuemax="100" style="width:30%;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                      </s:else>
+                                <div class="panel-heading height_36">
+                                <div class="">
+                                     <div class="progress_n1">
+														    <span class="progress-val_n1"><s:property value="completedPerStatus"/>%</span>
+														    <span class="progress-bar_n1"><span class="progress-in_n1" style="width:<s:property value="completedPerStatus"/>%;"></span></span>
+														  </div>
+                                   
+                                  </div> 
                                 </div>
                                 	<s:if test="resourceList.size()>0">
-								<div class="panel-heading">
+								<div class="panel-heading height_110 pad_head">
                                   <div class="media-body text-caption">
-                                           <h4 class="black-text center">Resources included</h4>
+                                           <h5 class="black-text">Resources included</h5>
 									
 										<s:iterator value="resourceList">
-										<div class="media v-middle">
+										<div class="media v-middle margin_all0">
                                             <div class="media-left">
                                                 <a href="#">
                                                     <img src="view/helper/images/video.png" alt="person" class="img-square width-60">
                                                 </a>
                                             </div>
                                             <div class="media-body">
-                                                <a href="javaScript:;" onclick="getResourceDetial(<s:property value="resourceId"/>,<s:property value="#status.moduleId"/>)"; class="text-subhead link-text-color"><s:property value="authorName"/></a>
+                                            <div id="fog">
+                                          
+                                              
+                                              <p class="module-li">
+                                                <a href="javaScript:;" onclick="getResourceDetial(<s:property value="resourceId"/>,<s:property value="#status.moduleId"/>)"; class="module-li"><s:property value="resourceName"/></a>
+                                              </p>
+                                              </div>
                                             </div>
                                         </div>
                                         </s:iterator>
                                         
-										<li class="course-li"><a href="javaScript:;" onclick="moduleDescription(<s:property value='moduleId'/>)">More...</a> </li>
+										<p class="module-li margin_top4"><a href="javaScript:;" onclick="moduleDescription(<s:property value='moduleId'/>)">More...</a> </p>
 									 </div>
 							    </div>
                                         
                                 <hr class="margin-none">
                                 <div class="panel-body">
-									
-									 <h5><i data-toggle="tooltip" title="Start Date" class="fa fa-calendar fa-fw"></i><s:property value="startedOn"/> </h5>
+									<div class="media-left panel-left">
+									<!-- <i data-toggle="tooltip" title="Start Date" class="fa fa-calendar fa-fw margin_top9"></i> -->Scheduled Start : <s:property value="startedOn"/>&nbsp;&nbsp;&nbsp;<br/>
 									 <s:if test="completedOn !=null">
-									 <h5><i data-toggle="tooltip" title="Completed Date" class="fa fa-calendar fa-fw"></i><s:property value="completedOn"/> </h5>
+									 <!-- <i data-toggle="tooltip" title="Completed Date" class="fa fa-calendar fa-fw margin_top9""></i> -->Scheduled End : <s:property value="completedOn"/>
 									 </s:if>
-                                    <a style="margin-top: -41px;" class="btn-pad loginbutton btn-height btn-pad-height" data-z="0" data-hover-z="1" data-animated="" href="javaScript:;" onclick="moduleDescription(<s:property value='moduleId'/>)">View Module</a>
-                                </div>
+									  </div>
+									 
+									 <div class="media-right">
+                                    <a class="btn-pad normalbutton btn-height margin_bot1 margin_topm10" data-z="0" data-hover-z="1" data-animated="" href="javaScript:;" onclick="moduleDescription(<s:property value='moduleId'/>)">View</a>
+                               	 </div>
+								</div>
                                 </s:if>
                                 <s:else>
                                 <b style="text-align: center; margin: 20px;">There is no data</b>
