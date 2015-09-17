@@ -106,7 +106,7 @@ public static String[] getTimeWindow(String departTime, String timeWindow){
 	        try {
 	            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	            Date fechaNueva = format.parse(inStr);
-	            SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
+	            SimpleDateFormat format2 = new SimpleDateFormat("MM/dd/yyyy");
 	            outStr = format2.format(fechaNueva);
 	           // System.out.println(outStr); // Prints 2013-10-10 10:49:29
 	        } catch (Exception e) {
@@ -187,15 +187,15 @@ public static String[] getTimeWindow(String departTime, String timeWindow){
 			}
 			String time="";
 			if(days!=0){
-				if(days==1){time="yesterday";}else{time=days+" days ";}
+				if(days==1){time="Yesterday";}else{time=days+" Days ";}
 			}else{
 			if(diffHours!=0){
-				if(diffHours==1){time=time+diffHours+" Hour ";}else{time=time+diffHours+" Hours ";}
+				if(diffHours==1){time=time+diffHours+" Hr ";}else{time=time+diffHours+" Hrs ";}
 			}
 			if(diffMinutes!=0){
-				if(diffHours==1){time=time+diffMinutes+" Minute ";}else{time=time+diffMinutes+" Minutes ";}
+				if(diffHours==1){time=time+diffMinutes+" Min ";}else{time=time+diffMinutes+" Mins ";}
 			}}
-			if(time.equalsIgnoreCase("")){time="few seconds";}
+			if(time.equalsIgnoreCase("")){time="Just now";}
 			return time;
 	 
 		}
@@ -208,7 +208,7 @@ public static String[] getTimeWindow(String departTime, String timeWindow){
 	 public static int checkDateIsPreDate(String date){
          
 	        Date current = new Date();
-	        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 	        //create date object
 	        Date prev=null;
 			try {

@@ -1,38 +1,14 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<script>
-
-/* function getByFB(){
-	var userFbId = document.getElementById("userFbId").value;
-	var userPassword = document.getElementById("loginUserPasswordId").value;
-	if(userFbId==""){
-			alert("please enter userFbId");
-		}else{
-		$("#getByFBFormId").submit();
-	}
-	return false;
-} */
-</script>
 
  <div class="footer_sec">
 						<ul>
-							<li class="footer_sec_li"><a class="default_color" href="#">Instructions</a> | &nbsp;</li>
-							<li class="footer_sec_li"><a class="default_color" href="#"> Mobile App</a> | &nbsp;</li>
-							<li><a class="default_color" href="#"> Contact Us</a></li>
+							<li class="footer_sec_li"><a href="#">Instructions</a> | &nbsp;</li>
+							<li class="footer_sec_li"><a href="#"> Mobile App</a> | &nbsp;</li>
+							<li><a href="#"> Contact Us</a></li>
 						</ul>
 		</div>
         
   
-
-<!-- <div align="right">
-	Get By Facebook
-	<form action="getByFBId" method="post" id="getByFBFormId">
-	<label>Facebook Id</label>
-	<input type="text" name="userFbId" id="userFbId"/><br/>
-	<input type="button" value="getByFB" onclick="return getByFB();">
-	<input type="button" value="reset" onclick="return reset('getByFBFormId');">
-	</form>
-</div> -->
-
 
 <s:if test="#session.loginDetail !=null">
 <script>
@@ -82,6 +58,7 @@
     As a convenience, we provide the entire UI framework broke down in separate modules
     Some of the standalone modules may have not been used with the current theme/module
     but ALL the modules are 100% compatible -->
+     <script src="view/helper/js/jquery.cookie.js"></script>
     <script src="view/helper/js/module-essentials.min.js"></script>
     <script src="view/helper/js/module-material.min.js"></script>
     <script src="view/helper/js/module-layout.min.js"></script>

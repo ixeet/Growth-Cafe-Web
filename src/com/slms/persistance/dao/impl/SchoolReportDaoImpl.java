@@ -11,6 +11,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
+import com.slms.app.domain.utility.GetJsonObject;
+import com.slms.app.domain.utility.PostJsonObject;
+import com.slms.app.domain.utility.Utility;
 import com.slms.domain.vo.DashBoardReportVo;
 import com.slms.persistance.dao.iface.SchoolReportDao;
 import com.slms.persistance.factory.LmsDaoAbstract;
@@ -25,6 +30,10 @@ public class SchoolReportDaoImpl extends LmsDaoAbstract implements SchoolReportD
 	Connection conn = null;
 	   Statement stmt = null;
 	   ResultSet rs ;
+	   String baseUrl=Utility.getProperties("application.properties").getProperty("loginbaseUrl");
+		String baseTeacherUrl=Utility.getProperties("application.properties").getProperty("loginTeacherbaseUrl");
+		
+		String response;
 	@Override
 	public List<DashBoardReportVo> getSchoolDetailList(
 			DashBoardReportVo dashBoardReportVo) {
@@ -182,6 +191,45 @@ public class SchoolReportDaoImpl extends LmsDaoAbstract implements SchoolReportD
             closeResources(conn, stmt, null);
         }
         return homeRoomList;
+	}
+
+	@Override
+	public String getSchoolList(DashBoardReportVo dashBoardReportVo) {
+		try{
+			String url=baseUrl+"rest/common/getMasterData";
+			System.out.println("CoursesServiceImpl method : - master data Request"+url);
+			response = GetJsonObject.getWebServceObj(url);
+		}
+		catch (Exception e) {
+			System.out.println("CoursesServiceImpl method : - master data Request"+e.getMessage());
+			e.printStackTrace();
+		}
+		System.out.println("CoursesServiceImpl method : - master data Response:-"+response);
+		return response;
+	}
+
+	@Override
+	public String getModuleDetail(DashBoardReportVo dashBoardReportVo) {
+		try {
+			String url=baseUrl+"rest/course/getCourses/teacher";
+			System.out.println(url);
+			
+			JSONObject logingJsonObject = new JSONObject();
+			logingJsonObject.put("userId", dashBoardReportVo.getUserId());
+			logingJsonObject.put("courseId",dashBoardReportVo.getCourseId());
+			logingJsonObject.put("schoolId",dashBoardReportVo.getSchoolId());
+			logingJsonObject.put("classId",dashBoardReportVo.getClassId());
+			logingJsonObject.put("hrmId",dashBoardReportVo.getHomeRoomId());
+			
+			
+			
+			System.out.println("CoursesServiceImpl method:-courses Request:-"+logingJsonObject);
+			response = PostJsonObject.postJson(logingJsonObject, url);
+		} catch (Exception e) {
+			System.out.println("CoursesServiceImpl method:-courses "+e.getMessage());
+		}
+		System.out.println("CoursesServiceImpl method:-courses Response:-"+response);
+		return response;
 	}
  
     

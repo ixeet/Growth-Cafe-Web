@@ -1,20 +1,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<div class="parallax overflow-hidden  page-section third margin-section">
-        <div class="container parallax-layer" data-opacity="true" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
-            <div class="media v-middle">
-                
-                <div class="media-body">
-                    <h3 class="text-black margin-v-0">View Assignment</h3>
-					
-                  
-                </div>
-               
-            </div>
-        </div>
-    </div>
     
-     <div class="container">
+     <div class="container margin_topm22">
         <div class="page-section">
             <div class="row">
                 <div class="col-md-9">
@@ -22,10 +9,10 @@
                         <!-- Module -->
 						<div class="item col-xs-12 col-sm-12  col-md-12 col-lg-8">
                             <div class="panel panel-default paper-shadow" data-z="0.5">
-                                <div class="panel-heading bgcolor">
+                                <div class="panel-heading pad_modal1">
                                     <div class="media media-clearfix-xs-min v-middle">
                                         <div class="media-body text-caption text-white">
-                                           <h4 class="text-white">${assignmentVo.assignmentName}</h4>
+                                           <h5 class="h5_color">${assignmentVo.assignmentName}</h5>
                                         </div>
                                         
                                     </div>
@@ -49,7 +36,7 @@
 													   
 														<div>
 														<!-- <h4>This is a title of this assignment which student has submitted</h4> -->
-														<h6>${assignmentVo.assignmentDesc}</h6>
+														<h5 class="line_h16">${assignmentVo.assignmentDesc}</h5>
 														<s:if test="assignmentVo.resourcesList !=null">
 														<s:iterator value="assignmentVo.resourcesList">
 														<%-- <iframe width="500" height="290" src="<s:property value="resourceUrl" />" frameborder="0" allowfullscreen></iframe> --%>
@@ -84,16 +71,16 @@
 						<div class="item col-xs-12 col-sm-12 col-md-12 col-lg-4">
 								<div class="col-lg-12 col-sm-6 col-md-6 col-xs-12">
 							<div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
-								<div class="panel-heading bgcolor">
-									<h4 class="text-white">Module Information</h4>
+								<div class="panel-heading pad_modal1">
+									<h5 class="h5_color">Module Information</h5>
 								</div>
 								<div class="panel-body">
-									<p class="text-caption">
+									<p class="text-caption text_default">
 										Course : ${assignmentVo.courseName} <br>
 										Module : ${assignmentVo.moduleName} <br>
-									  <s:if test="timeDuration !=null"> <i data-toggle="tooltip" title="" class="fa fa-clock-o fa-fw" data-original-title="Time duration"></i> ${moduleDetail.timeDuration} days &nbsp;<br></s:if>
-									  <s:if test="startedOn !=null"><i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Start Date"></i> ${moduleDetail.startedOn} &nbsp;</s:if> 
-									   <s:if test="completedOn !=null"><i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Complete Date"></i> ${moduleDetail.completedOn}</s:if>
+									  <s:if test="moduleDetail.timeDuration !=null"> <!-- <i data-toggle="tooltip" title="" class="fa fa-clock-o fa-fw" data-original-title="Time duration"></i> -->Module Duration :&nbsp; ${moduleDetail.timeDuration} days &nbsp;<br></s:if>
+									  <s:if test="moduleDetail.startedOn !=null"><!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Start Date"></i> -->Scheduled Start :&nbsp; ${moduleDetail.startedOn} &nbsp;<br></s:if> 
+									   <s:if test="moduleDetail.completedOn !=null"><!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Complete Date"></i> -->Scheduled End : &nbsp; ${moduleDetail.completedOn}</s:if>
 										<!-- <br>
 										<i data-toggle="tooltip" title="" class="fa fa-user fa-fw" data-original-title="Author"></i> Adrian Demian
 										<br> -->
@@ -108,15 +95,18 @@
 					
 					<div class="col-lg-12 col-sm-6 col-md-6 col-xs-12">
 							<div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
-							<div class="panel-heading bgcolor">
-									<h4 class="text-white">Assignment Details</h4>
+							<div class="panel-heading pad_modal1">
+									<h5 class="h5_color">Assignment Details</h5>
 									</div>
 								<div class="panel-body">
 									
 									<div class="expandable expandable-indicator-white expandable-trigger">
-										<div class="expandable-content">
-										  <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Last date of submission"></i> ${assignmentVo.assignmentDueDate}<br>	
-											<p>${assignmentVo.assignmentDesc}</p>
+										<div class="expandable-content text_default">
+										  <!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Last date of submission"></i> -->Due Date :&nbsp; ${assignmentVo.assignmentDueDate}<br>
+										  	<s:if test="assignmentVo.assignmentDueDate !=null">
+										<!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Last date of submission"></i> -->Submitted On :&nbsp; ${assignmentVo.assignmentSubmittedDate}<br>
+										</s:if>
+											<h5>${assignmentVo.assignmentDesc}</h5>
 										<div class="expandable-indicator"><i></i></div></div>
 									</div>
 								</div>

@@ -80,12 +80,10 @@ function validPassword(password){
 		
 		else if(!ValidateEmail(adminEmail)){
 			$("#emailshow").show();
-			//alert("Enter a valid email id including '@' and '.'");
 		}
 		else if(ValidateEmail(adminEmail)){
 			$("#emailshow").hide();
 				$("#adminEmailId").removeClass("fieldFill");
-			//alert("Enter a valid email id including '@' and '.'");
 		} */
 			
 		if(lastName!="" && firstName!="" && title!="Title"){
@@ -145,7 +143,7 @@ $("input").change(function(e) {
 	if(userPassword=="" || userPassword=="" || userNewPassword==""){
 			showSuccessMessage("Password fields can't be empty, please enter a valid password.");
 		} else if(userNewPassword !=confirmPassword){
-			showSuccessMessage("Enter a password not match");
+			showSuccessMessage("Confirm password not match");
 		} else if(!validPassword(userNewPassword)){
 			showSuccessMessage("Enter a password with 8 characters including one letter and number.");
 		} else if(!validPassword(userPassword)){
@@ -158,7 +156,6 @@ $("input").change(function(e) {
 		/* var data = $("#loginFormId").serialize();
 		$.post("login",data,
 		function(data,status){
-            alert("Data: " + data + "\nStatus: " + status);
         }); */
 	}
 	return false;
@@ -233,42 +230,27 @@ $("input").change(function(e) {
 						beforeSend :function(){
 							//showErrorMessage("looading");
 						},
-						success : function(result1){alert(result1);/* 
-						var response = JSON.parse(result1);alert(response);
+						success : function(result1){
+						var response = JSON.parse(result1);
 						if(response.statusMessage=='success'){
-							showSuccessMessage("Your Facebook Id successfuly set");
+							showSuccessMessage("Your Facebook Id successfully set");
 						}else{
 							showSuccessMessage("Your Facebook Id not set");
-						} */
-						//$("#BodyId").html(data);
+						}
 						},
 			        });
-                       // window.location="?userFbId="+response.email;
-                    });
+                });
                     
   }
 </script>
 
-	<div class="parallax overflow-hidden  page-section third margin-section">
-        <div class="container parallax-layer" data-opacity="true" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
-            <div class="media v-middle">
-                
-                <div class="media-body">
-                    <h3 class="text-black margin-v-0"><a class="transf" href="#">Dashboard</a> / Profile</h3>
-					
-                  
-                </div>
-               
-            </div>
-        </div>
-    </div>
 
- <div class="container">
+ <div class="container margin_topm22">
         <div class="page-section">
             <div class="row">
                 <div class="col-md-9">
                     <!-- Tabbable Widget -->
-                    <div class="tabbable paper-shadow relative" data-z="0.5">
+                    
                         <!-- Tabs -->
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#"><i class="fa fa-fw fa-lock"></i> <span class="hidden-sm hidden-xs">Your Profile</span></a></li>
@@ -276,19 +258,14 @@ $("input").change(function(e) {
                         </ul>
                         <!-- // END Tabs -->
                         <!-- Panes -->
-                        <div class="tab-content">
-                            <div id="account" class="tab-pane active">
-                            
-                            
-                            
-                            
-                            
+                       
+                           
                               <div class="panel panel-default">
                        				 <div class="panel-body">
                             <form class="form-horizontal" action="updateProfileImg" method="post" id="profileImgUploadFormId" enctype="multipart/form-data">
                                 
                                     <div class="form-group">
-                                    <label for="inputEmail3" class="col-md-2 control-label">Profile Picture</label>
+                                    <label for="inputEmail3" class="font_weight500 col-md-2 control-label">Profile Picture</label>
                                     <div class="col-md-8">
                                     	<div class="row">
                                         
@@ -301,7 +278,7 @@ $("input").change(function(e) {
 		                                                    </div>
 		                                                </div>
 		                                                <div class="media-body">
-		                                                    <a href="#" onclick="openFileOption();return;" style="float:left"  class="btn btn-pad btn-height loginbutton" data-z="0.5" data-hover-z="1" data-animated> Add Image<i class="fa fa-upl"></i></a>
+		                                                    <a href="#" onclick="openFileOption();return;" style="float:left"  class="btn-pad normalbutton btn-height margin_bot1" data-z="0.5" data-hover-z="1" data-animated> Change Picture<i class="fa fa-upl"></i></a>
 															<input type="file" id="file1"  name="profilePhoto"  onchange="readURL(this);" style="display: none;"/>
 														</div>
 		                                            </div>
@@ -312,7 +289,7 @@ $("input").change(function(e) {
 		                                            </div>
 		                                            <div class="media v-middle">
 		                                              <label id="loginfb"  for="login">
-														<div onlogin="checkLoginState();" class="fb-login-button loginfb" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false">Set Facebook Id</div>
+														<div onlogin="checkLoginState();" class="fb-login-button loginfb2" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false">Set Facebook Id</div>
 													</label>
 		                                            </div>
 		                                        </div>
@@ -367,7 +344,7 @@ $("input").change(function(e) {
                                      --%>
                                      <div style="clear:both"></div>
                                      <div class="form-group">
-                                    <label for="inputEmail3" class="col-md-2 control-label">Title</label>
+                                    <label for="inputEmail3" class=" font_weight500 col-md-2 control-label">Title</label>
                                     <div class="col-md-8">
                                     
                                      <div class="row">
@@ -389,7 +366,7 @@ $("input").change(function(e) {
                                     <input type="text" style="display:none;"  id="titleId" value="${sessionScope.loginDetail.title}">
                                     
                                     <div class="form-group">
-                                        <label for="inputEmail3" class="col-md-2 control-label">Full Name</label>
+                                        <label for="inputEmail3" class="font_weight500 col-md-2 control-label">Full Name</label>
                                         <div class="col-md-8">
                                             <div class="row">
                                                 <div class="col-md-6 selectw">
@@ -422,7 +399,7 @@ $("input").change(function(e) {
                                     <br>
                                     <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">
-											 <input  value="Save Changes" type="button" onclick="return updateProfile();" class="left btn-pad btn-height loginbutton " data-z="0.5" data-hover-z="1" data-animated>
+											 <input  value="Save Changes" type="button" onclick="return updateProfile();" class="btn-pad normalbutton btn-height margin_bot1" data-z="0.5" data-hover-z="1" data-animated>
                                         </div>
                                     </div>
                                 </form>
@@ -430,10 +407,8 @@ $("input").change(function(e) {
                                 </div></div>
                                 
                                 
-                            </div>
-                        </div>
-                        <!-- // END Panes -->
-                    </div>
+                            
+                   
                     <!-- // END Tabbable Widget -->
                     <br/>
                     <br/>
@@ -441,16 +416,16 @@ $("input").change(function(e) {
 				
               <div class="col-md-3">
                     <div class="panel panel-default" data-toggle="panel-collapse" data-open="true">
-                        <div class="panel-heading bgntext panel-collapse-trigger">
-                            <h4 class="text-white">Information</h4>
+                        <div class="panel-heading pad_modal1 panel-collapse-trigger">
+                            <h5 class="h5_color">Information</h5>
                         </div>
                         <div class="panel-body list-group">
                            <ul class="list-group relative paper-shadow" data-hover-z="0.5" data-animated>
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
-                                            <div class="media-body">
-                                               <h4 style="color:#ba0032">School :  <a href="#" class="text-subhead link-text-color">${sessionScope.loginDetail.schoolName}</a></h4>
+                                            <div class="media-body pad_5">
+                                               <h5 style="color:#ba0032">Organization :  <a href="#" class=" link-text-color">${sessionScope.loginDetail.schoolName}</a></h5>
                                                 
                                             </div>
                                            
@@ -459,8 +434,8 @@ $("input").change(function(e) {
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
-                                            <div class="media-body">
-                                                <h4 style="color:#ba0032">Class :  <a href="#" class="text-subhead link-text-color">${sessionScope.loginDetail.className}</a></h4>
+                                            <div class="media-body pad_5">
+                                                <h5 style="color:#ba0032">Department :  <a href="#" class=" link-text-color">${sessionScope.loginDetail.className}</a></h5>
                                                 
                                             </div>
                                            
@@ -469,8 +444,8 @@ $("input").change(function(e) {
 									<li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
-                                            <div class="media-body">
-                                                <h4 style="color:#ba0032">Home Room :  <a href="#" class="text-subhead link-text-color">${sessionScope.loginDetail.homeRoomName}</a></h4>
+                                            <div class="media-body pad_5">
+                                                <h5 style="color:#ba0032">Group :  <a href="#" class=" link-text-color">${sessionScope.loginDetail.homeRoomName}</a></h5>
                                                 
                                             </div>
                                            
@@ -493,7 +468,7 @@ $("input").change(function(e) {
 								                                <div class="modal-content">
 								                                    <div class="modal-header">
 								                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-								                                        <h4 class="modal-title">Change password</h4>
+								                                        <h5 class="modal-title">Change password</h5>
 								                                    </div>
 								                                    <div class="modal-body">
 								                                        <form id="changePasswordFormId" method="post" action="changePassword">
@@ -510,7 +485,7 @@ $("input").change(function(e) {
 								                                                <label for="credit-card">Confirm Password</label>
 								                                            </div>
 								                                            
-								                                            <button type="button" onclick="return changePassword();" class="btn-pad btn-height loginbutton fnone paper-shadow relative" data-z="0.5" data-hover-z="1" data-animated data-dismiss="modal">Update Password</button>
+								                                            <button type="button" onclick="return changePassword();" class="btn-pad normalbutton btn-height margin_bot1 fnone paper-shadow relative" data-z="0.5" data-hover-z="1" data-animated data-dismiss="modal">Update Password</button>
 								                                        </form>
 								                                    </div>
 								                                </div>

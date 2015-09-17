@@ -1372,7 +1372,7 @@ hr {
 	font-family: inherit;
 	font-weight: 500;
 	line-height: 1.1;
-	color: #212121
+	color: #141823;
 }
 
 .h1 .small,.h1 small,.h2 .small,.h2 small,.h3 .small,.h3 small,.h4 .small,.h4 small,.h5 .small,.h5 small,.h6 .small,.h6 small,h1 .small,h1 small,h2 .small,h2 small,h3 .small,h3 small,h4 .small,h4 small,h5 .small,h5 small,h6 .small,h6 small
@@ -1767,7 +1767,7 @@ pre code {
 
 @media ( min-width :1200px) {
 	.container {
-		width: 1180px
+		width: 1166px
 	}
 }
 
@@ -2677,7 +2677,8 @@ input[type=checkbox],input[type=radio] {
 }
 
 input[type=file] {
-	display: block
+	display: block;
+	padding:4px;
 }
 
 input[type=range] {
@@ -2707,7 +2708,7 @@ output {
 .form-control {
 	display: block;
 	width: 100%;
-	height: 36px;
+	height: 30px;
 	padding: 8px 12px;
 	font-size: 13px;
 	line-height: 1.42857143;
@@ -3136,7 +3137,7 @@ select[multiple].form-group-lg .form-control,textarea.form-group-lg .form-contro
 	background-image: none;
 	border: 1px solid transparent;
 	white-space: nowrap;
-	padding: 8px 12px;
+	padding: 5.2px 12px;
 	font-size: 13px;
 	line-height: 1.42857143;
 	border-radius: 2px;
@@ -4574,7 +4575,7 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
 
 .navbar-default .navbar-nav>.open>a,.navbar-default .navbar-nav>.open>a:focus,.navbar-default .navbar-nav>.open>a:hover
 	{
-	background-color: #8e0228 !important;
+	background-color: #72142d !important;
 	color: #1b93f3
 }
 
@@ -4676,7 +4677,7 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
 
 .navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a:focus,.navbar-inverse .navbar-nav>.open>a:hover
 	{
-	background-color: #8e0228 !important;
+	background-color: #72142d !important;
 	color: #fff
 }
 
@@ -4795,8 +4796,8 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
 	{
 	z-index: 2;
 	color: #fff;
-	background-color: #cc0033;
-	border-color: #8e0228;
+	background-color: #ba0032;
+	border-color: #72142d;
 	cursor: default
 }
 
@@ -5317,7 +5318,7 @@ to {
 .list-group-item {
 	position: relative;
 	display: block;
-	padding: 10px 15px;
+	padding: 6px 5px 5px 5px;
 	margin-bottom: -1px;
 	background-color: #fff;
 	border: 1px solid #e2e9e6
@@ -5497,16 +5498,16 @@ a.list-group-item-danger.active,a.list-group-item-danger.active:focus,a.list-gro
 	margin-bottom: 18px;
 	background-color: #fff;
 	border: 1px solid transparent;
-	border-radius: 0;
+	border-radius: 4px;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, .05)
 }
 
 .panel-body {
-	padding: 16px
+	padding: 10px
 }
 
 .panel-heading {
-	padding: 10px 15px;
+	padding: 8px 15px;
 	border-bottom: 1px solid transparent;
 	border-top-right-radius: -1;
 	border-top-left-radius: -1
@@ -9514,16 +9515,18 @@ body.survey .lock-container .panel .panel-footer .small {
 }
 
 .module-li {
-	text-transform: uppercase;
-	color: #ba0032;
+	text-transform: none; 
+	color: #757575;
+	font-size:13px;
+	list-style:initial;
 }
 
 .course-li {
-	text-transform: uppercase;
-	color: #ba0032;
+	text-transform: none;
+	color: #757575;
 	list-style: none;
-	padding-top: 15px;
-	margin-right: 10px;
+	/* padding-top: 15px;
+	margin-right: 10px; */
 	float: right;
 }
 
@@ -9572,7 +9575,7 @@ a.dropdown-toggle.ripple {
 
 .navbar-default .navbar-nav>.open>a,.navbar-default .navbar-nav>.open>a:focus,.navbar-default .navbar-nav>.open>a:hover
 	{
-	background-color: #8e0228 !important;
+	background-color: #72142d !important;
 }
 
 @media ( max-width :480px) {

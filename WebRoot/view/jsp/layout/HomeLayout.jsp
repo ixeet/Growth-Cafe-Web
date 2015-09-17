@@ -9,10 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Learning</title>
+    <title>Growth Cafe</title>
 	 
 	<link href="view/helper/css/theme-style.css" rel="stylesheet">
-	
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	</head>
 	<body>
 	<div>
