@@ -791,13 +791,231 @@ public class UpdatesAction extends ActionSupport implements ServletResponseAware
 					 feedObj.setCommentList(commentList);
 							 }
 					 feedDetails =feedObj;
+					 feedList = new ArrayList<FeedVo>();
+					 feedList.add(feedDetails);
 		}
 		
 	}
 	
 
+	public void viewNotification() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("UpdatesAction method:-viewNotification ");
+		try {
+			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
+			if(registrationVo !=null){
+				JSONArray notificationArr = new JSONArray();
+				UpdatesServiceIface updatesServiceIface = new UpdatesServiceImpl();
+				response = updatesServiceIface.viewNotification(registrationVo,3,0);
+				JSONObject jsonResponseObj = new JSONObject(response);
+				if(jsonResponseObj.getString("statusMessage").equalsIgnoreCase("success")){
+					JSONArray jsonFeedList = jsonResponseObj.getJSONArray("feedList");
+					feedList = new ArrayList<FeedVo>();
+					for(int i=0;i<jsonFeedList.length();i++){
+						/**
+						 * feed parsing
+						 */
+						JSONObject jsonFeedObj = (JSONObject) jsonFeedList.get(i);
+						FeedVo feedObj = new FeedVo();
+						if(jsonFeedObj.has("commentCounts")){
+						feedObj.setCommentCounts(jsonFeedObj.getInt("commentCounts"));
+						}
+						if(jsonFeedObj.has("feedId")){
+						feedObj.setFeedId(jsonFeedObj.getInt("feedId"));
+						} 
+						if(jsonFeedObj.has("feedOn")){
+							feedObj.setFeedOn(Utility.getBeforeTime(jsonFeedObj.getString("feedOn")));
+							} 
+						if(jsonFeedObj.has("likeCounts")){
+							feedObj.setLikeCounts(jsonFeedObj.getInt("likeCounts"));
+							}
+						if(jsonFeedObj.has("isLiked")){
+						feedObj.setLikeStatus(jsonFeedObj.getBoolean("isLiked"));
+						}if(jsonFeedObj.has("feedText")){
+							String feedText=jsonFeedObj.getString("feedText");
+							if(feedText.contains("$")){
+							String[] feedTextArr =feedText.split("\\$");
+							JSONArray feedTextContentArr = jsonFeedObj.getJSONArray("feedTextArray");
+							//String[] content = new String[feedTextContentArr.length()];
+							feedText="";
+							String feedTextPost="";
+							for(int j=0;j<feedTextContentArr.length();j++){
+								JSONObject jsonFeedContentObj = feedTextContentArr.getJSONObject(j);
+								String type=jsonFeedContentObj.getString("type");
+								String value=jsonFeedContentObj.getString("value");
+								int key=jsonFeedContentObj.getInt("key");
+								feedText=feedText+feedTextArr[j]+"<a href='javaScript:;' onclick=\"clickableResource("+feedObj.getFeedId()+",'"+type+"',"+key+");\">"+value+"</a>";
+								feedTextPost=feedTextPost+feedTextArr[j]+value;
+								}
+							if(feedTextArr.length > feedTextContentArr.length() && feedTextArr[feedTextContentArr.length()] != null){
+								feedText=feedText+feedTextArr[feedTextContentArr.length()];
+								feedTextPost=feedTextPost+feedTextArr[feedTextContentArr.length()];
+							}
+								feedObj.setFeedText(feedText);
+								feedObj.setFeedTextPost(feedTextPost);
+							}
+						}
+						
+						/**
+						 * user detail
+						 */if(jsonFeedObj.has("user")){
+							JSONObject jsonUserObj = jsonFeedObj.getJSONObject("user");
+							RegistrationVo user = new RegistrationVo();
+							user.setUserId(jsonUserObj.getInt("userId"));
+							user.setUserName(jsonUserObj.getString("userName"));
+							if(jsonUserObj.has("userFbId")){
+							user.setUserFbId(jsonUserObj.getString("userFbId"));
+							}
+							user.setFirstName(jsonUserObj.getString("firstName"));
+							user.setLastName(jsonUserObj.getString("lastName"));
+							if(jsonUserObj.has("title")){
+							user.setTitle(jsonUserObj.getString("title"));
+						 	}
+							user.setProfilePhotoFileName(jsonUserObj.getString("profileImage"));
+							user.setEmailId(jsonUserObj.getString("emailId"));
+							feedObj.setUser(user);
+						 }
+						
+						feedList.add(feedObj);
+						
+						JSONObject jsonNotificationObj = new JSONObject();
+						jsonNotificationObj.put("feedText", feedObj.getFeedTextPost());
+						jsonNotificationObj.put("feedOn", feedObj.getFeedOn());
+						jsonNotificationObj.put("profileImage", feedObj.getUser().getProfilePhotoFileName());
+						jsonNotificationObj.put("feedId", feedObj.getFeedId());
+						notificationArr.put(jsonNotificationObj);
+					 }
+						
+					}
+				getServletResponse().getWriter().print(notificationArr);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	
+	
+public String getNotifications() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		logger.debug("UpdatesAction method:-viewNotification ");
+		try {
+			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("loginDetail");
+			if(registrationVo !=null){
+				JSONArray notificationArr = new JSONArray();
+				UpdatesServiceIface updatesServiceIface = new UpdatesServiceImpl();
+				if(request.getSession().getAttribute("offset") !=null && offset>0){
+					offset = (Integer) request.getSession().getAttribute("offset");
+					}
+				response = updatesServiceIface.viewNotification(registrationVo, 10,offset);
+				JSONObject jsonResponseObj = new JSONObject(response);
+				if(jsonResponseObj.getString("statusMessage").equalsIgnoreCase("success")){
+					JSONArray jsonFeedList = jsonResponseObj.getJSONArray("feedList");
+					feedList = new ArrayList<FeedVo>();
+					for(int i=0;i<jsonFeedList.length();i++){
+						/**
+						 * feed parsing
+						 */
+						JSONObject jsonFeedObj = (JSONObject) jsonFeedList.get(i);
+						FeedVo feedObj = new FeedVo();
+						if(jsonFeedObj.has("commentCounts")){
+						feedObj.setCommentCounts(jsonFeedObj.getInt("commentCounts"));
+						}
+						if(jsonFeedObj.has("feedId")){
+						feedObj.setFeedId(jsonFeedObj.getInt("feedId"));
+						} 
+						if(jsonFeedObj.has("feedOn")){
+							feedObj.setFeedOn(Utility.getBeforeTime(jsonFeedObj.getString("feedOn")));
+							} 
+						if(jsonFeedObj.has("likeCounts")){
+							feedObj.setLikeCounts(jsonFeedObj.getInt("likeCounts"));
+							}
+						if(jsonFeedObj.has("isLiked")){
+						feedObj.setLikeStatus(jsonFeedObj.getBoolean("isLiked"));
+						}if(jsonFeedObj.has("feedText")){
+							String feedText=jsonFeedObj.getString("feedText");
+							if(feedText.contains("$")){
+							String[] feedTextArr =feedText.split("\\$");
+							JSONArray feedTextContentArr = jsonFeedObj.getJSONArray("feedTextArray");
+							//String[] content = new String[feedTextContentArr.length()];
+							feedText="";
+							String feedTextPost="";
+							for(int j=0;j<feedTextContentArr.length();j++){
+								JSONObject jsonFeedContentObj = feedTextContentArr.getJSONObject(j);
+								String type=jsonFeedContentObj.getString("type");
+								String value=jsonFeedContentObj.getString("value");
+								int key=jsonFeedContentObj.getInt("key");
+								feedText=feedText+feedTextArr[j]+"<a href='javaScript:;' onclick=\"clickableResource("+feedObj.getFeedId()+",'"+type+"',"+key+");\">"+value+"</a>";
+								feedTextPost=feedTextPost+feedTextArr[j]+value;
+								}
+							if(feedTextArr.length > feedTextContentArr.length() && feedTextArr[feedTextContentArr.length()] != null){
+								feedText=feedText+feedTextArr[feedTextContentArr.length()];
+								feedTextPost=feedTextPost+feedTextArr[feedTextContentArr.length()];
+							}
+								feedObj.setFeedText(feedText);
+								feedObj.setFeedTextPost(feedTextPost);
+							}
+						}
+						/**
+						 * user detail
+						 */if(jsonFeedObj.has("user")){
+							JSONObject jsonUserObj = jsonFeedObj.getJSONObject("user");
+							RegistrationVo user = new RegistrationVo();
+							user.setUserId(jsonUserObj.getInt("userId"));
+							user.setUserName(jsonUserObj.getString("userName"));
+							if(jsonUserObj.has("userFbId")){
+							user.setUserFbId(jsonUserObj.getString("userFbId"));
+							}
+							user.setFirstName(jsonUserObj.getString("firstName"));
+							user.setLastName(jsonUserObj.getString("lastName"));
+							if(jsonUserObj.has("title")){
+							user.setTitle(jsonUserObj.getString("title"));
+						 	}
+							user.setProfilePhotoFileName(jsonUserObj.getString("profileImage"));
+							user.setEmailId(jsonUserObj.getString("emailId"));
+							feedObj.setUser(user);
+						 }
+						feedList.add(feedObj);
+					 }
+						if(offset>0 && feedList.size()>0){
+							offset=offset+feedList.size();
+							request.getSession().setAttribute("offset", offset);
+							return SUCCESS;
+						}else if(feedList.size()>0){
+							offset=feedList.size();
+							request.getSession().setAttribute("offset", offset);
+						}
+					}
+				request.getSession().setAttribute("selectedTab","notificationTabId");
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	public String getNotificationDetail() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.getSession().setAttribute("offset", 0);
+		try{
+		RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
+		if(loginDetail !=null){
+			UpdatesServiceIface updatesServiceIface = new UpdatesServiceImpl();
+			int feedId = Integer.parseInt(request.getParameter("feedId"));
+			updatesServiceIface.setNotificationStatus(feedId,loginDetail.getUserId());
+		response = updatesServiceIface.getFeedDetail(feedId,loginDetail.getUserId());
+		getFeedDetail();
+		}
+		request.getSession().setAttribute("selectedTab","updatesTabId");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+		
+	}
 	
 	/**
 	 * @return the commentList

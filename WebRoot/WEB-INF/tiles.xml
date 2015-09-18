@@ -69,6 +69,10 @@
 	<put-attribute name="header" value="/view/jsp/common/header.jsp"/>
 	  	<put-attribute name="body" value="/view/jsp/pages/updates.jsp" /> 
 	</definition>
+	<definition name="/notifications" extends="HomeLayout">
+	<put-attribute name="header" value="/view/jsp/common/header.jsp"/>
+	  	<put-attribute name="body" value="/view/jsp/pages/notifications.jsp" /> 
+	</definition>
 	
 	<definition name="/assignment" extends="HomeLayout">
 	  	<put-attribute name="body" value="/view/jsp/pages/assignment.jsp" /> 
