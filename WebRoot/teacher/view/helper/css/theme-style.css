@@ -849,3 +849,8 @@ height: 130px;
 .marg10{
 margin-top: 10px;	
 }
+
+.pad_10{
+	width: 175px;margin-left: -10px;
+	
+}
