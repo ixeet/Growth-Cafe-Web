@@ -30,7 +30,6 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 	AssignmentReportDao assignmentReportDao;
 	DashBoardReportVo dashBoardReportVo;
 	HttpServletResponse servletResponse;
-	 
 	List<DashBoardReportVo> assignmentReportList;
 	ArrayList<DashBoardReportVo> schoolNameList;
 	List<DashBoardReportVo> classNameList;

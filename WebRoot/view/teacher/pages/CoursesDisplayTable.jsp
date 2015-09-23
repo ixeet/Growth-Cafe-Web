@@ -8,32 +8,6 @@
 							data-toggle="collapse"
 							data-target="#<s:property value="schoolId"/>-1-<s:property value="courseId"/>">
 							<div class="media">
-								<%-- <div class="media-left">
-									<span class="icon-block img-circle half bg-green-300 text-white"><s:property
-											value="completedPerStatus" />%</span>
-								</div> --%>
-								<%-- <div class="media-body">
-									<div class="col-md-6">
-										<p>
-											<span class="btn default_bg btn-xs">Organization </span> <span><s:property value="schoolName" /> </span>
-										</p>
-									</div>
-									<div class="col-md-6">
-										<p>
-											<span class="btn default_bg btn-xs">Department </span> <span><s:property value="className" /> </span>
-										</p>
-									</div>
-									<div class="col-md-6">
-										<p>
-											<span class="btn default_bg btn-xs">Group </span> <span><s:property value="homeRoomName" /> </span>
-										</p>
-									</div>
-									<div class="col-md-6">
-										<p>
-											<span class="btn default_bg btn-xs">Course Name </span> <span><s:property value="courseName" /> </span>
-										</p>
-									</div>
-								</div> --%>
 								
 								<div class="media-body">
 									 <p class="col-sm-2 col-xs-2 center">  <i class="fa fa-fw fa-institution"></i></br><span><s:property value="schoolName"/></span></p>
@@ -124,10 +98,17 @@
 																onclick="viewDetail('<s:property value="#parent.courseId" />','<s:property value="moduleId" />','<s:property value="#parent.schoolId"/>','<s:property value="#parent.classId"/>','<s:property value="#parent.homeRoomId"/>')"
 																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
 																data-placement="top" title="View this module">View</a> --%>
-																<a href="javaScript:;"
+																<%-- <a href="javaScript:;"
 																onclick="changeStatusDetail('<s:property value='ModuleSessionId'/>','<s:property value='moduleStatuId'/>')"
 																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
 																data-placement="top" style="float:left;" title="Complete this module">Complete</a>
+																 --%>
+																
+																<button onclick="changeStatusDetail(event)"
+																class="btn-pad normalbutton btn-height" data-toggle="tooltip" value="<s:property value='ModuleSessionId'/>"
+																data-placement="top" title="Complete this module">Complete</button>
+																
+																
 														</s:if> <%-- <s:elseif test="moduleStatuId==2">
 															<a href="javaScript:;"
 																onclick="changeStatusDetail('<s:property value='ModuleSessionId'/>','<s:property value='moduleStatuId'/>')"

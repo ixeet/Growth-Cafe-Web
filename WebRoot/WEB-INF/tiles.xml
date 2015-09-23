@@ -122,6 +122,15 @@
 	  	<put-attribute name="body" value="/view/teacher/pages/CourseReportDetail.jsp" /> 
 	</definition>
 	
+	<definition name="/teacherUpdates" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/updates.jsp" /> 
+	</definition>
+	<definition name="/teacherNotification" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/notifications.jsp" /> 
+	</definition>
+	
 	<definition name="/leaderBoard" extends="DashBoardLayout">
 		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
 	  	<put-attribute name="body" value="/view/teacher/pages/LeaderBoardReportDetail.jsp" /> 

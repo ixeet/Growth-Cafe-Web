@@ -94,13 +94,9 @@
 			<result name="success" type="tiles">/userProfile</result>
 		</action>
 		<action name="updates" class="com.slms.app.webapp.controller.UpdatesAction">
-			<!-- <interceptor-ref name="completeStack"/>
-		    <interceptor-ref name="execAndWait"/>
-		    <result name="wait">view/jsp/pages/waitingPage.jsp</result> -->
 			<interceptor-ref name="authStack"></interceptor-ref> 
 			<result name="login" type="chain">welcome</result>
 			<result name="success" type="tiles">/updates</result>
-			
 		</action>
 		<action name="paginationUpdates" class="com.slms.app.webapp.controller.UpdatesAction">
 			<result name="success">view/jsp/paginationUpdates.jsp</result>
@@ -266,6 +262,41 @@
 			<result name="success" type="tiles">/teacherPersonalProfile</result>
 		</action>
 		
+		<!-- updates -->
+		<action name="updates" class="com.slms.webapp.controller.TeacherUpdatesAction">
+			<result name="success" type="tiles">/teacherUpdates</result>
+		</action>
+		
+		<action name="commentOnFeed" class="com.slms.webapp.controller.TeacherUpdatesAction" method="commentOnFeed">
+			<result name="success">/view/teacher/pages/feedComments.jsp</result>
+		</action>
+		<action name="commentOnFeedComment" class="com.slms.webapp.controller.TeacherUpdatesAction" method="commentOnFeedComment">
+			<result name="success">/view/teacher/pages/feedComments.jsp</result>
+		</action>
+		<action name="likeOnFeed" class="com.slms.webapp.controller.TeacherUpdatesAction" method="likeOnFeed">
+			<result name="success">/view/teacher/pages/feedComments.jsp</result>
+		</action>
+		<action name="likeOnFeedComment" class="com.slms.webapp.controller.TeacherUpdatesAction" method="likeOnFeedComment">
+			<result name="success">/view/teacher/pages/feedComments.jsp</result>
+		</action>
+		
+		<action name="paginationUpdates" class="com.slms.webapp.controller.TeacherUpdatesAction">
+			<result name="success">/view/teacher/pages/paginationUpdates.jsp</result>
+		</action>
+		
+		<action name="viewNotification" class="com.slms.webapp.controller.TeacherUpdatesAction" method="viewNotification">
+		</action>
+		
+		<action name="getNotifications" class="com.slms.webapp.controller.TeacherUpdatesAction" method="getNotifications">
+			<result name="success" type="tiles">/teacherNotification</result>
+		</action>
+		
+		<action name="getNotificationDetail" class="com.slms.webapp.controller.TeacherUpdatesAction" method="getNotificationDetail">
+			<result name="success" type="tiles">/teacherUpdates</result>
+		</action>
+		<action name="paginationNotification" class="com.slms.webapp.controller.TeacherUpdatesAction" method="getNotifications">
+			<result name="success">/view/teacher/pages/notificationPage.jsp</result>
+		</action>
         </package>
 	
 </struts>    

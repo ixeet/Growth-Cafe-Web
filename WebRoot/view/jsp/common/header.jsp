@@ -115,6 +115,7 @@ function courses(){
 }
 
 function updates(){
+	$("#loader").append("<div id='top'><img  style='margin:252px 0 0 259px;' width='160px' height='120px' src='view/helper/images/animatedLoading.gif'/></div>");
 	window.location="updates";
 	
 }

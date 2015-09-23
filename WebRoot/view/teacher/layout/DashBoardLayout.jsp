@@ -45,7 +45,7 @@
 .backdro-container #loading-img {
     position: absolute;
     z-index:10;
-    top:40%;
+    top:30%;
     left:48%;
 }
 </style>
