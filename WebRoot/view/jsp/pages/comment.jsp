@@ -11,11 +11,12 @@
  </script>
  							<ul class="mdesc_ul mdesc_pad1">
 								<s:if test="%{moduleDescription.likeStatus}">
-									<li class="mdesc_li color_likes bold"><a href="javaScript:;" ><i class="fa fa-fw fa-thumbs-up"></i>Like</a></li>
+									<li class="mdesc_li"><a class="color_likes bold" href="javaScript:;" ><i class="fa fa-fw fa-thumbs-up"></i>${moduleDescription.likeCounts}<s:if test="moduleDescription.likeCounts>1"> Likes</s:if><s:else> Like</s:else></a></li>
 								</s:if>
 								<s:else>
 									<li class="mdesc_li"><a class="color_likes bold" href="javaScript:;" onclick="likeResource()"><i class="fa fa-fw fa-thumbs-o-up"></i>${moduleDescription.likeCounts}<s:if test="moduleDescription.likeCounts>1"> Likes</s:if><s:else> Like</s:else></a></li>
 								</s:else>
+								
 								<li class="mdesc_li"><a class="color_likes bold" href="javaScript:;"><i class="fa fa-fw fa-comments-o"></i>${moduleDescription.commentCounts} Comments</a></li>
 								<li class="mdesc_li"><a class="color_likes bold" href="javaScript:;" id="share_button"><i class="fa fa-fw fa-share-square-o"></i>Share</a></li>
 								

@@ -22,4 +22,8 @@ public interface UpdatesServiceIface {
 
 	public String getFeedDetail(int feedId, int userId);
 
+	public String viewNotification(RegistrationVo registrationVo, int noOfRecords, int offset);
+
+	public void setNotificationStatus(int feedId, int userId);
+
 }

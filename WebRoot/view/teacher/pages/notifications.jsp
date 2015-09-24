@@ -12,7 +12,7 @@ var eventStatus=true;
   				 if (st > lastScrollTop){
                  if ($win.height() + $win.scrollTop()
                                 > Math.round(($(document).height()*.9)) && eventStatus) {
-                                $("#paginationContentId").append("<img src='view/helper/images/animatedLoading.gif' style='margin-left: 50%; width:100px;height:120px;' alt='loading please wait' id='loadingUpdateImgId'>");
+                                $("#paginationContentId").append("<img src='view/helper/images/ajax-loader-large.gif' style='margin-left: 40%; width:100px;height:120px;' alt='loading please wait' id='loadingUpdateImgId'>");
                                 eventStatus=false;
                                 $.ajax({
 									url : "paginationNotification",

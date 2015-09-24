@@ -26,6 +26,7 @@
                         <div class="panel-body list-group">
 							<div class="col-md-9">
                            <ul class="list-group relative paper-shadow" data-hover-z="0.5" data-animated>
+                            <s:if test="firstName !=null">
 									<li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
@@ -36,6 +37,8 @@
                                            
                                         </div>
                                     </li>
+                                    </s:if>
+                                     <s:if test="emailId !=null">
 									<li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
@@ -46,7 +49,8 @@
                                            
                                         </div>
                                     </li>
-									
+                                    </s:if>
+									<s:if test="schoolName !=null">
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
@@ -57,6 +61,8 @@
                                            
                                         </div>
                                     </li>
+                                    </s:if>
+                                    <s:if test="className !=null">
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
@@ -67,6 +73,8 @@
                                            
                                         </div>
                                     </li>
+                                    </s:if>
+                                    <s:if test="homeRoomName !=null">
 									<li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
@@ -77,6 +85,7 @@
                                            
                                         </div>
                                     </li>
+                                    </s:if>
 									
                                 </ul>
                         </div><!-- div left closed-->

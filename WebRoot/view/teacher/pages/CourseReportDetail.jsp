@@ -183,8 +183,14 @@ function viewDetail(courseId,moduleId,schoolId,classId,homeRoomId){
 window.location="viewListDetail?courseId="+courseId+"&moduleId="+moduleId+"&schoolId="+schoolId+"&classId="+classId+"&homeRoomId="+homeRoomId;
 }
 
-function changeStatusDetail(sessionId,status){
-var url = "changeDetailTeach.action";
+function changeStatusDetail(event){
+var sessionId=$(event.currentTarget).val();
+var testValue = $(event.currentTarget).text();
+if(testValue == "Complete"){
+	var status=0;
+}
+
+  var url = "changeDetailTeach.action";
 	$.ajax({
 	type		:	"POST",
 	url			:	url,
@@ -193,17 +199,16 @@ var url = "changeDetailTeach.action";
 			startwindowDisable();
 	},
 	success		:	function(result){
-	/* $("#courseDetailDiv").html(result); */
+	$("#courseDetailDiv").html(result);
 	},
 	complete		:	function(){
 		endwindowDisable();
-	showCourse();
 	}
 	});
 
-return false;
+return false; 
 }
- 
+ /* $("#courseDetailDiv").html(result); */
  </script>
 
 

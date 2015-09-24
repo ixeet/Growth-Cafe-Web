@@ -138,4 +138,35 @@ public class UpdatesServiceImpl implements UpdatesServiceIface{
 		return response;
 	}
 
+	@Override
+	public String viewNotification(RegistrationVo registrationVo, int noOfRecords, int offset) {
+		try {
+			String url=baseUrl+"rest/common/getNotifications";
+			
+			JSONObject regJsonObject = new JSONObject();
+			regJsonObject.put("userId", registrationVo.getUserId());
+			regJsonObject.put("searchText","");
+			regJsonObject.put("offset",offset);
+			regJsonObject.put("noOfRecords",noOfRecords);
+			logger.debug("UpdatesServiceImpl method:-viewNotification Request:-"+regJsonObject);
+			response = PostJsonObject.postJson(regJsonObject, url);
+		} catch (Exception e) {
+			logger.error("UpdatesServiceImpl method:-viewNotification "+e.getMessage());
+		}
+		logger.debug("UpdatesServiceImpl method:-viewNotification Response:-"+response);
+		return response;
+	}
+
+	@Override
+	public void setNotificationStatus(int feedId, int userId) {
+		try {
+			String url=baseUrl+"rest/common/updateNotificationStatus/userId/"+userId+"/feedId/"+feedId+"/status/1";
+			logger.debug("UpdatesServiceImpl method:-getFeedDetail url:-"+url);
+			response = GetJsonObject.getWebServceObj(url);
+		} catch (Exception e) {
+			logger.error("UpdatesServiceImpl method:-likeOnFeedComment "+e.getMessage());
+		}
+		logger.debug("UpdatesServiceImpl method:-likeOnFeedComment Response:-"+response);
+	}
+
 }

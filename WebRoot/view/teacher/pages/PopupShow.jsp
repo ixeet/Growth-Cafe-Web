@@ -9,11 +9,14 @@ var url = "changeWorkStatus";
 	url			:	url,
 	data		:	{"tcsMainId":tcsMainId, "CompletedStatus":status,"courseId":courseId,"moduleId":moduleId,"resourceId":resourceId},
 	beforeSend	: 	function() {
+		startwindowDisable();
+	
 	},
 	success		:	function(result){
 	$("#StatusChangeByTeacherId").html(result);
 	},
 	complete	:	function(){
+	endwindowDisable();
 	}
 	});
 

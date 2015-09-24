@@ -33,6 +33,8 @@
                                         </div>
                                     </li>
 									
+									 <s:if test="schoolName !=null && schoolName !=''">
+									
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
@@ -43,6 +45,8 @@
                                            
                                         </div>
                                     </li>
+                                    </s:if>
+                                     <s:if test="className !=null && className !=''">
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             
@@ -53,6 +57,8 @@
                                            
                                         </div>
                                     </li>
+                                    </s:if>
+                                    <s:if test="homeRoomName !=null && homeRoomName !=''">
 									<li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
                                             <div class="media-body">
@@ -62,6 +68,7 @@
                                            
                                         </div>
                                     </li>
+                                    </s:if>
 									
                                 </ul>
                         </div><!-- div left closed-->

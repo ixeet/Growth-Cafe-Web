@@ -115,6 +115,7 @@ function courses(){
 }
 
 function updates(){
+	$("#loader").append("<div id='top'><img  style='margin:252px 0 0 259px;' width='160px' height='120px' src='view/helper/images/animatedLoading.gif'/></div>");
 	window.location="updates";
 	
 }
@@ -133,6 +134,59 @@ function overlay() {
 	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 }
 
+
+function getNotificationDetail(feedId){
+	window.location="getNotificationDetail?feedId="+feedId;
+}
+
+
+function viewNotification(){
+		$.ajax({
+				url : "viewNotification",
+				type :"post",
+				dataType:"json",
+				beforeSend :function(){
+				},
+				success : function(data){
+					//var response = data.feedList;
+					var contentElement = $("#notificatioDivId");
+					var notificationContent=" <ul class='dropdown-menu' role='notification'> <li class='dropdown-header'>Notifications</li>";
+						for(var i=0;i<data.length;i++){
+							notificationContent = notificationContent +"<li class='media' style=' cursor: pointer; cursor: hand;'  onclick='getNotificationDetail("+data[i].feedId+");'>"+
+                                    "<div class='media-left'>"+
+                                        "<img src='"+data[i].profileImage+"' alt='people' class='img-circle' width='30'>"+
+                                    "</div>"+
+                                    "<div class='media-body'>"+data[i].feedText
+                                        +"<br>"+
+                                        "<span class='text-caption text-muted'>"+data[i].feedOn+"</span>"+
+                                    "</div>"+
+                                "</li>";	
+                            }  
+                            	notificationContent = notificationContent +"<li class='dropdown-header'>"+
+                            	"<div class='pull-right'>"+
+                                        "<a href='getNotifications' class='btn-pad normalbutton btn-height margin_bot1'>View All</a>"+
+                                    "</div>"+
+                            	"</li></ul>";
+                            contentElement.html(notificationContent);	
+                            $("#notificatioDivId .dropdown-menu").show();
+                             $("#notificatioDivId").show();
+				}
+	        });
+	        var tabId ='${selectedTab}';
+			$("#"+tabId).parent().removeClass("active");
+}
+
+
+$(document).mouseup(function (e)
+{
+    var container = $("#notificatioDivId");
+
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        container.hide();
+    }
+});
 </script>
 
  <style>
@@ -280,63 +334,19 @@ function overlay() {
                 <div class="navbar-right navbar-right-margin">
                     <ul class="nav navbar-nav navbar-nav-bordered navbar-nav-margin-right ul-navbar-right-margin">
                         <!-- user --><li class="dropdown notifications updates">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a id="notificationTabId" href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown" onclick="return viewNotification();">
                                 <i class="fa fa-bell-o"></i>
                                 <span class="badge badge-primary">4</span>
                             </a>
-                            <ul class="dropdown-menu" role="notification">
-                                <li class="dropdown-header">Notifications</li>
-                                <li class="media">
-                                    <div class="pull-right">
-                                        <span class="label label-success">New</span>
-                                    </div>
-                                    <div class="media-left">
-                                        <img src="view/helper/images/people/50/guy-6.jpg" alt="people" class="img-circle" width="30">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#">Adrian D.</a> posted <a href="#">a photo</a> on his timeline.
-                                        <br>
-                                        <span class="text-caption text-muted">5 mins ago</span>
-                                    </div>
-                                </li>
-                                <li class="media">
-                                    <div class="pull-right">
-                                        <span class="label label-success">New</span>
-                                    </div>
-                                    <div class="media-left">
-                                        <img src="view/helper/images/people/50/guy-6.jpg" alt="people" class="img-circle" width="30">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#">Bill</a> posted <a href="#">a comment</a> on Adrian's recent <a href="#">post</a>.
-                                        <br>
-                                        <span class="text-caption text-muted">3 hrs ago</span>
-                                    </div>
-                                </li>
-                                <li class="media">
-                                    <div class="media-left">
-                                        <span class="icon-block s30 bg-grey-200"><i class="fa fa-plus"></i></span>
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#">Mary D.</a> and <a href="#">Michelle</a> are now friends.
-                                        <p>
-                                            <span class="text-caption text-muted">1 day ago</span>
-                                        </p>
-                                        <a href="">
-                                            <img class="width-30 img-circle" src="view/helper/images/people/50/guy-6.jpg" alt="people">
-                                        </a>
-                                        <a href="">
-                                            <img class="width-30 img-circle" src="view/helper/images/people/50/guy-6.jpg" alt="people">
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
+                           <div id="notificatioDivId"></div>
                         </li>
-                        <li class="dropdown user">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="${loginDetail.profilePhotoFileName}" alt="" class="img-circle width-30" /> ${loginDetail.firstName}<span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-box" role="menu">
-                                <li><a href="userProfile"><i class="fa fa-user"></i> Profile</a></li>
+                        
+                         <li class="dropdown user">
+		                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                                <img src="${loginDetail.profilePhotoFileName}" alt="" class="img-circle width-30" /> ${loginDetail.firstName}<span class="caret"></span>
+		                            </a>
+		                            <ul class="dropdown-menu dropdown-menu-box" role="menu">
+		                                <li><a href="userProfile"><i class="fa fa-user"></i> Profile</a></li>
                                 <li><a href="javaScript:;" onclick="logout();"><i class="fa fa-sign-out"></i> Logout</a></li>
                             </ul>
                         </li>
