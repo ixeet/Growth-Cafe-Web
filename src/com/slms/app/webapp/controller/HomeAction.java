@@ -226,15 +226,15 @@ public class HomeAction extends ActionSupport implements ModelDriven<Registratio
 		public String logout() {
 			try {
 				logger.debug("HomeAction method:-logout ");
-			HttpServletRequest request = ServletActionContext.getRequest();
-			request.getSession().removeAttribute("loginDetail");
-			request.getSession().removeAttribute("relatedVideos");
-			request.getSession().removeAttribute("feedList");
-			request.getSession().removeAttribute("selectedTab");
-			request.getSession().removeAttribute("courseList");
-			request.getSession().removeAttribute("assignmentList");
-			request.getSession().removeAttribute("teacherloginDetail");
-			execute();
+				HttpServletRequest request = ServletActionContext.getRequest();
+				request.getSession().removeAttribute("loginDetail");
+				request.getSession().removeAttribute("relatedVideos");
+				request.getSession().removeAttribute("feedList");
+				request.getSession().removeAttribute("selectedTab");
+				request.getSession().removeAttribute("courseList");
+				request.getSession().removeAttribute("assignmentList");
+				request.getSession().removeAttribute("teacherloginDetail");
+				execute();
 			} catch (Exception e) {
 				logger.error("HomeAction method:-logout error:-"+e.getMessage());
 			}
