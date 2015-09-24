@@ -185,6 +185,10 @@
 			<result name="success" type="tiles">/dashboard</result>
 		</action>
 		
+		<action name="loadDashboardClassMethod" class="com.slms.webapp.controller.DashBoardAction" method="loadDashboardClassMethod"/>
+		
+		<action name="dashboardHomeRoom" class="com.slms.webapp.controller.DashBoardAction" method="dashboardHomeRoom"/>
+		
 								<!-- school Detail  -->
 		<action name="schoolDetail" class="com.slms.webapp.controller.SchoolReportAction" method="schoolDetails">
 				<result name="success" type="tiles">/schoolDetail</result>

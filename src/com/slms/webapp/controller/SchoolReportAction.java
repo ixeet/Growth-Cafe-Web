@@ -2,18 +2,22 @@ package com.slms.webapp.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import com.slms.app.domain.utility.Utility;
 import com.slms.app.domain.vo.RegistrationVo;
 import com.slms.domain.vo.DashBoardReportVo;
+import com.slms.persistance.dao.iface.DashBoardMasterDao;
 import com.slms.persistance.dao.iface.SchoolReportDao;
+import com.slms.persistance.dao.impl.DashBoardMasterDaoImpl;
 import com.slms.persistance.dao.impl.SchoolReportDaoImpl;
 
 public class SchoolReportAction extends ActionSupport implements ModelDriven<DashBoardReportVo>, ServletResponseAware{
@@ -27,7 +31,9 @@ public class SchoolReportAction extends ActionSupport implements ModelDriven<Das
 	HttpServletResponse servletResponse;
 	List<DashBoardReportVo> courseReportList;
 	ArrayList<DashBoardReportVo> schoolNameList;
+	ArrayList<DashBoardReportVo> schoolList;
 	List<DashBoardReportVo> schoolReportList;
+	DashBoardMasterDao dashBoardMasterDao;
 	String response;
 
 	public String execute(){
@@ -49,6 +55,7 @@ public class SchoolReportAction extends ActionSupport implements ModelDriven<Das
 		schoolReportDao = new  SchoolReportDaoImpl();
 		try{
 			if(loginTeacherDetail!=null){
+				 dashBoardMasterDao = new  DashBoardMasterDaoImpl();
 				dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
 				dashBoardReportVo.setSchoolId(0);
 				dashBoardReportVo.setClassId(0);
@@ -57,6 +64,36 @@ public class SchoolReportAction extends ActionSupport implements ModelDriven<Das
 				dashBoardReportVo.setModuleId(0);
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
 				/*schoolNameList = courseReportDao.getSchoolNameList(dashBoardReportVo);*/
+				/*response = dashBoardMasterDao.getSchoolDetail(dashBoardReportVo);
+				System.out.println(response);
+				JSONObject jsonMasterObject2 = new JSONObject(response);
+				if(jsonMasterObject2!=null && jsonMasterObject2.getString("statusMessage").equalsIgnoreCase("success")){
+					JSONArray jsonMasterArray=jsonMasterObject2.getJSONArray("schoolList");
+					schoolList = new ArrayList<DashBoardReportVo>();
+					for(int i=0; i<jsonMasterArray.length(); i++){
+						DashBoardReportVo dashvo = new DashBoardReportVo();
+						JSONObject  jsonbj = jsonMasterArray.getJSONObject(i);
+						dashvo.setSchoolId(jsonbj.getInt("schoolId"));
+						dashvo.setSchoolName(jsonbj.getString("schoolName"));
+						schoolList.add(dashvo);
+					}
+					dashBoardReportVo.setSchoolList(schoolList);
+				}*/
+				
+				
+				schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
+				/*System.out.println(schoolNameList.size());
+					JSONArray jsonMasterArray=new JSONArray(schoolNameList);
+					for(int i=0; i<jsonMasterArray.length(); i++){
+						DashBoardReportVo schoolVo = new DashBoardReportVo();
+						JSONObject  jsonbj = jsonMasterArray.getJSONObject(i);
+						schoolVo.setSchoolId(jsonbj.getInt("schoolId"));
+						schoolVo.setSchoolName(jsonbj.getString("schoolName"));
+						schoolNameList.add(schoolVo);
+						}*/
+				}
+				
+				
 				response = schoolReportDao.getSchoolList(dashBoardReportVo);
 				JSONObject jsonMasterObject = new JSONObject(response);
 				if(jsonMasterObject!=null && jsonMasterObject.getString("statusMessage").equalsIgnoreCase("success")){
@@ -78,8 +115,10 @@ public class SchoolReportAction extends ActionSupport implements ModelDriven<Das
 								JSONObject groupObj = groupArray.getJSONObject(j);
 								ArrayList<DashBoardReportVo> homeroomList = new ArrayList<DashBoardReportVo>();
 								if(groupObj.length()>0){
+									System.out.println(groupObj.length());
 									for(int k=0; k<groupObj.length(); k++){
 										DashBoardReportVo HomeRoomVo = new DashBoardReportVo();
+										System.out.println(groupArray.getJSONObject(k));
 										JSONObject homeObj = groupArray.getJSONObject(k);
 										HomeRoomVo.setHomeRoomId(homeObj.getInt("homeRoomId"));
 										HomeRoomVo.setHomeRoomName(homeObj.getString("homeRoomName"));
@@ -101,10 +140,7 @@ public class SchoolReportAction extends ActionSupport implements ModelDriven<Das
 
 				}
 				request.setAttribute("selectedTab", "schoolTabId"); 
-			}
-			else {
-				return ERROR;
-			}
+		 
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -331,6 +367,26 @@ public class SchoolReportAction extends ActionSupport implements ModelDriven<Das
 
 	public void setServletResponse(HttpServletResponse servletResponse) {
 		this.servletResponse = servletResponse;
+	}
+
+
+	public DashBoardMasterDao getDashBoardMasterDao() {
+		return dashBoardMasterDao;
+	}
+
+
+	public void setDashBoardMasterDao(DashBoardMasterDao dashBoardMasterDao) {
+		this.dashBoardMasterDao = dashBoardMasterDao;
+	}
+
+
+	public ArrayList<DashBoardReportVo> getSchoolList() {
+		return schoolList;
+	}
+
+
+	public void setSchoolList(ArrayList<DashBoardReportVo> schoolList) {
+		this.schoolList = schoolList;
 	}
 
 
