@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ 
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+ 
+<tiles-definitions>
+ 
+  <definition name="HomeLayout" template="/view/jsp/layout/HomeLayout.jsp">
+  	  <put-attribute name="title"  value="SLMS"/>
+      <put-attribute name="header" value="/view/jsp/common/header.jsp"/>
+      <put-attribute name="body"   value=""/>
+      <put-attribute name="footer"   value="/view/jsp/common/footer.jsp"/>
+  </definition>  
+  
+  
+  <definition name="ProfileLayout" template="/view/jsp/layout/ProfileLayout.jsp">
+  	  <put-attribute name="title"  value="SLMS"/>
+      <put-attribute name="header" value="/view/jsp/common/header.jsp"/>
+      <put-attribute name="body"   value=""/>
+  </definition> 
+  
+   <definition name="ConfigurationLayout" template="/view/jsp/layout/ConfigurationLayout.jsp">
+  <put-attribute name="title" value="SLMS" /> 
+  <put-attribute name="header" value="/view/jsp/common/header.jsp" /> 
+  <put-attribute name="leftMenu" value="/view/jsp/common/leftMenu.jsp" /> 
+  <put-attribute name="body" value="" /> 
+  <put-attribute name="footer" value="/view/jsp/common/footer.jsp"/> 
+  </definition>
+  
+   <definition name="DashBoardLayout" template="/view/teacher/layout/DashBoardLayout.jsp">
+  	  <put-attribute name="title"  value="SLMS"/>
+      <put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+      <put-attribute name="body"   value=""/>
+     <!--  <put-attribute name="content"   value=""/> -->
+      <put-attribute name="footer"   value="/view/teacher/common/footerTeacher.jsp"/>
+  </definition> 
+ 
+  <definition name="/home" extends="HomeLayout">
+      <put-attribute name="body"   value="/view/jsp/pages/home.jsp"/>
+  </definition>
+  <definition name="/homeTeacher" extends="HomeLayout">
+      <put-attribute name="body"   value="/view/jsp/pages/home.jsp"/>
+  </definition>
+  
+  
+    <definition name="/course" extends="HomeLayout">
+	  <put-attribute name="body" value="/view/jsp/pages/courses.jsp" /> 
+	</definition>
+	
+	<definition name="/getModule" extends="HomeLayout">
+	  <put-attribute name="body" value="/view/jsp/pages/modules.jsp" /> 
+	</definition>
+	
+	<definition name="/getModuleDesc" extends="HomeLayout">
+	  <put-attribute name="body" value="/view/jsp/pages/moduleDescription.jsp" /> 
+	</definition>
+	
+	<definition name="/forgetPassword" extends="HomeLayout">
+	  <put-attribute name="body" value="/view/jsp/pages/forgetPassword.jsp" /> 
+	</definition>
+	
+	<definition name="/userProfile" extends="ProfileLayout">
+		<put-attribute name="header" value="/view/jsp/common/header.jsp"/>
+	  	<put-attribute name="body" value="/view/jsp/pages/userProfile.jsp" /> 
+	</definition>
+	
+	<definition name="/updates" extends="HomeLayout">
+	<put-attribute name="header" value="/view/jsp/common/header.jsp"/>
+	  	<put-attribute name="body" value="/view/jsp/pages/updates.jsp" /> 
+	</definition>
+	
+	<definition name="/assignment" extends="HomeLayout">
+	  	<put-attribute name="body" value="/view/jsp/pages/assignment.jsp" /> 
+	</definition>
+	
+	<definition name="/viewAssignment" extends="HomeLayout">
+	  	<put-attribute name="body" value="/view/jsp/pages/viewAssignment.jsp" /> 
+	</definition>
+	
+	<definition name="/relatedVideo" extends="HomeLayout">
+	  	<put-attribute name="body" value="/view/jsp/pages/relatedVideo.jsp" /> 
+	</definition>
+	
+	<definition name="/submitAssignment" extends="HomeLayout">
+	  	<put-attribute name="body" value="/view/jsp/pages/submitAssignment.jsp" /> 
+	</definition>
+	
+	<definition name="/personalProfile" extends="HomeLayout">
+	  	<put-attribute name="body" value="/view/jsp/pages/personalProfile.jsp" /> 
+	</definition>
+	
+	
+ <definition name="/dashboard" extends="DashBoardLayout">
+     <put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/DashBoardDetail.jsp" /> 
+  </definition>
+ 
+ 
+	<definition name="/assignmentDetail" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/AssignmentReportDetail.jsp" /> 
+	</definition>
+	
+	<definition name="/assignmentResourceDetail" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/AssignmentResourseDetail.jsp" /> 
+	</definition>
+	
+	
+	<definition name="/schoolDetail" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/SchoolReportDetail.jsp" /> 
+	</definition>
+	
+	<definition name="/courseDetail" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/CourseReportDetail.jsp" /> 
+	</definition>
+	
+	<definition name="/leaderBoard" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/LeaderBoardReportDetail.jsp" /> 
+	</definition>
+	
+	<definition name="/viewDetail" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/PopupShow.jsp" /> 
+	</definition>
+	
+	<definition name="/teacherPersonalProfile" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/teacherPersonalProfile.jsp" /> 
+	</definition>
+</tiles-definitions>
