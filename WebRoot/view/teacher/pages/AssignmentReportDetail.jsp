@@ -233,7 +233,7 @@ return false;
  <div class="container">
 <div class="row panel-default" >
 	<div class="col-md-2">
-		<s:select list="schoolList" listValue="schoolName" 
+		<s:select list="schoolNameList" listValue="schoolName" 
 			listKey="schoolId" headerKey="0" headerValue="ORGANIZATION(ALL)" cssClass="form-control panel-default bgsize"
 			name="schoolId" id="schoolIds"
 			onchange="return loadClassMethodShow();"></s:select>

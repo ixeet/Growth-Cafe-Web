@@ -22,4 +22,6 @@ public interface DashBoardMasterDao {
 
 	String updates(RegistrationVo loginDetail, int offset);
 
+	public String getSchoolDetail(DashBoardReportVo dashBoardReportVo);
+
 }

@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
+
+import com.slms.app.domain.utility.GetJsonObject;
 import com.slms.app.domain.utility.PostJsonObject;
 import com.slms.app.domain.utility.Utility;
 import com.slms.app.domain.vo.RegistrationVo;
@@ -110,6 +112,26 @@ public class DashBoardMasterDaoImpl extends LmsDaoAbstract implements DashBoardM
 			regJsonObject.put("noOfRecords", 10);
 			System.out.println("DashBoardMasterDaoImpl method:-updates Request:-"+regJsonObject);
 			response = PostJsonObject.postJson(regJsonObject, url);
+		} catch (Exception e) {
+			System.out.println("UpdatesServiceImpl method:-updates "+e.getMessage());
+		}
+		System.out.println("DashBoardMasterDaoImpl method:-updates Response:-"+response);
+		return response;
+	}
+
+	
+	/*  Data Come From Service */
+	
+
+	@Override
+	public String getSchoolDetail(DashBoardReportVo dashBoardReportVo) {
+		try {
+			/*String url=baseUrl+"rest/common/getFeeds"; */
+			
+				String url= baseUrl+"rest/common/getMasterData/teacherId/"+dashBoardReportVo.getUserId(); 
+				
+				System.out.println("DashboardMasterDaoImpl method : - master data Request "+url);
+				response = GetJsonObject.getWebServceObj(url);
 		} catch (Exception e) {
 			System.out.println("UpdatesServiceImpl method:-updates "+e.getMessage());
 		}

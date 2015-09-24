@@ -362,7 +362,7 @@ window.location="moduleDescription?moduleId="+moduleId+"&courseId="+courseId+"&r
 			  
                    <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated>
                         <div class="panel-heading">
-                          <h5 class="h5_color">Assignments ENABLE/DISABLE</h5>
+                          <h5 class="h5_color">Assignments ENABLE / DISABLE</h5>
                         </div>
                         <div class="panel-body">
                         

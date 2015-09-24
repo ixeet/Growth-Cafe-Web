@@ -4,7 +4,7 @@
 
 	function loadClassMethodShow(){
 		var schoolId=$("#schoolIds").val();
-		var url="loadClassMethod.action";
+		var url="loadDashboardClassMethod.action";
 		$.ajax({
 			type		:	"POST",
 			url			:	url,
@@ -37,7 +37,7 @@
 	function loadRoomType(){
 		var schoolId	=	$("#schoolIds").val();
 		var classId		=	$("#classIds").val();
-		var url			=	"homeRoom.action";
+		var url			=	"dashboardHomeRoom.action";
 		$.ajax({
 			type		:	"POST",
 			data		:	{"schoolId":schoolId , "classId":classId},
