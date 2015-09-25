@@ -175,12 +175,14 @@ function moduleDescription(moduleId,courseId){
                                     </li>
                                   </s:iterator>
                                 </s:else>
+                                <s:if test="#session.courseList.size()>0">
 									<li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
 												<a class="btn-pad normalbutton btn-height margin_bot1" href="courses" >View All</a>
                                         </div>
                                     </li>
-									
+								</s:if>
+								<s:else>There is no course</s:else>
                                 </ul>
                         </div>
                     </div>
@@ -211,10 +213,10 @@ function moduleDescription(moduleId,courseId){
 															is now over due for submission. 
 														</s:elseif>
 														<s:elseif test="assignmentStatus ==2">
-															has been submitted on &nbsp;<span class="color_black">${assignmentSubmittedDate}.</span>
+															 submitted on &nbsp;<span class="color_black">${assignmentSubmittedDate}.</span>
 														</s:elseif>
 														<s:elseif test="assignmentStatus ==3">
-															has been reviewed.
+															reviewed.
 														</s:elseif>
 												</h5>
 												
@@ -286,10 +288,10 @@ function moduleDescription(moduleId,courseId){
 															is now over due for submission 
 														</s:elseif>
 														<s:elseif test="assignmentStatus ==2">
-															has been submitted on &nbsp;<span class="color_blue">${assignmentSubmittedDate}</span>
+															 submitted on &nbsp;<span class="color_blue">${assignmentSubmittedDate}</span>
 														</s:elseif>
 														<s:elseif test="assignmentStatus ==3">
-															has been reviewed.
+															 reviewed.
 														</s:elseif>
 												</h5>
 												<div class="left">
@@ -323,13 +325,16 @@ function moduleDescription(moduleId,courseId){
                                     </li>
                                     </s:iterator>
                                     </s:else>
-									
+									<s:if test="#session.assignmentList.size()>0">
 									<li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
 												<a class="btn-pad normalbutton btn-height" href="assignments" >View All</a>
                                         </div>
                                     </li>
-									
+									</s:if>
+									<s:else>
+										There is no assignment
+										</s:else>
                                 </ul>
                         </div>
                     </div>

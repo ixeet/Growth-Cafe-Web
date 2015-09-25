@@ -18,9 +18,6 @@
 													<h5 class="h5_color"><s:property value="assignmentDesc" /></h5>
 
 												</div>
-												
-												 
-
 
 												<div class="tabbable tabs-blocks">
 													<!-- Tabs -->
@@ -181,6 +178,75 @@
 													</div>
 												</div>
 											</div>
+											
+											
+											
+											 <!-- Start  -->
+											
+											<%-- <div class="col-lg-12 col-sm-6 col-md-6 col-xs-12">
+												<div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+													 <div class="panel-heading">
+													<h5 class="h5_color">Review Assignment</h5>
+													</div>
+													<div class="panel-body pad_l14">
+														<h5> <strong>Accuracy </strong>: Excellent</h5>
+														<h5> <strong>Ingenuity </strong>: Need More Work</h5>
+														<h5> <strong>Timely Submission </strong>: On Time</h5>
+														
+													</div>
+													<hr class="margin-none">
+
+
+												</div>
+											</div> --%>
+											
+											
+											 <!-- End  -->
+											 
+											 
+											 
+											 
+											  <!-- Start  -->
+											 
+											 
+											 <div class="col-lg-12 col-sm-6 col-md-6 col-xs-12">
+												<div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+													 <div class="panel-heading">
+													<h5 class="h5_color">Review Assignment</h5>
+													</div>
+													<div class="panel-body">
+														<select class="form-control panel-default bgsize pad_6" name="classId">
+															 <option value="0">Accuracy</option>
+														</select>
+														</br>
+														
+														<select class="form-control panel-default bgsize pad_6" name="classId">
+															 <option value="0">Ingenuity</option>
+														</select>
+														</br>
+														
+														<select class="form-control panel-default bgsize pad_6" name="classId">
+															 <option value="0">Timely Submission</option>
+														</select>
+														</br>
+														<a href="#" class="btn-pad normalbutton btn-height">Submit</a>
+														
+														
+													</div>
+													<hr class="margin-none">
+
+
+												</div>
+											</div>
+											 
+											 
+											 
+											  <!-- End  -->
+											 
+											 
+											 
+											
+											
 										</div>
 
 									</div>

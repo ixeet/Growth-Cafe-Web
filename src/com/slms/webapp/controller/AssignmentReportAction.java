@@ -146,16 +146,15 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 											}
 											
 											if(assignObj.getInt("assignmentStatus") == 2){
-											assignListRes.setAssignmentId(assignObj.getInt("assignmentId"));
-											assignListRes.setAssignmentStatus(assignObj.getInt("assignmentStatus"));
-											assignListRes.setStudentName(assignObj.getString("assignmentSubmittedBy"));
-											assignListRes.setAssignmentSubmittedById(assignObj.getInt("assignmentSubmittedById"));
-											assignListRes.setAssignmentSubmittedDate(Utility.getDisplayDate(assignObj.getString("assignmentSubmittedDate")));
-											assignListSubmit.add(assignListRes);
+												assignListRes.setAssignmentId(assignObj.getInt("assignmentId"));
+												assignListRes.setAssignmentStatus(assignObj.getInt("assignmentStatus"));
+												assignListRes.setStudentName(assignObj.getString("assignmentSubmittedBy"));
+												assignListRes.setAssignmentSubmittedById(assignObj.getInt("assignmentSubmittedById"));
+												assignListRes.setAssignmentSubmittedDate(Utility.getDisplayDate(assignObj.getString("assignmentSubmittedDate")));
+												assignListSubmit.add(assignListRes);
 											}
 
 											/*
-											
 											assignDetail.add(assignListRes);*/
 										}
 										int totalsize=jsonAssignListObj.length();
@@ -174,6 +173,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 					courseListDetails.addAll(course);
 					//dashBoardReportVo.setCourseList(course);
 				}
+				request.getSession().setAttribute("assignmentReportList", courseListDetails);
 			request.setAttribute("selectedTab", "assignmentTabId");
 		}
 			else {

@@ -36,7 +36,7 @@
              
               <div class="col-xs-12 col-md-12 col-lg-12">
 				
-                <div class="timeline-block">
+                <div class="timeline-block1">
                   <div class="panel panel-default " style="padding: 8px;">
 
                     <div class="panel-heading">
