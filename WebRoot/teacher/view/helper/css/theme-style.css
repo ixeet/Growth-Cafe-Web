@@ -636,6 +636,37 @@ border: 1px solid #ba0032;
     
 }
 
+.color_likes{
+	color:#7f7f7f !important;
+}
+
+.border_t_likes{
+	border-top: 1px solid #e2e9e6;
+}
+
+.view_all{
+	    width: 100%;
+    background-color: #f6f7f8;
+    padding: 7px 0px 7px 7px;
+}
+
+.comment_box_m{
+	    width: 98% !important;
+    margin-left: 2% !important;
+    background-color: white !important;
+    border: 1px solid #bdc7d8 !important;
+    height: 32px !important;
+}
+.comment_box_r{
+	    width: 98% !important;
+    /* margin-left: 2% !important; */
+    background-color: white !important;
+    border: 1px solid #bdc7d8 !important;
+    height: 20px !important;
+    font-size: 11px !important;
+    padding: 3px !important;
+}
+
 #fog { width: 185px; height: 40px; overflow: hidden; }
 
 #fog2 { width: 250px; height:auto; max-height: 26px; overflow: hidden; }

@@ -73,22 +73,7 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 				dashBoardReportVo.setModuleId(-1);
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
 				/*schoolNameList = courseReportDao.getSchoolNameList(dashBoardReportVo);*/
-				response = courseReportDao.getSchoolList(dashBoardReportVo);
-				JSONObject jsonMasterObject = new JSONObject(response);
-				if(jsonMasterObject!=null && jsonMasterObject.getString("statusMessage").equalsIgnoreCase("success")){
-					JSONArray jsonMasterArray=jsonMasterObject.getJSONArray("schoolList");
-					schoolNameList = new ArrayList<DashBoardReportVo>();
-					for(int i=0; i<jsonMasterArray.length(); i++){
-						DashBoardReportVo dashvo = new DashBoardReportVo();
-						JSONObject  jsonbj = jsonMasterArray.getJSONObject(i);
-						dashvo.setSchoolId(jsonbj.getInt("schoolId"));
-						dashvo.setSchoolName(jsonbj.getString("schoolName"));
-						schoolNameList.add(dashvo);
-					}
-					dashBoardReportVo.setSchoolList(schoolNameList);
-				}
-				
-				
+				schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
 				
 				response = courseReportDao.getCourse(dashBoardReportVo);
 				System.out.println(response);

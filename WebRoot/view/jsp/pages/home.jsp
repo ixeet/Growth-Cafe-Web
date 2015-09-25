@@ -551,6 +551,10 @@ select option:disabled {
     overflow-x: hidden;
     overflow-y: scroll;
 }
+
+#schoolSelect{
+	margin-top:10px;
+}
 <!---------Changes made by Praveen on 13Aug2015------->
 
 </style>
@@ -673,7 +677,7 @@ select option:disabled {
 					<label class="labeln" for ="lname">Last Name</label>
 					<li ><input type="text" name="lastName" id="lastNameId" class="input width_100p" placeholder="Last name"/></li>
 					</div>
-					<div id="titleSelect" class="msgShow">Title not selected</div>
+					<div id="titleSelect" style="font-size: 12px;display: block; display: none;">Title not selected</div>
 					
 					
 					<label class="labeln" for ="email">Email</label>

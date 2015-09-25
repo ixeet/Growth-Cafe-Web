@@ -114,10 +114,11 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 					}
 				}
 			}
+			getServletRequest().getSession().setAttribute("selectedTab","coursesTabId");
 		} catch (Exception e) {
 			logger.error("CoursesAction method:-courses error:-"+e.getMessage());
 		}
-		getServletRequest().getSession().setAttribute("selectedTab","coursesTabId");
+		
 		return SUCCESS;
 	}
 	
@@ -332,11 +333,11 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 			}
 			
 			}
+			request.getSession().setAttribute("relatedVideos", moduleDescription.getRelatedVideoList());
+			getServletRequest().getSession().setAttribute("selectedTab","coursesTabId");
 		} catch (Exception e) {
 			logger.error("CoursesAction method:-moduleDescription error:-"+e.getMessage());
 		}
-		request.getSession().setAttribute("relatedVideos", moduleDescription.getRelatedVideoList());
-		getServletRequest().getSession().setAttribute("selectedTab","coursesTabId");
 		return SUCCESS;	
 	}
 	

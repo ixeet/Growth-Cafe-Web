@@ -69,6 +69,10 @@
 	<put-attribute name="header" value="/view/jsp/common/header.jsp"/>
 	  	<put-attribute name="body" value="/view/jsp/pages/updates.jsp" /> 
 	</definition>
+	<definition name="/notifications" extends="HomeLayout">
+	<put-attribute name="header" value="/view/jsp/common/header.jsp"/>
+	  	<put-attribute name="body" value="/view/jsp/pages/notifications.jsp" /> 
+	</definition>
 	
 	<definition name="/assignment" extends="HomeLayout">
 	  	<put-attribute name="body" value="/view/jsp/pages/assignment.jsp" /> 
@@ -116,6 +120,15 @@
 	<definition name="/courseDetail" extends="DashBoardLayout">
 		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
 	  	<put-attribute name="body" value="/view/teacher/pages/CourseReportDetail.jsp" /> 
+	</definition>
+	
+	<definition name="/teacherUpdates" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/updates.jsp" /> 
+	</definition>
+	<definition name="/teacherNotification" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/notifications.jsp" /> 
 	</definition>
 	
 	<definition name="/leaderBoard" extends="DashBoardLayout">

@@ -9699,10 +9699,13 @@ select {
 	color:grey;
 }
 .bgsize{
-	background-size: 6% !important;
-	 	background-position: 94% 50% !important;
-	 	background-color: white !important;
-	 	padding-right: 25px !important;
+	background-color: white !important;
+    background-position: 94% 50% !important;
+    background-size: 6% auto !important;
+    padding-bottom: 1px;
+    padding-left: 3px;
+    padding-right: 26px !important;
+    padding-top: 0;
 }
 
 option {

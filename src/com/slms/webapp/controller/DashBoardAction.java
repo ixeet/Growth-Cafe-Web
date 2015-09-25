@@ -38,6 +38,8 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 	List<DashBoardReportVo> courseReportList;
 	CourseReportDao courseReportDao;
 	List<DashBoardReportVo> dashBoardReportList;
+	ArrayList<DashBoardReportVo> schoolNameList;
+	List<DashBoardReportVo> classNameList;
 	String response="";
 	 
 	public String execute(){
@@ -60,39 +62,76 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 		 int offset =0;
 		try{
 			if(loginTeacherDetail!=null){
-				
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
-				dashBoardReportVo.setCourseId(0);
-				dashBoardReportVo.setSchoolId(0);
-				dashBoardReportVo.setClassId(0);
-				dashBoardReportVo.setHomeRoomId(0);
-				response = courseReportDao.getCourse(dashBoardReportVo);
+				response = dashBoardMasterDao.getSchoolDetail(dashBoardReportVo);
 				System.out.println(response);
-				JSONObject jsonResObject = new JSONObject(response);
-				if(jsonResObject !=null && jsonResObject.getString("statusMessage").equalsIgnoreCase("success")){
-					JSONArray jsonCourseArray = jsonResObject.getJSONArray("courseList");
-					courseReportList= new ArrayList<DashBoardReportVo>();
-					
-					for(int i=0;i<jsonCourseArray.length();i++){
-						JSONObject jsonCourseObj = jsonCourseArray.getJSONObject(i);
-						DashBoardReportVo dashBoardReportVo = new DashBoardReportVo();
+				JSONObject jsonMasterObject = new JSONObject(response);
+				if(jsonMasterObject!=null && jsonMasterObject.getString("statusMessage").equalsIgnoreCase("success")){
+					JSONArray jsonMasterArray=jsonMasterObject.getJSONArray("schoolList");
+					schoolNameList = new ArrayList<DashBoardReportVo>();
+					for(int i=0; i<jsonMasterArray.length(); i++){
+						DashBoardReportVo schoolVo = new DashBoardReportVo();
+						JSONObject  jsonbj = jsonMasterArray.getJSONObject(i);
 						
-						dashBoardReportVo.setCourseName(jsonCourseObj.getString("courseName"));
-						dashBoardReportVo.setSchoolId(jsonCourseObj.getInt("schoolId"));
-						dashBoardReportVo.setSchoolName(jsonCourseObj.getString("schoolName"));
-						dashBoardReportVo.setClassId(jsonCourseObj.getInt("classId"));
-						dashBoardReportVo.setClassName(jsonCourseObj.getString("classeName"));
-						dashBoardReportVo.setHomeRoomId(jsonCourseObj.getInt("hrmId"));
-						dashBoardReportVo.setHomeRoomName(jsonCourseObj.getString("hrmName"));
+						JSONArray jsonClassArray = jsonbj.getJSONArray("classList");
+						ArrayList<DashBoardReportVo> classNameList = new ArrayList<DashBoardReportVo>();
+						if(jsonClassArray.length()>0){
+							for(int j=0; j<jsonClassArray.length(); j++){
+								DashBoardReportVo classVo = new DashBoardReportVo();
+								JSONObject jsonClassObj = jsonClassArray.getJSONObject(j);
+								
+								JSONArray jsonhomeArray = jsonClassObj.getJSONArray("homeRoomList");
+								if(jsonhomeArray.length()>0){
+									ArrayList<DashBoardReportVo> homeList = new ArrayList<DashBoardReportVo>();
+									for(int k=0; k<jsonhomeArray.length(); k++){
+										DashBoardReportVo homeVo = new DashBoardReportVo();
+										JSONObject jsonHomeObj = jsonhomeArray.getJSONObject(k);
+										
+										JSONArray jsonCourseArray = jsonHomeObj.getJSONArray("courseList");
+										if(jsonCourseArray.length()>0){
+											ArrayList<DashBoardReportVo> courseList = new ArrayList<DashBoardReportVo>();
+											for(int l=0; l<jsonCourseArray.length(); l++){
+												DashBoardReportVo courseVo = new DashBoardReportVo();
+												JSONObject jsonCourseObj = jsonCourseArray.getJSONObject(l);
+													JSONArray jsonModuleArray = jsonCourseObj.getJSONArray("moduleList");
+													if(jsonModuleArray.length()>0){
+														ArrayList<DashBoardReportVo> moduleList = new ArrayList<DashBoardReportVo>();
+														for(int m=0; m<jsonModuleArray.length(); m++){
+															DashBoardReportVo moduleVo = new DashBoardReportVo();
+															JSONObject jsonModuleObj = jsonModuleArray.getJSONObject(m);
+															moduleVo.setModuleId(jsonModuleObj.getInt("moduleId"));
+															moduleVo.setModuleName(jsonModuleObj.getString("moduleName"));
+															moduleList.add(moduleVo);
+														}
+														courseVo.setModulesList(moduleList);
+													}
+												courseVo.setCourseId(jsonCourseObj.getInt("courseId"));
+												courseVo.setCourseName(jsonCourseObj.getString("courseName"));
+												courseList.add(courseVo);
+											}
+											homeVo.setCourseList(courseList);
+										}
+										homeVo.setHomeRoomId(jsonHomeObj.getInt("homeRoomId"));
+										homeVo.setHomeRoomName(jsonHomeObj.getString("homeRoomName"));
+										homeList.add(homeVo);
+									}
+									classVo.setHomeRoomList(homeList);
+								}
+								classVo.setClassId(jsonClassObj.getInt("classId"));
+								classVo.setClassName(jsonClassObj.getString("className"));
+								classNameList.add(classVo);
+							}
+							schoolVo.setClassList(classNameList);
+						}
+						schoolVo.setSchoolId(jsonbj.getInt("schoolId"));
+						schoolVo.setSchoolName(jsonbj.getString("schoolName"));
+						schoolNameList.add(schoolVo);
 						
-						Double d = jsonCourseObj.getDouble("completedPercentStatus");
-						int completPer = d.intValue();
-						dashBoardReportVo.setCompletedPerStatus(""+completPer);
-						dashBoardReportVo.setCourseId(jsonCourseObj.getInt("courseId"));
-						courseReportList.add(dashBoardReportVo);
+					}
+					request.getSession().setAttribute("schoolNameList", schoolNameList);
+					System.out.println("complete");
 					}
 				}
-				
 				
 				
 			dashBoardReportList = dashBoardMasterDao.getDashBoardDetailList(dashBoardReportVo);
@@ -231,12 +270,6 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 				request.getSession().setAttribute("feedList", feedList);
 			}
 			
-			
-			
-			}
-			else{
-				return "noLogin";
-			}
 			}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -246,6 +279,120 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 
 
 
+	
+	public String loadDashboardClassMethod(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+		 dashBoardMasterDao = new  DashBoardMasterDaoImpl();
+		try{
+			if(loginTeacherDetail!=null){
+			int selectSchoolId=dashBoardReportVo.getSchoolId();
+			dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
+			classNameList = new ArrayList<DashBoardReportVo>();
+			 schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
+			System.out.println(schoolNameList.size());
+				JSONArray jsonMasterArray=new JSONArray(schoolNameList);
+				for(int i=0; i<jsonMasterArray.length(); i++){
+					JSONObject  jsonbj = jsonMasterArray.getJSONObject(i);
+					int schoolId=jsonbj.getInt("schoolId");
+					if(schoolId == selectSchoolId){
+						JSONArray jsonclassArray=jsonbj.getJSONArray("classList");
+							if(jsonclassArray.length()>0){
+								for(int j=0; j<jsonclassArray.length();j++){
+								DashBoardReportVo dashvo = new DashBoardReportVo();
+								JSONObject jsonClass = jsonclassArray.getJSONObject(j);
+								dashvo.setClassId(jsonClass.getInt("classId"));
+								dashvo.setClassName(jsonClass.getString("className"));
+								classNameList.add(dashvo);
+								}
+							}
+						}
+					}
+			}
+			
+			JSONArray jsonArray = new JSONArray();
+			if(classNameList!= null && ! classNameList.isEmpty()){
+				for(DashBoardReportVo dashBoardVo : classNameList){
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("id", dashBoardVo.getClassId());
+					jsonObject.put("cName", dashBoardVo.getClassName());
+					jsonArray.put(jsonObject);
+				}
+				
+			}
+			servletResponse.getWriter().print(jsonArray);
+			 
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	public String dashboardHomeRoom(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+		 dashBoardMasterDao = new  DashBoardMasterDaoImpl();
+		try{
+			if(loginTeacherDetail!=null){
+			int selectSchoolId=dashBoardReportVo.getSchoolId();
+			int selectClassId=dashBoardReportVo.getClassId();
+			dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
+			classNameList = new ArrayList<DashBoardReportVo>();
+			 schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
+				System.out.println(schoolNameList.size());
+					JSONArray jsonMasterArray=new JSONArray(schoolNameList);
+				for(int i=0; i<jsonMasterArray.length(); i++){
+					JSONObject  jsonbj = jsonMasterArray.getJSONObject(i);
+					int schoolId=jsonbj.getInt("schoolId");
+					if(schoolId == selectSchoolId){
+						JSONArray jsonclassArray=jsonbj.getJSONArray("classList");
+							if(jsonclassArray.length()>0){
+								for(int j=0; j<jsonclassArray.length();j++){
+								JSONObject jsonClass = jsonclassArray.getJSONObject(j);
+								int classId=jsonClass.getInt("classId");
+									if(schoolId == selectSchoolId && classId== selectClassId){
+										JSONArray jsonHomeArray = jsonClass.getJSONArray("homeRoomList");
+										if(jsonHomeArray.length()>0){
+											for(int k=0; k<jsonHomeArray.length(); k++){
+												DashBoardReportVo dashvo = new DashBoardReportVo();
+												JSONObject jsonHomeRoom = jsonHomeArray.getJSONObject(k);
+												dashvo.setHomeRoomId(jsonHomeRoom.getInt("homeRoomId"));
+												dashvo.setHomeRoomName(jsonHomeRoom.getString("homeRoomName"));
+												classNameList.add(dashvo);
+											}
+											
+										}
+										
+									}
+								}
+							}
+						}
+					}
+			}
+			JSONArray jsonArray = new JSONArray();
+			if(classNameList!= null && ! classNameList.isEmpty()){
+				for(DashBoardReportVo dashBoardReportVo : classNameList){
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("id", dashBoardReportVo.getHomeRoomId());
+					jsonObject.put("hrName", dashBoardReportVo.getHomeRoomName());
+					jsonArray.put(jsonObject);
+				}
+			}
+			servletResponse.getWriter().print(jsonArray);
+			 
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	
 	 
 
 	@Override
@@ -294,13 +441,6 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 	}
 
 
-	@Override
-	public void setServletResponse(HttpServletResponse arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 	public HttpServletResponse getServletResponse() {
 		return servletResponse;
 	}
@@ -346,6 +486,32 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 	}
 
 
+	public ArrayList<DashBoardReportVo> getSchoolNameList() {
+		return schoolNameList;
+	}
+
+
+	public void setSchoolNameList(ArrayList<DashBoardReportVo> schoolNameList) {
+		this.schoolNameList = schoolNameList;
+	}
+
+
+	public List<DashBoardReportVo> getClassNameList() {
+		return classNameList;
+	}
+
+
+	public void setClassNameList(List<DashBoardReportVo> classNameList) {
+		this.classNameList = classNameList;
+	}
+
+
+	public void setServletResponse(HttpServletResponse servletResponse) {
+		this.servletResponse = servletResponse;
+
+	}
+ 
+ 
  
 	 
  

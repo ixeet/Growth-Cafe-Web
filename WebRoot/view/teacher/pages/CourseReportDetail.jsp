@@ -4,7 +4,7 @@
 
 	function loadClassMethodShow(){
 		var schoolId=$("#schoolIds").val();
-		var url="loadClassMethod.action";
+		var url="loadDashboardClassMethod.action";
 		$.ajax({
 			type		:	"POST",
 			url			:	url,
@@ -25,7 +25,6 @@
 				$("#homeRoomIds").val(0);
 				$("#courseIds").val(0);
 				$("#moduleIds").val(0);
-				$("#statusId").val(0);
 				
 		},
 		complete		:	function(){
@@ -38,7 +37,7 @@
 	function loadRoomType(){
 		var schoolId	=	$("#schoolIds").val();
 		var classId		=	$("#classIds").val();
-		var url			=	"homeRoom.action";
+		var url			=	"dashboardHomeRoom.action";
 		$.ajax({
 			type		:	"POST",
 			data		:	{"schoolId":schoolId , "classId":classId},
@@ -49,7 +48,7 @@
 			},
 			success		:	function(result){
 			var container = $("#loadHomeRoomDetail");
-			var HTMLAppand = "<select name='homeRoomId' id='homeRoomIds' class='form-control panel-default bgsize' onchange='return courseDetail();'><option value='0'>GROUP (ALL)</option>";
+			var HTMLAppand = "<select name='homeRoomId' id='homeRoomIds' onchange='return courseDetail();' class='form-control panel-default bgsize'><option value='0'>GROUP (ALL)</option>";
 				for(var i=0; i<result.length; i++){
 					HTMLAppand=HTMLAppand+"<option value='"+result[i].id+"'>"+result[i].hrName+"</option >";
 				}
@@ -58,7 +57,6 @@
 				$("#courseIds").val(0);
 				$("#moduleIds").val(0);
 				$("#statusId").val(0);
-			
 			},
 			complete		:	function(){
 		endwindowDisable();
@@ -218,8 +216,8 @@ return false;
 		<div class="list-group-item active">Course Console</div>
 	</div> -->
 			<div class="col-md-2 ">
-		<s:select list="schoolList" listValue="schoolName"
-			listKey="schoolId" headerKey="0" headerValue="ORGANIZATION (ALL)" cssClass="form-control panel-default bgsize"
+		<s:select list="schoolNameList" listValue="schoolName"
+			listKey="schoolId" headerKey="0" headerValue="ORGANIZATION (ALL)" cssClass="bgsize form-control panel-default bgsize"
 			name="schoolId" id="schoolIds"
 			onchange="return loadClassMethodShow();"></s:select>
 	</div>

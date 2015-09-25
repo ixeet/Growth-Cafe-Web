@@ -23,6 +23,7 @@ public class LoginCheckInterceptor implements Interceptor{
 	public String intercept(ActionInvocation invocation) throws Exception {
 		
 		HttpServletRequest request = ServletActionContext.getRequest();
+		
 		RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 		RegistrationVo teacherloginDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
 		if(loginDetail==null && teacherloginDetail==null){

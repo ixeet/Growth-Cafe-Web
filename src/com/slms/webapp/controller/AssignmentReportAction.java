@@ -33,7 +33,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 	List<DashBoardReportVo> assignmentReportList;
 	ArrayList<DashBoardReportVo> schoolNameList;
 	List<DashBoardReportVo> classNameList;
-	List<DashBoardReportVo> homeRoomList;
+	ArrayList<DashBoardReportVo> homeRoomList;
 	List<DashBoardReportVo> courseList;
 	List<DashBoardReportVo> moduleList;
 	List<DashBoardReportVo> courseListDetails =  new ArrayList<DashBoardReportVo>();
@@ -81,7 +81,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 				dashBoardReportVo.setModuleId(0);
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
 				dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
-				response = courseReportDao.getSchoolList(dashBoardReportVo);
+				/*response = courseReportDao.getSchoolList(dashBoardReportVo);
 				JSONObject jsonMasterObject = new JSONObject(response);
 				if(jsonMasterObject!=null && jsonMasterObject.getString("statusMessage").equalsIgnoreCase("success")){
 					JSONArray jsonMasterArray=jsonMasterObject.getJSONArray("schoolList");
@@ -94,9 +94,9 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 						schoolNameList.add(dashvo);
 					}
 					dashBoardReportVo.setSchoolList(schoolNameList);
-				}
+				}*/
 				
-				
+				schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
 			/*assignmentReportList = assignmentReportDao.getAssignmentDetailList(dashBoardReportVo);*/
 				
 				response = courseReportDao.getShowFilterData(dashBoardReportVo);
@@ -485,18 +485,67 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 	
 	public String courseDetailMethod(){
 		assignmentReportDao = new  AssignmentReportDaoImpl();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		try{
-			courseList = assignmentReportDao.getCourseList(dashBoardReportVo);
+			int selectSchoolId=dashBoardReportVo.getSchoolId();
+			int selectClassId=dashBoardReportVo.getClassId();
+			int homeRoom = dashBoardReportVo.getHomeRoomId();
+			homeRoomList = new ArrayList<DashBoardReportVo>();
+			 schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
+				System.out.println(schoolNameList.size());
+					JSONArray jsonMasterArray=new JSONArray(schoolNameList);
+				for(int i=0; i<jsonMasterArray.length(); i++){
+					JSONObject  jsonbj = jsonMasterArray.getJSONObject(i);
+					int schoolId=jsonbj.getInt("schoolId");
+					if(schoolId == selectSchoolId){
+						JSONArray jsonclassArray=jsonbj.getJSONArray("classList");
+							if(jsonclassArray.length()>0){
+								for(int j=0; j<jsonclassArray.length();j++){
+								JSONObject jsonClass = jsonclassArray.getJSONObject(j);
+								int classId=jsonClass.getInt("classId");
+									if(schoolId == selectSchoolId && classId== selectClassId){
+										JSONArray jsonHomeArray = jsonClass.getJSONArray("homeRoomList");
+										if(jsonHomeArray.length()>0){
+											for(int k=0; k<jsonHomeArray.length(); k++){
+												JSONObject jsonHomeRoom = jsonHomeArray.getJSONObject(k);
+												if(jsonHomeRoom.getInt("homeRoomId") == homeRoom){
+													JSONArray jsonCourseArray = jsonHomeRoom.getJSONArray("courseList");
+													if(jsonCourseArray.length()>0){
+														for(int l=0; l<jsonCourseArray.length(); l++){
+														DashBoardReportVo dashvo = new DashBoardReportVo();
+														JSONObject jsoncourseObj = jsonCourseArray.getJSONObject(l);
+														dashvo.setCourseId(jsoncourseObj.getInt("courseId"));
+														dashvo.setCourseName(jsoncourseObj.getString("courseName"));
+														homeRoomList.add(dashvo);
+																
+														}
+														
+													}
+													
+													
+												}
+											}
+											
+										}
+										
+									}
+								}
+							}
+						}
+			}
+			
+			//courseList = assignmentReportDao.getCourseList(dashBoardReportVo);
 			JSONArray jsonArray = new JSONArray();
-			if(courseList!= null){
-				for(DashBoardReportVo dashBoardReportVo : courseList){
+			if(homeRoomList!= null){
+				for(DashBoardReportVo dashBoardReportVo : homeRoomList){
 					JSONObject jsonObject = new JSONObject();
 					jsonObject.put("id", dashBoardReportVo.getCourseId());
 					jsonObject.put("coName", dashBoardReportVo.getCourseName());
 					jsonArray.put(jsonObject);
 				}
-				servletResponse.getWriter().print(jsonArray);
+			
 			}
+			servletResponse.getWriter().print(jsonArray);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -613,16 +662,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 		this.classNameList = classNameList;
 	}
 
-
-	public List<DashBoardReportVo> getHomeRoomList() {
-		return homeRoomList;
-	}
-
-
-	public void setHomeRoomList(List<DashBoardReportVo> homeRoomList) {
-		this.homeRoomList = homeRoomList;
-	}
-
+ 
 
 	public List<DashBoardReportVo> getCourseList() {
 		return courseList;
@@ -686,6 +726,16 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 
 	public void setServletRequest(HttpServletRequest servletRequest) {
 		this.servletRequest = servletRequest;
+	}
+
+
+	public ArrayList<DashBoardReportVo> getHomeRoomList() {
+		return homeRoomList;
+	}
+
+
+	public void setHomeRoomList(ArrayList<DashBoardReportVo> homeRoomList) {
+		this.homeRoomList = homeRoomList;
 	}
 
  

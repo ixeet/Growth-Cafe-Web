@@ -4,8 +4,8 @@
 
 
 $(document).ready(function(){
-	setTimeout("courseStatusPaiChart()", 5000);
-	setTimeout("assignmentStatusPaiChart()", 5000);
+	setTimeout("courseStatusPaiChart()", 6000);
+	setTimeout("assignmentStatusPaiChart()", 6000);
 });
 
 
@@ -27,8 +27,6 @@ function courseInProgressStatus(){
 	return courseInProgress;
 }
 
-
-
 function assignmentCompleteStatus(){
 	return assignmentComplete;
 }
@@ -39,14 +37,11 @@ function assignmentInProgressStatus(){
 	return assignmentInProgress;
 }
 
-
-
 function assignmentStatusPaiChart(){
-
 	var chart = new CanvasJS.Chart("assignmentStatus",
 	{
 		title:{
-			text: "Teacher Assignment Status",
+			text: "Assignments",
 			fontSize: 12,
 			fontColor: "#9197a3",
 			backgroundColor: "white",
@@ -85,9 +80,9 @@ function assignmentStatusPaiChart(){
 			showInLegend: true,
 			indexLabel: "#percent%", 
 			dataPoints: [
-				{  y: assignmentCompleteStatus(), name: "Completed", legendMarkerType: "triangle"},
-				{  y: assignmentNotStartStatus(), name: "Not Started", legendMarkerType: "square"},
-				{  y: assignmentInProgressStatus(), name: "In Progress", legendMarkerType: "circle"}
+				{  y: assignmentCompleteStatus(), name: "Submitted", legendMarkerType: "square"},
+				{  y: assignmentNotStartStatus(), name: "Not Submitted", legendMarkerType: "square"},
+				{  y: assignmentInProgressStatus(), name: "Reviewed", legendMarkerType: "square"}
 			]
 		}
 		]
@@ -96,16 +91,12 @@ function assignmentStatusPaiChart(){
 	chart.render();
 }
 
-
-
-
-
 function courseStatusPaiChart(){
 
 	var chart = new CanvasJS.Chart("courseStatus",
 	{
 		title:{
-			text: "Teacher Course Status",
+			text: "Courses",
 			fontSize: 12,
 			fontColor: "#9197a3",
 			backgroundColor: "white",
@@ -113,15 +104,15 @@ function courseStatusPaiChart(){
 			padding: 5,
         	borderThickness: 2,
         	cornerRadius: 4,
-		fontFamily: "RobotoDraft, 'Helvetica Neue', Helvetica, Arial"
+			fontFamily: "RobotoDraft, 'Helvetica Neue', Helvetica, Arial"
 		},
                 animationEnabled: true,
 		legend: {
 			verticalAlign: "bottom",
 			horizontalAlign: "center",
 			fontSize: 12,
-			fontFamily: "RobotoDraft, 'Helvetica Neue', Helvetica, Arial",
-			maxWidth: 300
+			maxWidth: 300,
+			fontFamily: "RobotoDraft, 'Helvetica Neue', Helvetica, Arial"
 		},
 		
 		toolTip: {
@@ -130,7 +121,7 @@ function courseStatusPaiChart(){
 		},
 		
 		
-		theme: "theme1",
+		theme: "theme2",
 		data: [
 		{        
 			type: "pie",
@@ -148,9 +139,9 @@ function courseStatusPaiChart(){
 			dataPoints: [
 			
 			
-				{  y: courseCompleteStatus(), name: "Completed", legendMarkerType: "triangle"},
+				{  y: courseCompleteStatus(), name: "Completed", legendMarkerType: "square"},
 				{  y: courseNotStartStatus(), name: "Not Started", legendMarkerType: "square"},
-				{  y: courseInProgressStatus(), name: "In Progress", legendMarkerType: "circle"}
+				{  y: courseInProgressStatus(), name: "In Progress", legendMarkerType: "square"}
 			]
 		}
 		]
@@ -160,31 +151,119 @@ function courseStatusPaiChart(){
 	chart.render();
 }
 </script>
+
+<script type="text/javascript">
+
+
+	function loadClassMethodShow(){
+		var schoolId=$("#schoolIds").val();
+		var url="loadDashboardClassMethod.action";
+		$.ajax({
+			type		:	"POST",
+			url			:	url,
+			data		:	{"schoolId":schoolId},
+			dataType	:	"json",
+			beforeSend		:	function(){
+			startwindowDisable();
+			
+			},
+			success			:	function(result){
+			var container = $("#loadClassDetail");
+			var HTMLAppand = "<select name='classId' id='classIds' class='form-control panel-default bgsize' onchange='return loadRoomType();'><option value='0'>DEPARTMENT (ALL)</option>";
+				for(var i=0; i<result.length; i++){
+					HTMLAppand=HTMLAppand+"<option value='"+result[i].id+"'>"+result[i].cName+"</option >";
+				}
+				container.html(HTMLAppand);
+				$("#classIds").val(0);
+				$("#homeRoomIds").val(0);
+		},
+		complete		:	function(){
+		endwindowDisable();
+		}
+		});
+	return false;
+	}
+
+	function loadRoomType(){
+		var schoolId	=	$("#schoolIds").val();
+		var classId		=	$("#classIds").val();
+		var url			=	"dashboardHomeRoom.action";
+		$.ajax({
+			type		:	"POST",
+			data		:	{"schoolId":schoolId , "classId":classId},
+			url			:	url,
+			dataType	:	"json",
+			beforeSend		:	function(){
+			startwindowDisable();
+			},
+			success		:	function(result){
+			var container = $("#loadHomeRoomDetail");
+			var HTMLAppand = "<select name='homeRoomId' id='homeRoomIds' class='form-control panel-default bgsize' onchange='return courseDetail();'><option value='0'>GROUP (ALL)</option>";
+				for(var i=0; i<result.length; i++){
+					HTMLAppand=HTMLAppand+"<option value='"+result[i].id+"'>"+result[i].hrName+"</option >";
+				}
+				container.html(HTMLAppand);
+				$("#homeRoomIds").val(0);
+				$("#courseIds").val(0);
+			
+			},
+			complete		:	function(){
+		endwindowDisable();
+		}
+		});
+	return false;
+	}
+	
+	
+	
+function filterData(){
+	 var courseId	= $("#courseIds").val();
+	var schoolId	=	$("#schoolIds").val();
+	var classId		=	$("#classIds").val();
+	var homeRoomId	=	$("#homeRoomIds").val();
+	
+	var url = "courseFilterList.action";
+		$.ajax({
+		type		:	"POST",
+		url			:	url,
+		data		:	{"courseId " :courseId, "schoolId":schoolId, "classId":classId,"homeRoomId":homeRoomId},
+		/* data		:	datas, */
+		beforeSend		:	function(){
+			startwindowDisable();
+		},
+		success		:	function(result){
+		$("#courseDetailDiv").html(result);
+		
+		},
+		complete		:	function(){
+		endwindowDisable();
+		
+		}
+		});
+	return false;
+	}
+
+</script>
+
 <script type="text/javascript" src="view/helper/js/canvasjs.min.js"></script>
 
 <style>
 .loadImg{
-	margin-left: 44%; position: absolute; margin-top: 15%; height:100px;
+	position: absolute; margin-top: 15%; height: 100px; z-index: 1; margin-left: -57%;
 }
 </style>
 <div class="container">
+
 <div class="row panel-default" >
-	<div class="col-md-7" style="padding: 0px;">
-		<img  class="loadImg" src='view/helper/images/ajax-loader-large.gif'/>
-		
-		<%-- <div class="col-md-2 ">
-		<s:select list="schoolList" listValue="schoolName"
+	<div class="col-md-7">
+	
+		<div class="col-md-3">
+		<s:select list="schoolNameList" listValue="schoolName"
 			listKey="schoolId" headerKey="0" headerValue="ORGANIZATION (ALL)" cssClass="form-control panel-default bgsize"
 			name="schoolId" id="schoolIds"
 			onchange="return loadClassMethodShow();"></s:select>
-	</div> --%>
-	<div class="col-md-3">
-		<div id="loadClassDetail">
-		<select class="form-control panel-default bgsize " name="classId" >
-			 <option value="0">DEPARTMENT (ALL)</option>
-		</select>
-		</div>
 	</div>
+	
 	<div class="col-md-3">
 		<div id="loadClassDetail">
 		<select class="form-control panel-default bgsize " name="classId" >
@@ -204,50 +283,14 @@ function courseStatusPaiChart(){
 		 <a class="pad4 normalbutton btn-height btn_mar_left" href="javaScript:;" onclick="" >Filter</a>
 		</div>
 		
+		<div class="col-md-12" style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
+		<img  class="loadImg" src='view/helper/images/ajax-loader-large.gif'/>
+		<s:include value="PieChartReport.jsp"/>
+		</div>
 		
-	<div class="col-md-6" style="padding-top: 10px;background-color: white;margin-top: 13px;">
-		<div id="courseStatus" style="height: 300px; width: 100%;"></div>
 	</div>
-	
-	<div class="col-md-6" style="padding-top: 10px;background-color: white;margin-top: 13px;">
-		<div id="assignmentStatus" style="height: 300px; width: 100%;"></div>
-	</div>
-	</div>
-	
-		<%-- <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
-                        <div class="panel-heading">
-                            <h5 class="h5_color">Recent Progress Status</h5>
-                        </div>
-                        <s:if test="courseReportList!=null"> 
-                        <s:iterator value="courseReportList">
-                        <div class="panel-body">
-                          <div class="media v-middle">
-                                            <div class="media-left">
-                                                <span class="icon-block half bg-green-300 img-circle text-white"><s:property value="completedPerStatus"/>% </span>
-												<span class="center">Start Date </br> 09-2-2015</span>
-                                            </div>
-                                            <div class="media-body">
-                                          <p>  <span class="btn default_bg btn-xs">Organization </span> 
-                                              <span>  <s:property value="schoolName"/></span></p>
-                                              <p>  <span class="btn default_bg btn-xs">Department </span>
-											 <span>	<s:property value="className"/></span></p>
-												 <p>  <span class="btn default_bg btn-xs">Group </span> <span>  <s:property value="homeRoomName"/></span> </p>
-												<p>  <span class="btn default_bg btn-xs">Course </span> <span>  <s:property value="courseName"/> </span></p>
-												<!-- <p class="text-subhead link-text-color">Module B is in Progress</p> -->
-                                            </div>
-                                            
-                                        </div>  
-                        </div>
-                        <hr class="margin-none">
-                        </s:iterator>
-                        </s:if>
-                        
-                    </div> --%>
-	
-	
 	
 		<div id="recentAssignmentDetailId">
-		<%-- <s:include value="RecentAssignmentDetail.jsp"/> --%>
 		<s:include value="teacherRecentUpdates.jsp"/>
 	
 	</div>

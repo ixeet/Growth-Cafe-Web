@@ -22,6 +22,48 @@ function clickableResource(id,type,key){
 	window.location="personalProfile?userId="+userId;
 }
 
+
+function getNotificationDetail(feedId){
+	window.location="getNotificationDetail?feedId="+feedId;
+}
+
+function viewNotification(){
+		$.ajax({
+				url : "viewNotification",
+				type :"post",
+				dataType:"json",
+				beforeSend :function(){
+				},
+				success : function(data){
+					//var response = data.feedList;
+					var contentElement = $("#notificatioDivId");
+					var notificationContent=" <ul class='dropdown-menu' role='notification'> <li class='dropdown-header'>Notifications</li>";
+						for(var i=0;i<data.length;i++){
+							notificationContent = notificationContent +"<li class='media' style=' cursor: pointer; cursor: hand;'  onclick='getNotificationDetail("+data[i].feedId+");'>"+
+                                    "<div class='media-left'>"+
+                                        "<img src='"+data[i].profileImage+"' alt='people' class='img-circle' width='30'>"+
+                                    "</div>"+
+                                    "<div class='media-body'>"+data[i].feedText
+                                        +"<br>"+
+                                        "<span class='text-caption text-muted'>"+data[i].feedOn+"</span>"+
+                                    "</div>"+
+                                "</li>";	
+                            }  
+                            	notificationContent = notificationContent +"<li class='dropdown-header'>"+
+                            	"<div class='pull-right'>"+
+                                        "<a href='getNotifications' class='btn-pad normalbutton btn-height margin_bot1'>View All</a>"+
+                                    "</div>"+
+                            	"</li></ul>";
+                            contentElement.html(notificationContent);	
+                            $("#notificatioDivId .dropdown-menu").show();
+                             $("#notificatioDivId").show();
+				}
+	        });
+	        var tabId ='${selectedTab}';
+			$("#"+tabId).parent().removeClass("active");
+}
+
+
  /*  
 function startwindowDisable(){
 $(".breakpoint-1024").addClass("modal fade in");
@@ -123,6 +165,9 @@ return false;
                     <li class="dropdown dropdown_hover">
                         <a href="javaScript:;" id="assignmentTabId" onclick="return assignments();" class="dropdown-toggle dropdown_hover" data-toggle="dropdown">Assignments</a>
                     </li>
+                     <li class="dropdown dropdown_hover">
+                        <a href="javaScript:;" id="updatesTabId" onclick="return updates();" class="dropdown-toggle dropdown_hover" data-toggle="dropdown">Updates</a>
+                    </li>
                      <!-- <li class="dropdown dropdown_hover">
                         <a href="javaScript:;" id="leaderboardTabId" onclick="return showLeaderboard();" class="dropdown-toggle dropdown_hover" data-toggle="dropdown">Leaderboard</a>
                     </li> -->
@@ -131,6 +176,13 @@ return false;
                 
                 <div class="navbar-right navbar-right-margin">
                      <ul class="nav navbar-nav navbar-nav-bordered navbar-nav-margin-right ul-navbar-right-margin">
+                      <!-- user --><li class="dropdown notifications updates">
+                            <a id="notificationTabId" href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown" onclick="return viewNotification();">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="badge badge-primary">4</span>
+                            </a>
+                           <div id="notificatioDivId"></div>
+                        </li>
                         <li class="dropdown user">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="${teacherloginDetail.address}" alt="" class="img-circle width-30" /> ${teacherloginDetail.firstName}<span class="caret"></span>
@@ -172,6 +224,9 @@ function assignments(){
 	window.location="assignmentDetail";
 }
 
+function updates(){
+	window.location="updates";
+}
 
 
 function showSchool(){

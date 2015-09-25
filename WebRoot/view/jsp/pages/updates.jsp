@@ -33,8 +33,9 @@ var eventStatus=true;
   				 if (st > lastScrollTop){
                  if ($win.height() + $win.scrollTop()
                                 > Math.round(($(document).height()*.9)) && eventStatus) {
-                                $("#paginationContentId").append("<img src='view/helper/images/animatedLoading.gif' style='margin-left: 50%;' alt='loading please wait' id='loadingUpdateImgId'>");
+                               /*  $("#paginationContentId").append("<img src='view/helper/images/animatedLoading.gif' style='margin-left: 50%;' alt='loading please wait' id='loadingUpdateImgId'>"); */
                                 eventStatus=false;
+                                $("#loader").append("<div id='top'><img  style='margin:252px 0 0 259px;' width='160px' height='120px' src='view/helper/images/animatedLoading.gif'/></div>");
                                 $.ajax({
 									url : "paginationUpdates",
 									data :{"offset":1},
@@ -44,8 +45,9 @@ var eventStatus=true;
 									success : function(result){
 									$("#noMoreUpdateDivId").remove();
 										$("#paginationContentId").append(result);
-										$("#loadingUpdateImgId").remove();
+										/* $("#loadingUpdateImgId").remove(); */
 										eventStatus=true;
+										$("#top").remove();
 									},
 						        });
                  }
@@ -201,16 +203,17 @@ function showSubComment(commentId){
 			</script>
              
              
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
+    <style type="text/css">
+    	#top {
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  z-index: 999;
+		  width: 57%;
+		  height: 95%;
+		  background-color: white;
+		}
+    </style>        
              
              
              
@@ -812,3 +815,6 @@ function showSubComment(commentId){
             </div>
 		</div>
 	</div>
+	<div id="loader"></div>
+	
+	
