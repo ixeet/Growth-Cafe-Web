@@ -2,10 +2,10 @@
 
 <s:if test="courseListDetails!= null && courseListDetails.size()>0">
 	<s:iterator value="courseListDetails" var="parent">
-		<s:if test="modulesList!= null && modulesList.size()>0">
+		<s:if test="modulesList!= null && modulesList.size()>0" >
 			<s:iterator value="modulesList" var="child">
 				<s:if
-					test="assignmentSubmitList!= null && assignmentSubmitList.size()>0">
+					test="assigNotSubmitList!= null && assigNotSubmitList.size()>0  ||   assignmentSubmitList!= null && assignmentSubmitList.size()>0">
 					<div class="col-md-12" style="padding: 0px;margin-top: -18px;">
 						<div class="panel panel-default curriculum paper-shadow"
 							data-z="0.5">
@@ -95,7 +95,7 @@
 														<s:if
 															test="assignmentSubmitList!= null && assignmentSubmitList.size()>0">
 															<s:iterator value="assignmentSubmitList" status="counter">
-																<s:if test="assignmentStatus==2">
+																<s:if test="assignmentStatus==2 || assignmentStatus==3">
 																	<tr>
 																		<td><span class="label"
 																			style="background-color: rgb(194, 194, 194);"><s:property
@@ -108,7 +108,7 @@
 
 																		<td class="text-center"><a href="javaScript:;"
 																			style="float: left;"
-																			onclick="studentAssignmentViewDetail('<s:property value="#parent.schoolId" />','<s:property value="#parent.classId" />','<s:property value="#parent.hrmId" />','<s:property value="#parent.courseId" />','<s:property value="#child.moduleId" />','<s:property value="assignmentSubmittedById" />');"
+																			onclick="studentAssignmentViewDetail('<s:property value="#parent.schoolId" />','<s:property value="#parent.classId" />','<s:property value="#parent.HomeRoomId" />','<s:property value="#parent.courseId" />','<s:property value="#child.moduleId" />','<s:property value="assignmentSubmittedById" />');"
 																			class="btn-pad normalbutton btn-height"
 																			data-toggle="tooltip" data-placement="top"
 																			title="View his assignment">View</a></td>

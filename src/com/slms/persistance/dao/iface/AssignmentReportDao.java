@@ -41,4 +41,6 @@ public interface AssignmentReportDao {
 	
 	public String getShowFilterData(DashBoardReportVo dashBoardReportVo);
 
+	public String getRateAssignment(DashBoardReportVo dashBoardReportVo);
+
 }

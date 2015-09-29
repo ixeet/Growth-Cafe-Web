@@ -289,7 +289,7 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 			int selectSchoolId=dashBoardReportVo.getSchoolId();
 			dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
 			classNameList = new ArrayList<DashBoardReportVo>();
-			 schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
+			schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
 			System.out.println(schoolNameList.size());
 				JSONArray jsonMasterArray=new JSONArray(schoolNameList);
 				for(int i=0; i<jsonMasterArray.length(); i++){

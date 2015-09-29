@@ -235,6 +235,10 @@
 			<result name="success" type="tiles">/assignmentResourceDetail</result>
 		</action>
 		
+		<action name="rateAssignment" class="com.slms.webapp.controller.AssignmentReportAction" method="rateAssignment">
+			<result name="success">/view/teacher/pages/AssignmentReview.jsp</result>
+		</action>
+		
 		<action name="loadClassMethodDetails" class="com.slms.webapp.controller.CourseReportAction" method="loadClassMethod"/>
 	
 		<!-- <action name="homeRoom" class="com.slms.webapp.controller.AssignmentReportAction" method="homeRoom"/> -->

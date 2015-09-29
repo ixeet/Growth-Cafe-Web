@@ -594,7 +594,7 @@ function likeOnComment(commentId){
                                     <li class="list-group-item media v-middle">
                                         <div class="panel-body pad_l5">
                                             <h5 class="margin-none text_default">
-                                                <s:property value="assignmentName"/> has been submitted
+                                                <s:property value="assignmentName"/> submitted
                                             </h5>
                                             <div class="caption">
                                              <p class="text-caption">

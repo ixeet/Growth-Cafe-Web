@@ -58,8 +58,12 @@ public class DashBoardReportVo {
 	private String assignmentName;
 	private String assignmentDesc;
 	private String assignmentDueDate;
+	private String value;
+	private int key;
 	
-	
+	private String tempKey;
+	private String tempValue;
+	private int assignmentResourceTxnId;
 	private ArrayList<DashBoardReportVo> modulesList;
 	private ArrayList<DashBoardReportVo> resourceList;
 	private ArrayList<DashBoardReportVo> assignmentList;
@@ -70,8 +74,8 @@ public class DashBoardReportVo {
 	private ArrayList<DashBoardReportVo> attachedResources;
 	private ArrayList<DashBoardReportVo> classList;
 	private ArrayList<DashBoardReportVo> homeRoomList;
-	
-	
+	private ArrayList<DashBoardReportVo> ratingParameters;
+	private ArrayList<DashBoardReportVo> childs;
 	
 	
 	public String getSchoolName() {
@@ -589,6 +593,62 @@ public class DashBoardReportVo {
 
 	public void setHomeRoomList(ArrayList<DashBoardReportVo> homeRoomList) {
 		this.homeRoomList = homeRoomList;
+	}
+
+	public ArrayList<DashBoardReportVo> getRatingParameters() {
+		return ratingParameters;
+	}
+
+	public void setRatingParameters(ArrayList<DashBoardReportVo> ratingParameters) {
+		this.ratingParameters = ratingParameters;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public int getKey() {
+		return key;
+	}
+
+	public void setKey(int key) {
+		this.key = key;
+	}
+
+	public ArrayList<DashBoardReportVo> getChilds() {
+		return childs;
+	}
+
+	public void setChilds(ArrayList<DashBoardReportVo> childs) {
+		this.childs = childs;
+	}
+
+	public int getAssignmentResourceTxnId() {
+		return assignmentResourceTxnId;
+	}
+
+	public void setAssignmentResourceTxnId(int assignmentResourceTxnId) {
+		this.assignmentResourceTxnId = assignmentResourceTxnId;
+	}
+
+	public String getTempKey() {
+		return tempKey;
+	}
+
+	public void setTempKey(String tempKey) {
+		this.tempKey = tempKey;
+	}
+
+	public String getTempValue() {
+		return tempValue;
+	}
+
+	public void setTempValue(String tempValue) {
+		this.tempValue = tempValue;
 	}
 
  

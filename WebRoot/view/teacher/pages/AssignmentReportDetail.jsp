@@ -11,31 +11,12 @@ $(document).ready(function(){
 	$("#statusId").val(0);
 });
 
-
-/* 
-function startwindowDisable(){
-$(".breakpoint-1024").addClass("startBlock");
-$("#loadingImgId").show();
-return false;
-}
-
-function endwindowDisable(){
-$(".breakpoint-1024").removeClass("startBlock");
-$("#loadingImgId").hide();
-return false;
-} */
 </script>
-<%-- <style>
-
-.startBlock{
-	background-color: gray; opacity: 0.4;
-}
-</style> --%>
 <script type="text/javascript">
 
 	function loadClassMethodShow(){
 		var schoolId=$("#schoolIds").val();
-		var url="loadClassMethodDetails.action";
+		var url="loadDashboardClassMethod.action";
 		$.ajax({
 			type		:	"POST",
 			url			:	url,
@@ -68,7 +49,7 @@ return false;
 	function loadRoomType(){
 		var schoolId	=	$("#schoolIds").val();
 		var classId		=	$("#classIds").val();
-		var url			=	"homeRoom.action";
+		var url			=	"dashboardHomeRoom.action";
 		$.ajax({
 			type		:	"POST",
 			data		:	{"schoolId":schoolId , "classId":classId},

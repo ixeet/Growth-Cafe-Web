@@ -185,7 +185,7 @@ return false;
                         </li>
                         <li class="dropdown user">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="${teacherloginDetail.address}" alt="" class="img-circle width-30" /> ${teacherloginDetail.firstName}<span class="caret"></span>
+                                <img src="${teacherloginDetail.profilePhotoFileName}" alt="" class="img-circle width-30" /> ${teacherloginDetail.firstName}<span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-box" role="menu">
                                 <li><a href="javaScript:;" onclick="return showDashboard();"><i class="fa fa-bar-chart-o"></i> Dashboard</a></li>

@@ -1,14 +1,40 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<script type="text/javascript">
+
+function submitResponzeByTeacher(){
+	var dataString=$("#submitAtudentStatusId").serialize();
+	$.ajax({
+	type	:	"post",
+	data	:	dataString,
+	url		:	"rateAssignment.action",
+	beforeSend : function(){
+	startwindowDisable();
+	},
+	success	:	function(result){
+	alert(result);
+	$("#assignmentReviewId").html(result);
+	},
+	complete	:	function(){
+	endwindowDisable();
+	}
+	});
+
+return false;
+}
+
+</script>
+
+
+
 <div class="container">
 		<div class="row">
 			<div class="col-md-9">
-
 				<s:if test="courseListDetails!= null && courseListDetails.size()>0">
 					<s:iterator value="courseListDetails" var="parent">
 						<s:if test="modulesList!= null">
 							<s:iterator value="modulesList" begin="0" end="0" var="child">
 
-								<s:iterator value="assignmentSubmitList">
+								<s:iterator value="assignmentSubmitList" var="subchild">
 									<div class="row" data-toggle="isotope">
 										<!-- Module -->
 										<div class="item col-xs-12 col-sm-12  col-md-12 col-lg-8">
@@ -18,9 +44,6 @@
 													<h5 class="h5_color"><s:property value="assignmentDesc" /></h5>
 
 												</div>
-												
-												 
-
 
 												<div class="tabbable tabs-blocks">
 													<!-- Tabs -->
@@ -158,8 +181,6 @@
 													</div>
 													<div class="panel-body">
 
-														<div
-															class="expandable expandable-indicator-white expandable-trigger">
 															<div class="expandable-content">
 																<!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Last date of submission"></i> -->
 																Submitted On :&nbsp;
@@ -173,22 +194,32 @@
 																<h5>
 																	<s:property value="assignmentDesc" />
 																</h5>
-																<div class="expandable-indicator">
-																	<i></i>
-																</div>
+																
 															</div>
-														</div>
 													</div>
 												</div>
 											</div>
+											
+											
+											 <!-- Start  -->
+											
+											 <div class="col-lg-12 col-sm-6 col-md-6 col-xs-12">
+												<div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+													 <div class="panel-heading">
+													<h5 class="h5_color">Review Assignment</h5>
+													</div>
+													<div class="panel-body" id="assignmentReviewId">
+													<s:include value="AssignmentReview.jsp"/>
+													</div>
+													<hr class="margin-none">
+												</div>
+											</div>
+											  <!-- End  -->
 										</div>
-
 									</div>
-
 								</s:iterator>
 							</s:iterator>
 						</s:if>
-
 					</s:iterator>
 				</s:if>
 				<s:else>
