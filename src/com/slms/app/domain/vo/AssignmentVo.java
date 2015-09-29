@@ -21,6 +21,7 @@ public class AssignmentVo {
 	private String assignmentDueDate;
 	private String assignmentSubmittedBy;
 	private ArrayList<CoursesVo> resourcesList;
+	private String[][] ratingParameter=null;
 	
 	/**
 	 * @return the assignmentSubmittedBy
@@ -178,6 +179,12 @@ public class AssignmentVo {
 	}
 	public void setAssignmentDueDate(String assignmentDueDate) {
 		this.assignmentDueDate = assignmentDueDate;
+	}
+	public String[][] getRatingParameter() {
+		return ratingParameter;
+	}
+	public void setRatingParameter(String[][] ratingParameter) {
+		this.ratingParameter = ratingParameter;
 	}
 
 }

@@ -105,10 +105,22 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 									}
 									assignment.setResourcesList(resourceList);
 								}
+								
+								if(jsonAssignmentObj.has("ratingParameters")){
+									String[][] ratingParameter=new String[3][2];
+									JSONArray jsonRatingParameter = jsonAssignmentObj.getJSONArray("ratingParameters");
+									for(int x=0;x<jsonRatingParameter.length();x++){
+										JSONObject jsonParameterObj = jsonRatingParameter.getJSONObject(x);
+										String[] val = jsonParameterObj.getString("key").split("-");
+										ratingParameter[x][0]= jsonParameterObj.getString("key");
+										ratingParameter[x][1]= jsonParameterObj.getString("value");
+									}
+									assignment.setRatingParameter(ratingParameter);
+								}
 								assignmentList.add(assignment);
-								request.getSession().setAttribute("assignmentList",assignmentList);
+								
 							}
-							
+							request.getSession().setAttribute("assignmentList",assignmentList);
 							}
 							
 						}

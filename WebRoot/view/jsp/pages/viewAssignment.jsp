@@ -115,7 +115,9 @@
 						</div>
 						
 						</div>
-                    
+                    <div>${assignmentVo.ratingParameter[0][0]} :${assignmentVo.ratingParameter[0][1]}</div>
+                    <div>${assignmentVo.ratingParameter[1][0]} :${assignmentVo.ratingParameter[1][1]}</div>
+                     <div>${assignmentVo.ratingParameter[2][0]} :${assignmentVo.ratingParameter[2][1]}</div>
                 </div>
 				<!-- Recent Updates Jsp Included -->
 		              			<s:include value="recentUpdates.jsp"></s:include>
