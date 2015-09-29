@@ -94,7 +94,7 @@ public class SchoolReportAction extends ActionSupport implements ModelDriven<Das
 				}
 				
 				
-				response = schoolReportDao.getSchoolList(dashBoardReportVo);
+				/*response = schoolReportDao.getSchoolList(dashBoardReportVo);
 				JSONObject jsonMasterObject = new JSONObject(response);
 				if(jsonMasterObject!=null && jsonMasterObject.getString("statusMessage").equalsIgnoreCase("success")){
 					JSONArray jsonMasterArray=jsonMasterObject.getJSONArray("schoolList");
@@ -138,7 +138,7 @@ public class SchoolReportAction extends ActionSupport implements ModelDriven<Das
 						schoolNameList.add(schoolVo);
 					}
 
-				}
+				}*/
 				request.setAttribute("selectedTab", "schoolTabId"); 
 		 
 		}

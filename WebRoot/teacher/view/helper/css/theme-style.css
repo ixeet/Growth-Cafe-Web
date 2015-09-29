@@ -918,3 +918,12 @@ margin-top: 10px;
 color:#3b5998 !important;
   font-weight: bold !important;
 }
+
+.auto_dots235{
+    width: 235px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    list-style: initial !important;
+    
+}

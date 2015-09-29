@@ -111,9 +111,10 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 									JSONArray jsonRatingParameter = jsonAssignmentObj.getJSONArray("ratingParameters");
 									for(int x=0;x<jsonRatingParameter.length();x++){
 										JSONObject jsonParameterObj = jsonRatingParameter.getJSONObject(x);
-										String[] val = jsonParameterObj.getString("key").split("-");
-										ratingParameter[x][0]= jsonParameterObj.getString("key");
-										ratingParameter[x][1]= jsonParameterObj.getString("value");
+										String[] key = jsonParameterObj.getString("key").split("-");
+										String[] val = jsonParameterObj.getString("value").split("-");
+										ratingParameter[x][0]= key[1];
+										ratingParameter[x][1]= val[1];
 									}
 									assignment.setRatingParameter(ratingParameter);
 								}

@@ -191,7 +191,7 @@ $(document).mouseup(function (e)
 
  <style>
 	.home_bg{
-	background-image: url(view/helper/images/bg_3.png);
+	background-image: url(teacher/view/helper/images/bg_3.png);
     height: 100%;
     width: 100%;
 	    background-size: 100% 100%;

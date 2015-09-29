@@ -112,12 +112,30 @@
 								</div>
 							</div>
 						</div>
+						<s:if test="assignmentVo.ratingParameter !=null">
+						<div class="col-lg-12 col-sm-6 col-md-6 col-xs-12">
+							<div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+								<div class="panel-heading pad_modal1">
+									<h5 class="h5_color">Rating</h5>
+								</div>
+								<div class="panel-body">
+									<p class="text-caption text_default">
+									
+										<div>${assignmentVo.ratingParameter[0][0]} : ${assignmentVo.ratingParameter[0][1]}</div>
+					                    <div>${assignmentVo.ratingParameter[1][0]} : ${assignmentVo.ratingParameter[1][1]}</div>
+					                     <div>${assignmentVo.ratingParameter[2][0]} : ${assignmentVo.ratingParameter[2][1]}</div>
+					                  
+									</p>
+								</div>
+								<hr class="margin-none">
+									</div>
+							</div>
+					 </s:if>	
+						
 						</div>
 						
 						</div>
-                    <div>${assignmentVo.ratingParameter[0][0]} :${assignmentVo.ratingParameter[0][1]}</div>
-                    <div>${assignmentVo.ratingParameter[1][0]} :${assignmentVo.ratingParameter[1][1]}</div>
-                     <div>${assignmentVo.ratingParameter[2][0]} :${assignmentVo.ratingParameter[2][1]}</div>
+                    
                 </div>
 				<!-- Recent Updates Jsp Included -->
 		              			<s:include value="recentUpdates.jsp"></s:include>

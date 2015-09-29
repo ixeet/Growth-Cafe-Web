@@ -109,6 +109,10 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 												courseVo.setCourseName(jsonCourseObj.getString("courseName"));
 												courseList.add(courseVo);
 											}
+											/**
+											 * in resourceSize setting a number of courses teacher teach in an organistation
+											 * */
+											schoolVo.setResourceSize(schoolVo.getResourceSize()+courseList.size());
 											homeVo.setCourseList(courseList);
 										}
 										homeVo.setHomeRoomId(jsonHomeObj.getInt("homeRoomId"));
