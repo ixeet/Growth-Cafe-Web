@@ -64,7 +64,10 @@ function logout(){
 	return false;
 }
 
-
+function setting(){
+	window.location="setting";
+	return false;
+}
 
 
 function showErrorMessage(message){
@@ -347,6 +350,7 @@ $(document).mouseup(function (e)
 		                            </a>
 		                            <ul class="dropdown-menu dropdown-menu-box" role="menu">
 		                                <li><a href="userProfile"><i class="fa fa-user"></i> Profile</a></li>
+		                                <li><a href="javaScript:;" onclick="setting();"><i class="fa fa-wrench"></i> Settings</a></li>
                                 <li><a href="javaScript:;" onclick="logout();"><i class="fa fa-sign-out"></i> Logout</a></li>
                             </ul>
                         </li>

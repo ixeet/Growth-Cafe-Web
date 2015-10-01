@@ -39,6 +39,9 @@
   <definition name="/home" extends="HomeLayout">
       <put-attribute name="body"   value="/view/jsp/pages/home.jsp"/>
   </definition>
+   <definition name="/setting" extends="HomeLayout">
+      <put-attribute name="body"   value="/view/jsp/pages/setting.jsp"/>
+  </definition>
   <definition name="/homeTeacher" extends="HomeLayout">
       <put-attribute name="body"   value="/view/jsp/pages/home.jsp"/>
   </definition>
