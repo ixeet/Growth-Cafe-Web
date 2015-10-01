@@ -61,6 +61,18 @@ public class DashBoardReportVo {
 	private String value;
 	private int key;
 	
+	private int courseComplete;
+	private int courseProgress;
+	private int courseNotStarted;
+	private int assignmentComplete;
+	private int assignmentOpen;
+	private int assignmentNotEnabled;
+	
+	
+	
+ 
+	
+	
 	private String tempKey;
 	private String tempValue;
 	private int assignmentResourceTxnId;
@@ -76,7 +88,7 @@ public class DashBoardReportVo {
 	private ArrayList<DashBoardReportVo> homeRoomList;
 	private ArrayList<DashBoardReportVo> ratingParameters;
 	private ArrayList<DashBoardReportVo> childs;
-	
+	private ArrayList<DashBoardReportVo> percentage;
 	
 	public String getSchoolName() {
 		return schoolName;
@@ -649,6 +661,62 @@ public class DashBoardReportVo {
 
 	public void setTempValue(String tempValue) {
 		this.tempValue = tempValue;
+	}
+
+	public int getCourseComplete() {
+		return courseComplete;
+	}
+
+	public void setCourseComplete(int courseComplete) {
+		this.courseComplete = courseComplete;
+	}
+
+	public int getCourseProgress() {
+		return courseProgress;
+	}
+
+	public void setCourseProgress(int courseProgress) {
+		this.courseProgress = courseProgress;
+	}
+
+	public int getCourseNotStarted() {
+		return courseNotStarted;
+	}
+
+	public void setCourseNotStarted(int courseNotStarted) {
+		this.courseNotStarted = courseNotStarted;
+	}
+
+	public ArrayList<DashBoardReportVo> getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(ArrayList<DashBoardReportVo> percentage) {
+		this.percentage = percentage;
+	}
+
+	public int getAssignmentComplete() {
+		return assignmentComplete;
+	}
+
+	public void setAssignmentComplete(int assignmentComplete) {
+		this.assignmentComplete = assignmentComplete;
+	}
+
+	public int getAssignmentOpen() {
+		return assignmentOpen;
+	}
+
+	public void setAssignmentOpen(int assignmentOpen) {
+		this.assignmentOpen = assignmentOpen;
+	}
+
+	public int getAssignmentNotEnabled() {
+		return assignmentNotEnabled;
+	}
+
+	public void setAssignmentNotEnabled(int assignmentNotEnabled) {
+		this.assignmentNotEnabled = assignmentNotEnabled;
 	}
 
  

@@ -280,7 +280,7 @@ public class SchoolReportAction extends ActionSupport implements ModelDriven<Das
 		return SUCCESS;
 	}
 
-
+	
 
 	public List<DashBoardReportVo> getCourseReportList() {
 		return courseReportList;

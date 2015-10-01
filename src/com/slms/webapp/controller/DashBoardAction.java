@@ -40,7 +40,10 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 	List<DashBoardReportVo> dashBoardReportList;
 	ArrayList<DashBoardReportVo> schoolNameList;
 	List<DashBoardReportVo> classNameList;
+	
 	String response="";
+	
+	String responsePai="";
 	 
 	public String execute(){
 		try{
@@ -63,6 +66,59 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 		try{
 			if(loginTeacherDetail!=null){
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
+				dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
+				dashBoardReportVo.setSchoolId(0);
+				dashBoardReportVo.setClassId(0);
+				dashBoardReportVo.setHomeRoomId(0);
+				responsePai = dashBoardMasterDao.getPieChartDetail(dashBoardReportVo);
+				System.out.println(responsePai);
+				JSONObject jsonPaiChartObject = new JSONObject(responsePai);
+				if(jsonPaiChartObject!=null && jsonPaiChartObject.getString("statusMessage").equalsIgnoreCase("success")){
+					
+					JSONObject jsonPercentage = jsonPaiChartObject.getJSONObject("percentage");
+					
+						if(jsonPercentage.has("courseProgress")){
+						dashBoardReportVo.setCourseProgress(jsonPercentage.getInt("courseProgress"));
+					}
+					else{
+						dashBoardReportVo.setCourseProgress(0);
+					}
+					
+					if(jsonPercentage.has("courseComplete")){
+						dashBoardReportVo.setCourseComplete(jsonPercentage.getInt("courseComplete"));
+					}
+					else{
+						dashBoardReportVo.setCourseComplete(0);
+					}
+					if(jsonPercentage.has("courseNotStarted")){
+						dashBoardReportVo.setCourseNotStarted(jsonPercentage.getInt("courseNotStarted"));
+					}
+					else{
+					dashBoardReportVo.setCourseNotStarted(0);
+					}
+					
+					if(jsonPercentage.has("assReviewed")){
+						dashBoardReportVo.setAssignmentComplete(jsonPercentage.getInt("assReviewed"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentComplete(0);
+					}
+					if(jsonPercentage.has("assSubmitted")){
+						dashBoardReportVo.setAssignmentOpen(jsonPercentage.getInt("assSubmitted"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentOpen(0);
+					}
+					if(jsonPercentage.has("assNotSubmit")){
+						dashBoardReportVo.setAssignmentNotEnabled(jsonPercentage.getInt("assNotSubmit"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentNotEnabled(0);
+					}
+					
+				}
+				
+				
 				response = dashBoardMasterDao.getSchoolDetail(dashBoardReportVo);
 				System.out.println(response);
 				JSONObject jsonMasterObject = new JSONObject(response);
@@ -267,8 +323,14 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 								 }
 					feedList.add(feedObj);
 				}
+				
+				
+				
 				request.getSession().setAttribute("feedList", feedList);
 			}
+			
+			
+			
 			
 			}
 		catch (Exception e) {
@@ -391,7 +453,72 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 	}
 	
 	
-	
+
+	public String filterCourseData(){
+		
+		HttpServletRequest request= ServletActionContext.getRequest();
+		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+		 dashBoardMasterDao = new  DashBoardMasterDaoImpl();
+		try{
+			if(loginTeacherDetail!=null){
+				dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
+				responsePai = dashBoardMasterDao.getPieChartDetail(dashBoardReportVo);	
+				System.out.println(responsePai);
+				JSONObject jsonPaiChartObject = new JSONObject(responsePai);
+				if(jsonPaiChartObject!=null && jsonPaiChartObject.getString("statusMessage").equalsIgnoreCase("success")){
+					
+					JSONObject jsonPercentage = jsonPaiChartObject.getJSONObject("percentage");
+					
+						if(jsonPercentage.has("courseProgress")){
+						dashBoardReportVo.setCourseProgress(jsonPercentage.getInt("courseProgress"));
+					}
+					else{
+						dashBoardReportVo.setCourseProgress(0);
+					}
+					
+					if(jsonPercentage.has("courseComplete")){
+						dashBoardReportVo.setCourseComplete(jsonPercentage.getInt("courseComplete"));
+					}
+					else{
+						dashBoardReportVo.setCourseComplete(0);
+					}
+					if(jsonPercentage.has("courseNotStarted")){
+						dashBoardReportVo.setCourseNotStarted(jsonPercentage.getInt("courseNotStarted"));
+					}
+					else{
+					dashBoardReportVo.setCourseNotStarted(0);
+					}
+					
+					if(jsonPercentage.has("assReviewed")){
+						dashBoardReportVo.setAssignmentComplete(jsonPercentage.getInt("assReviewed"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentComplete(0);
+					}
+					if(jsonPercentage.has("assSubmitted")){
+						dashBoardReportVo.setAssignmentOpen(jsonPercentage.getInt("assSubmitted"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentOpen(0);
+					}
+					if(jsonPercentage.has("assNotSubmit")){
+						dashBoardReportVo.setAssignmentNotEnabled(jsonPercentage.getInt("assNotSubmit"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentNotEnabled(0);
+					}
+					
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return SUCCESS;
+	}
+
 	
 	 
 
@@ -509,6 +636,16 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 	public void setServletResponse(HttpServletResponse servletResponse) {
 		this.servletResponse = servletResponse;
 
+	}
+
+
+	public String getResponsePai() {
+		return responsePai;
+	}
+
+
+	public void setResponsePai(String responsePai) {
+		this.responsePai = responsePai;
 	}
  
  

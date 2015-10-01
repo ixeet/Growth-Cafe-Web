@@ -189,6 +189,12 @@
 		
 		<action name="dashboardHomeRoom" class="com.slms.webapp.controller.DashBoardAction" method="dashboardHomeRoom"/>
 		
+		
+		<action name="filterCourseData" class="com.slms.webapp.controller.DashBoardAction" method="filterCourseData">
+			<result name="success">/view/teacher/pages/DashBoardPieChartDetail.jsp</result>
+		</action>
+		
+		
 								<!-- school Detail  -->
 		<action name="schoolDetail" class="com.slms.webapp.controller.SchoolReportAction" method="schoolDetails">
 				<result name="success" type="tiles">/schoolDetail</result>
@@ -197,6 +203,7 @@
 		<action name="filterSchoolDetails" class="com.slms.webapp.controller.SchoolReportAction" method="filterSchoolDetails">
 			<result name="success">/view/teacher/pages/schoolReportDiaplayTable.jsp</result>
 		</action>
+		
 		
 		
 								<!-- course Detail  -->		

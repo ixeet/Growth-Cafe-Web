@@ -308,7 +308,6 @@ public class AssignmentReportDaoImpl extends LmsDaoAbstract implements Assignmen
 					jsonParmeterObj.put("key", key[x]);
 					jsonParmeter.put(jsonParmeterObj);
 					}
-			
 			JSONObject logingJsonObject = new JSONObject();
 			logingJsonObject.put("userId", dashBoardReportVo.getUserId());
 			logingJsonObject.put("assignmentResourceTxnId",dashBoardReportVo.getAssignmentResourceTxnId());

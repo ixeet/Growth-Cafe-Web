@@ -105,13 +105,25 @@
 																		<td><s:property value="assignmentSubmittedDate" />
 																		</td>
 																		<!--  <td>Yes</td> -->
-
+											<s:if test="assignmentStatus==2">
 																		<td class="text-center"><a href="javaScript:;"
 																			style="float: left;"
 																			onclick="studentAssignmentViewDetail('<s:property value="#parent.schoolId" />','<s:property value="#parent.classId" />','<s:property value="#parent.HomeRoomId" />','<s:property value="#parent.courseId" />','<s:property value="#child.moduleId" />','<s:property value="assignmentSubmittedById" />');"
 																			class="btn-pad normalbutton btn-height"
 																			data-toggle="tooltip" data-placement="top"
 																			title="View his assignment">View</a></td>
+																			</s:if>
+																			
+																			<s:if test="assignmentStatus==3">
+																		<td class="text-center"><a href="javaScript:;"
+																			style="float: left;"
+																			onclick="studentAssignmentViewDetail('<s:property value="#parent.schoolId" />','<s:property value="#parent.classId" />','<s:property value="#parent.HomeRoomId" />','<s:property value="#parent.courseId" />','<s:property value="#child.moduleId" />','<s:property value="assignmentSubmittedById" />');"
+																			class="btn-pad normalbutton btn-height"
+																			data-toggle="tooltip" data-placement="top"
+																			title="View his assignment"><i class="fa fa-fw fa-check-square-o"></i>View</a></td>
+																			</s:if>
+																			
+																			</tr>
 																	</tr>
 																</s:if>
 															</s:iterator>

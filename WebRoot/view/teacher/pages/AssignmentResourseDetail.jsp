@@ -11,7 +11,6 @@ function submitResponzeByTeacher(){
 	startwindowDisable();
 	},
 	success	:	function(result){
-	alert(result);
 	$("#assignmentReviewId").html(result);
 	},
 	complete	:	function(){
@@ -208,8 +207,10 @@ return false;
 													 <div class="panel-heading">
 													<h5 class="h5_color">Review Assignment</h5>
 													</div>
-													<div class="panel-body" id="assignmentReviewId">
+													<div class="panel-body" >
+													<div id="assignmentReviewId">
 													<s:include value="AssignmentReview.jsp"/>
+													</div>
 													</div>
 													<hr class="margin-none">
 												</div>

@@ -3,6 +3,10 @@
 
 
     <!-- Separate Vendor Script Bundles -->
+    
+<script type="text/javascript"  src="view/helper/js/jquery-1.9.1.js"></script>
+
+    
     <script src="view/helper/js/vendor-core.min.js"></script>
     <script src="view/helper/js/vendor-countdown.min.js"></script>
     <script src="view/helper/js/vendor-tables.min.js"></script>
@@ -23,4 +27,7 @@
     <script src="view/helper/js/module-charts-flot.min.js"></script>
    
     <script src="view/helper/js/theme-core.min.js"></script>
+    
 
+<script type="text/javascript"  src="view/helper/js/highcharts.js"></script>
+<script type="text/javascript" src="view/helper/js/canvasjs.min.js"></script>

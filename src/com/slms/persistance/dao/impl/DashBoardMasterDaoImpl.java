@@ -138,6 +138,31 @@ public class DashBoardMasterDaoImpl extends LmsDaoAbstract implements DashBoardM
 		System.out.println("DashBoardMasterDaoImpl method:-updates Response:-"+response);
 		return response;
 	}
+
+
+	@Override
+	public String getPieChartDetail(DashBoardReportVo dashBoardReportVo) {
+		try {
+			/*String url=baseUrl+"rest/common/getFeeds"; */
+			
+				String url= "http://192.168.0.19:8080/SLMS/rest/teacher/getPercentage"; 
+				
+				JSONObject regJsonObject = new JSONObject();
+				regJsonObject.put("userName", dashBoardReportVo.getUserName());
+				regJsonObject.put("schoolId", dashBoardReportVo.getSchoolId());
+				regJsonObject.put("classId", dashBoardReportVo.getClassId());
+				regJsonObject.put("hrmId", dashBoardReportVo.getHomeRoomId());
+				
+				
+				
+				System.out.println("DashBoardMasterDaoImpl method:- Pie Chart Request:-"+regJsonObject);
+				response = PostJsonObject.postJson(regJsonObject, url);
+			} catch (Exception e) {
+				System.out.println("UpdatesServiceImpl method:- Pie Chart "+e.getMessage());
+			}
+			System.out.println("DashBoardMasterDaoImpl method:- Pie Chart Response:-"+response);
+			return response;
+	}
     
     
 }//end of class

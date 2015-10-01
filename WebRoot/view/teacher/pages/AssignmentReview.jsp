@@ -31,9 +31,12 @@
 </s:if>
 
 <s:if test="assignmentStatus == 3">
-	<div class="pad_l14">
-		<h5> <strong>Accuracy </strong>: Excellent</h5>
-		<h5> <strong>Ingenuity </strong>: Need More Work</h5>
-		<h5> <strong>Timely Submission </strong>: On Time</h5>
+	<div class="pad_l14"> 
+	<s:if test="ratingParameters!=null" > 
+			<s:iterator value="ratingParameters" var="parent">
+		<h5 style="font-size: 12px;"> <b><!-- Accuracy -->  <s:property value="#parent.tempKey" /> </b>: <s:property value="#parent.value" /></h5>
+	</s:iterator>
+	</s:if>
+	
 	</div>
 </s:if>

@@ -36,6 +36,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 	ArrayList<DashBoardReportVo> homeRoomList;
 	List<DashBoardReportVo> courseList;
 	List<DashBoardReportVo> moduleList;
+	ArrayList<DashBoardReportVo> ratingParameters;
 	List<DashBoardReportVo> courseListDetails =  new ArrayList<DashBoardReportVo>();
 	HttpServletRequest servletRequest;
 	String response="";
@@ -136,7 +137,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 												assignListRes.setStudentName(assignObj.getString("assignmentSubmittedBy"));
 												assignListRes.setAssignmentSubmittedById(assignObj.getInt("assignmentSubmittedById"));
 												assignListRes.setAssignmentResourceTxnId(assignObj.getInt("assignmentResourceTxnId"));
-												/*assignListRes.setAssignmentSubmittedDate(Utility.getDisplayDate(assignObj.getString("assignmentSubmittedDate")));*/
+												assignListRes.setAssignmentSubmittedDate(Utility.getDisplayDate(assignObj.getString("assignmentSubmittedDate")));
 												
 												JSONArray jasonAttchResoArray = assignObj.getJSONArray("ratingParameters");
 												if(jasonAttchResoArray.length()>0){
@@ -166,9 +167,29 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 												}
 												assignListSubmit.add(assignListRes);
 											}
-
-											/*
-											assignDetail.add(assignListRes);*/
+											
+											if(assignObj.getInt("assignmentStatus") == 3){
+												assignListRes.setAssignmentId(assignObj.getInt("assignmentId"));
+												assignListRes.setAssignmentStatus(assignObj.getInt("assignmentStatus"));
+												assignListRes.setStudentName(assignObj.getString("assignmentSubmittedBy"));
+												assignListRes.setAssignmentSubmittedById(assignObj.getInt("assignmentSubmittedById"));
+												assignListRes.setAssignmentResourceTxnId(assignObj.getInt("assignmentResourceTxnId"));
+												assignListRes.setAssignmentSubmittedDate(Utility.getDisplayDate(assignObj.getString("assignmentSubmittedDate")));
+												
+												JSONArray jasonAttchResoArray = assignObj.getJSONArray("ratingParameters");
+												if(jasonAttchResoArray.length()>0){
+													ArrayList<DashBoardReportVo> attachResList = new  ArrayList<DashBoardReportVo>();
+												for(int m=0; m<jasonAttchResoArray.length(); m++){
+													JSONObject attachObj = jasonAttchResoArray.getJSONObject(m);
+													DashBoardReportVo attachRes= new DashBoardReportVo();
+													attachRes.setTempKey(attachObj.getString("key"));
+													attachRes.setValue(attachObj.getString("value"));
+													attachResList.add(attachRes);
+												}
+												assignListRes.setChilds(attachResList);
+												}
+												assignListSubmit.add(assignListRes);
+											}
 										}
 										int totalsize=jsonAssignListObj.length();
 										int submit=assignListSubmit.size();
@@ -303,9 +324,23 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 												attachRes.setChilds(childObjList);
 												attachResList.add(attachRes);
 											}
-											assignListRes.setRatingParameters(attachResList);
+												assignListRes.setRatingParameters(attachResList);
+										}
 											}
-											}
+											if(assignObj.getInt("assignmentStatus") == 3){
+												JSONArray jasonAttchResoArray = assignObj.getJSONArray("ratingParameters");
+												if(jasonAttchResoArray.length()>0){
+													ArrayList<DashBoardReportVo> attachResList = new  ArrayList<DashBoardReportVo>();
+												for(int m=0; m<jasonAttchResoArray.length(); m++){
+													JSONObject attachObj = jasonAttchResoArray.getJSONObject(m);
+													DashBoardReportVo attachRes= new DashBoardReportVo();
+													attachRes.setTempKey(attachObj.getString("key"));
+													attachRes.setValue(attachObj.getString("value"));
+													attachResList.add(attachRes);
+												}
+												assignListRes.setRatingParameters(attachResList);
+												}
+												}
 											assignListSubmit.add(assignListRes);
 											}
 										}
@@ -339,89 +374,127 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 			if(loginTeacherDetail!=null){
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
 				response = assignmentReportDao.getRateAssignment(dashBoardReportVo);
-				JSONObject jsonResponseObj= new JSONObject(response);
-				if(jsonResponseObj.getString("statusMessage").equalsIgnoreCase("success")){
-
-					int studentId=dashBoardReportVo.getAssignmentSubmittedById();
-					
-				JSONArray jsonCouArray = jsonResponseObj.getJSONArray("courseList");
-				ArrayList<DashBoardReportVo> course = new  ArrayList<DashBoardReportVo>();
-					if(jsonCouArray.length()>0){
-						for(int i=0; i <jsonCouArray.length(); i++){
-							DashBoardReportVo courseObj= new DashBoardReportVo();
-							JSONObject jsonCourseObject=jsonCouArray.getJSONObject(i);
-							courseObj.setSchoolId(jsonCourseObject.getInt("schoolId"));
-							courseObj.setSchoolName(jsonCourseObject.getString("schoolName"));
-							courseObj.setCourseId(jsonCourseObject.getInt("courseId"));
-							courseObj.setCourseName(jsonCourseObject.getString("courseName"));
-							courseObj.setHomeRoomId(jsonCourseObject.getInt("hrmId"));
-							courseObj.setHomeRoomName(jsonCourseObject.getString("hrmName"));
-							courseObj.setClassId(jsonCourseObject.getInt("classId"));
-							courseObj.setClassName(jsonCourseObject.getString("classeName"));
-							
-							JSONArray jsonModuleArray = jsonCourseObject.getJSONArray("moduleList");
-							if(jsonModuleArray.length()>0){
-								ArrayList<DashBoardReportVo> moduDetail = new ArrayList<DashBoardReportVo>();
-								for(int j=0; j<jsonModuleArray.length(); j++){
-								
-									JSONObject jsonModObj = jsonModuleArray.getJSONObject(j);
-									DashBoardReportVo moduListRes= new DashBoardReportVo();
-									moduListRes.setModuleId(jsonModObj.getInt("moduleId"));
-									moduListRes.setModuleName(jsonModObj.getString("moduleName"));
-									moduListRes.setStartedOn(Utility.getDisplayDate(jsonModObj.getString("startedOn")));
-									moduListRes.setCompletedOn(Utility.getDisplayDate(jsonModObj.getString("completedOn")));
+					 ratingParameters = new ArrayList<DashBoardReportVo>();
+					response = assignmentReportDao.getShowFilterData(dashBoardReportVo);
+					JSONObject jsonResponseObj= new JSONObject(response);
+					if(jsonResponseObj.getString("statusMessage").equalsIgnoreCase("success")){
+						int studentId=dashBoardReportVo.getAssignmentSubmittedById();
+						
+						JSONArray jsonCouArray = jsonResponseObj.getJSONArray("courseList");
+							if(jsonCouArray.length()>0){
+								for(int i=0; i <jsonCouArray.length(); i++){
+									DashBoardReportVo courseObj= new DashBoardReportVo();
+									JSONObject jsonCourseObject=jsonCouArray.getJSONObject(i);
+									courseObj.setSchoolId(jsonCourseObject.getInt("schoolId"));
+									courseObj.setSchoolName(jsonCourseObject.getString("schoolName"));
+									courseObj.setCourseId(jsonCourseObject.getInt("courseId"));
+									courseObj.setCourseName(jsonCourseObject.getString("courseName"));
+									courseObj.setHomeRoomId(jsonCourseObject.getInt("hrmId"));
+									courseObj.setHomeRoomName(jsonCourseObject.getString("hrmName"));
+									courseObj.setClassId(jsonCourseObject.getInt("classId"));
+									courseObj.setClassName(jsonCourseObject.getString("classeName"));
 									
-									moduDetail.add(moduListRes);
-									
-									JSONArray jsonAssignListObj = jsonModObj.getJSONArray("assignmentList");
-									
-									if(jsonAssignListObj.length()>0){
-										ArrayList<DashBoardReportVo> assignListSubmit = new ArrayList<DashBoardReportVo>();
-										for(int k=0; k<jsonAssignListObj.length(); k++){
-											DashBoardReportVo assignListRes= new DashBoardReportVo();
-											JSONObject assignObj = jsonAssignListObj.getJSONObject(k);
-											if(assignObj.getInt("assignmentSubmittedById")==studentId){
-												assignListRes.setAssignmentSubmittedById(assignObj.getInt("assignmentSubmittedById"));
-											assignListRes.setAssignmentId(assignObj.getInt("assignmentId"));
-											assignListRes.setAssignmentStatus(assignObj.getInt("assignmentStatus"));
-											assignListRes.setStudentName(assignObj.getString("assignmentSubmittedBy"));
-											assignListRes.setAssignmentName(assignObj.getString("assignmentName"));
-											assignListRes.setAssignmentSubmittedById(assignObj.getInt("assignmentSubmittedById"));
-											assignListRes.setAssignmentDesc(assignObj.getString("assignmentDesc"));
-											assignListRes.setAssignmentResourceTxnId(assignObj.getInt("assignmentResourceTxnId"));
-											assignListRes.setAssignmentDueDate(Utility.getDisplayDate(assignObj.getString("assignmentDueDate")));
-											assignListRes.setAssignmentSubmittedDate(Utility.getDisplayDate(assignObj.getString("assignmentSubmittedDate")));
-											JSONArray attachedResourcesObj=assignObj.getJSONArray("attachedResources");
+									JSONArray jsonModuleArray = jsonCourseObject.getJSONArray("moduleList");
+									if(jsonModuleArray.length()>0){
+										ArrayList<DashBoardReportVo> moduDetail = new ArrayList<DashBoardReportVo>();
+										for(int j=0; j<jsonModuleArray.length(); j++){
+										
+											JSONObject jsonModObj = jsonModuleArray.getJSONObject(j);
+											DashBoardReportVo moduListRes= new DashBoardReportVo();
+											moduListRes.setModuleId(jsonModObj.getInt("moduleId"));
+											moduListRes.setModuleName(jsonModObj.getString("moduleName"));
+											moduListRes.setStartedOn(Utility.getDisplayDate(jsonModObj.getString("startedOn")));
+											moduListRes.setCompletedOn(Utility.getDisplayDate(jsonModObj.getString("completedOn")));
 											
-											ArrayList<DashBoardReportVo> attachedResourcesList = new ArrayList<DashBoardReportVo>();
-											if(attachedResourcesObj.length()>0){
-												for(int l=0; l<attachedResourcesObj.length(); l++){
-													JSONObject attachedResourcesArray = attachedResourcesObj.getJSONObject(l);
-													DashBoardReportVo attachedResourcesVo= new DashBoardReportVo();
-														attachedResourcesVo.setResourseName(attachedResourcesArray.getString("resourceName"));
-														attachedResourcesVo.setResourceUrl(attachedResourcesArray.getString("resourceUrl"));
-														attachedResourcesVo.setResourseDesc(attachedResourcesArray.getString("resourceDesc"));
-														attachedResourcesVo.setUploadedDate(attachedResourcesArray.getString("uploadedDate"));
-														attachedResourcesVo.setAuthorImage(attachedResourcesArray.getString("authorImg"));
-														attachedResourcesVo.setThumbImg(attachedResourcesArray.getString("thumbImg"));
-														attachedResourcesList.add(attachedResourcesVo);
+											moduDetail.add(moduListRes);
+											
+											JSONArray jsonAssignListObj = jsonModObj.getJSONArray("assignmentList");
+											
+											if(jsonAssignListObj.length()>0){
+												for(int k=0; k<jsonAssignListObj.length(); k++){
+													DashBoardReportVo assignListRes= new DashBoardReportVo();
+													JSONObject assignObj = jsonAssignListObj.getJSONObject(k);
+													
+													if(assignObj.getInt("assignmentSubmittedById")==studentId){
+														assignListRes.setAssignmentSubmittedById(assignObj.getInt("assignmentSubmittedById"));
+													assignListRes.setAssignmentId(assignObj.getInt("assignmentId"));
+													assignListRes.setAssignmentStatus(assignObj.getInt("assignmentStatus"));
+													assignListRes.setStudentName(assignObj.getString("assignmentSubmittedBy"));
+													assignListRes.setAssignmentName(assignObj.getString("assignmentName"));
+													assignListRes.setAssignmentSubmittedById(assignObj.getInt("assignmentSubmittedById"));
+													assignListRes.setAssignmentDesc(assignObj.getString("assignmentDesc"));
+													assignListRes.setAssignmentResourceTxnId(assignObj.getInt("assignmentResourceTxnId"));
+													assignListRes.setAssignmentDueDate(Utility.getDisplayDate(assignObj.getString("assignmentDueDate")));
+													assignListRes.setAssignmentSubmittedDate(Utility.getDisplayDate(assignObj.getString("assignmentSubmittedDate")));
+													JSONArray attachedResourcesObj=assignObj.getJSONArray("attachedResources");
+													dashBoardReportVo.setAssignmentStatus(assignObj.getInt("assignmentStatus"));
+													ArrayList<DashBoardReportVo> attachedResourcesList = new ArrayList<DashBoardReportVo>();
+													if(attachedResourcesObj.length()>0){
+														for(int l=0; l<attachedResourcesObj.length(); l++){
+															JSONObject attachedResourcesArray = attachedResourcesObj.getJSONObject(l);
+															DashBoardReportVo attachedResourcesVo= new DashBoardReportVo();
+																attachedResourcesVo.setResourseName(attachedResourcesArray.getString("resourceName"));
+																attachedResourcesVo.setResourceUrl(attachedResourcesArray.getString("resourceUrl"));
+																attachedResourcesVo.setResourseDesc(attachedResourcesArray.getString("resourceDesc"));
+																attachedResourcesVo.setUploadedDate(attachedResourcesArray.getString("uploadedDate"));
+																attachedResourcesVo.setAuthorImage(attachedResourcesArray.getString("authorImg"));
+																attachedResourcesVo.setThumbImg(attachedResourcesArray.getString("thumbImg"));
+																attachedResourcesList.add(attachedResourcesVo);
+														}
+														assignListRes.setResourceList(attachedResourcesList);
+													}
+													
+													if(assignObj.getInt("assignmentStatus") == 2){
+													JSONArray jasonAttchResoArray = assignObj.getJSONArray("ratingParameters");
+													if(jasonAttchResoArray.length()>0){
+														ArrayList<DashBoardReportVo> attachResList = new  ArrayList<DashBoardReportVo>();
+													for(int m=0; m<jasonAttchResoArray.length(); m++){
+														JSONObject attachObj = jasonAttchResoArray.getJSONObject(m);
+														DashBoardReportVo attachRes= new DashBoardReportVo();
+														attachRes.setKey(attachObj.getInt("key"));
+														attachRes.setValue(attachObj.getString("value"));
+														
+														JSONArray childArray = attachObj.getJSONArray("childs");
+														ArrayList<DashBoardReportVo> childObjList = new  ArrayList<DashBoardReportVo>();
+														if(childArray.length()>0){
+															for(int n=0; n<childArray.length(); n++){
+																DashBoardReportVo childRes= new DashBoardReportVo();
+																JSONObject childObj = childArray.getJSONObject(n);
+																childRes.setKey(childObj.getInt("key"));
+																childRes.setValue(childObj.getString("value"));
+																childObjList.add(childRes);
+															}
+														}
+														attachRes.setChilds(childObjList);
+														attachResList.add(attachRes);
+													}
+														assignListRes.setRatingParameters(attachResList);
 												}
-												assignListRes.setResourceList(attachedResourcesList);
-											}
-											assignListSubmit.add(assignListRes);
+													}
+													if(assignObj.getInt("assignmentStatus") == 3){
+														JSONArray jasonAttchResoArray = assignObj.getJSONArray("ratingParameters");
+														if(jasonAttchResoArray.length()>0){
+															ArrayList<DashBoardReportVo> attachResList = new  ArrayList<DashBoardReportVo>();
+														for(int m=0; m<jasonAttchResoArray.length(); m++){
+															JSONObject attachObj = jasonAttchResoArray.getJSONObject(m);
+															DashBoardReportVo attachRes= new DashBoardReportVo();
+															attachRes.setTempKey(attachObj.getString("key"));
+															attachRes.setValue(attachObj.getString("value"));
+															attachResList.add(attachRes);
+														}
+														dashBoardReportVo.setRatingParameters(attachResList);
+														}
+														}
+													
+													}
+												}
 											}
 										}
-										moduListRes.setAssignmentSubmitList(assignListSubmit);
 									}
 								}
-								courseObj.setModulesList(moduDetail);
 							}
-							course.add(courseObj);
 						}
-					}
-					courseListDetails.addAll(course);
-				
-				}
+					System.out.println(ratingParameters.size());
 			}
 		}
 		catch (Exception e) {
@@ -943,6 +1016,16 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 
 	public void setHomeRoomList(ArrayList<DashBoardReportVo> homeRoomList) {
 		this.homeRoomList = homeRoomList;
+	}
+
+
+	public ArrayList<DashBoardReportVo> getRatingParameters() {
+		return ratingParameters;
+	}
+
+
+	public void setRatingParameters(ArrayList<DashBoardReportVo> ratingParameters) {
+		this.ratingParameters = ratingParameters;
 	}
 
  
