@@ -30,6 +30,7 @@ public class RegistrationVo {
 	private ArrayList<RegistrationVo> schoolList;
 	private ArrayList<RegistrationVo> classList;
 	private ArrayList<RegistrationVo> homeList;
+	private boolean isFollowUpAllowed;
 	
 	/**
 	 * @return the userName
@@ -358,6 +359,14 @@ public class RegistrationVo {
 
 	public void setUserType(int userType) {
 		this.userType = userType;
+	}
+
+	public boolean isFollowUpAllowed() {
+		return isFollowUpAllowed;
+	}
+
+	public void setFollowUpAllowed(boolean isFollowUpAllowed) {
+		this.isFollowUpAllowed = isFollowUpAllowed;
 	}
 
 	
