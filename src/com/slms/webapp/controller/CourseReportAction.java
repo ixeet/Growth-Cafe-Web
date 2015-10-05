@@ -65,6 +65,7 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 		assignmentReportDao = new  AssignmentReportDaoImpl();
 		try{
 			if(loginTeacherDetail!=null){
+				dashBoardReportVo = new DashBoardReportVo();
 				dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
 				dashBoardReportVo.setSchoolId(-1);
 				dashBoardReportVo.setClassId(-1);

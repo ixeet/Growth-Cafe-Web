@@ -4,8 +4,10 @@
 
 
 $(document).ready(function(){
-	setTimeout("courseStatusPaiChart()", 6000);
-	setTimeout("assignmentStatusPaiChart()", 6000);
+	setTimeout("courseStatusPaiChart()", 3000);
+	setTimeout("assignmentStatusPaiChart()", 3000);
+	setTimeout("picode()", 3000);
+	
 });
 
 
@@ -150,6 +152,46 @@ function courseStatusPaiChart(){
 	$(".loadImg").hide();
 	chart.render();
 }
+
+function picode(){
+ var chart = new CanvasJS.Chart("chartConta",
+    {
+     /*  title:{
+        text: "Top Oil Reserves"    
+      }, */
+      axisY: {
+        title: "Number of Student"
+      },
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      data: [
+
+      {        
+        color: "#B0D0B0",
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerType: "none",
+        legendText: "Grades",
+        dataPoints: [      
+        { x: 1, y: 15, label: "A+"},
+        { x: 2, y: 10,  label: "A" },
+        { x: 3, y: 15,  label: "B"},
+        { x: 4, y: 20,  label: "B+"},
+        { x: 5, y: 25,  label: "C"},
+        { x: 6, y: 30, label: "C+"},
+        { x: 7, y: 45,  label: "D"},        
+        ]
+      }
+      ]
+    });
+
+    chart.render();
+
+
+}
+
 </script>
 
 <script type="text/javascript">
@@ -287,7 +329,9 @@ function filterData(){
 		<img  class="loadImg" src='view/helper/images/ajax-loader-large.gif'/>
 		<s:include value="PieChartReport.jsp"/>
 		</div>
-		
+		<div class="col-md-12"  style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
+		<div id="chartConta" style="height: 300px; width: 100%;"></div>
+	</div>
 	</div>
 	
 		<div id="recentAssignmentDetailId">

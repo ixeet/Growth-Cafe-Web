@@ -17,6 +17,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.slms.app.domain.vo.RegistrationVo;
 import com.slms.app.service.iface.HomeServiceIface;
 import com.slms.app.service.impl.HomeServiceImpl;
+import com.slms.webapp.controller.CourseReportAction;
 
 public class HomeAction extends ActionSupport implements ModelDriven<RegistrationVo>, ServletResponseAware{
 
@@ -190,6 +191,7 @@ public class HomeAction extends ActionSupport implements ModelDriven<Registratio
 								registrationVo.setAddress(resJsonObject.getString("address"));
 							  	registrationVo.setUserType(resJsonObject.getInt("userType"));
 								request.getSession().setAttribute("teacherloginDetail", registrationVo);
+								new CourseReportAction().courseDetail();
 							}
 						  
 					        break;

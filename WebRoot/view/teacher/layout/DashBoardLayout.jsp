@@ -16,13 +16,12 @@
 <style>
 
 .homebg{
-	background-color: #f7f7f7;
-    height: 100%;
+	background-color: #e0e0e0;
     width: 100%;
+    height:100%;
 	background-size: 100% 100%;
     background-repeat: no-repeat;
-   background-attachment:fixed;
-  
+    background-attachment:fixed;
   
 }
 

@@ -48,7 +48,7 @@ function moduleDescription(moduleId,courseId){
     
     
     <div class="container margin_topm22">
-        <div class="page-section">
+        <div class="">
             <div class="row">
             
              <div class="col-xs-12 col-md-7 col-lg-7">
@@ -57,7 +57,7 @@ function moduleDescription(moduleId,courseId){
              
               <div class="col-xs-12 col-md-12 col-lg-12"  style='cursor: pointer; cursor: hand;' onclick="getNotificationDetail(<s:property value="feedId"/>);">
 				
-                <div class="timeline-block">
+                <div class="timeline-block1">
                   <div class="panel panel-default " style="padding: 8px;">
 
                     <div class="panel-heading">
@@ -74,7 +74,7 @@ function moduleDescription(moduleId,courseId){
                         </div>
                         <div class="media-body">
 						
-                            <span><h6 class=" color_blue bold link-text-color"> <s:text name="feedTextPost"/> </h6>&nbsp;</span>
+                            <span><h6 class="color_blue1  link-text-color"> <s:text name="feedTextPost"/> </h6>&nbsp;</span>
 							<br><i><s:property value="feedOn" /> </i>
                         </div>
                       </div>
@@ -103,13 +103,13 @@ function moduleDescription(moduleId,courseId){
                         </div>
                         <div class="panel-body list-group pad_0">
                            <ul class="list-group relative paper-shadow" data-hover-z="0.5" data-animated>
-                           <s:if test="#session.courseList != null && #session.courseList.size()>3">
-                           		<s:iterator value="#session.courseList" begin="0" end="2">
+                           <s:if test="#session.courseReportList != null && #session.courseReportList.size()>3">
+                           		<s:iterator value="#session.courseReportList" begin="0" end="2">
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
 												<div class="left width_60p">
-													<a href="javaScript:;" onclick="getModules(<s:property value="courseId"/>)">
-													<h6 class=" color_blue bold link-text-color"><s:property value="courseName"/></h6></a>
+													<%-- <a href="javaScript:;" onclick="getModules(<s:property value="courseId"/>)">
+													<h6 class=" color_blue bold link-text-color"><s:property value="courseName"/></h6></a> --%><s:property value="courseName"/> Started for <s:property value="schoolName"/> - <s:property value="className"/> - <s:property value="homeRoomName"/>
 													</div>
 												<s:if test="completedPerStatus == 100">
 												<div class="right">
@@ -140,12 +140,12 @@ function moduleDescription(moduleId,courseId){
                                   </s:iterator>
                                 </s:if>
                                 <s:else>
-                                <s:iterator value="#session.courseList">
+                                <s:iterator value="#session.courseReportList">
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
 												<div class="left width_60p">
-													<a href="javaScript:;" onclick="getModules(<s:property value="courseId"/>)">
-													<h6 class=" color_blue bold link-text-color"><s:property value="courseName"/></h6></a>
+													<%-- <a href="javaScript:;" onclick="getModules(<s:property value="courseId"/>)">
+													<h6 class=" color_blue bold link-text-color"><s:property value="courseName"/></h6></a> --%><s:property value="courseName"/> Started for <s:property value="schoolName"/> - <s:property value="className"/> - <s:property value="homeRoomName"/>
 													</div>
 												<s:if test="completedPerStatus == 100">
 												<div class="right">
@@ -177,7 +177,7 @@ function moduleDescription(moduleId,courseId){
                                 </s:else>
 									<li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
-												<a class="btn-pad normalbutton btn-height margin_bot1" href="courses" >View All</a>
+												<a  onclick="showCourse();"  class="btn-pad normalbutton btn-height margin_bot1"  href="javaScript:;">View All</a>
                                         </div>
                                     </li>
 									
@@ -188,16 +188,16 @@ function moduleDescription(moduleId,courseId){
             </div>
 			
 			<!-- assignments started -->
-			 <div class="row update_row2" data-toggle="isotope">
-			<div class="col-xs-12 col-md-12 col-lg-12">
+			<div class="row update_row2" data-toggle="isotope">
+			<%-- <div class="col-xs-12 col-md-12 col-lg-12">
                     <div class="panel panel-default" data-toggle="panel-collapse" data-open="true">
                         <div class="panel-heading panel-collapse-trigger pad_modal">
                             <h5 class="h5_color">Assignments</h5>
                         </div>
                         <div class="panel-body list-group pad_0">
                            <ul class="list-group relative paper-shadow" data-hover-z="0.5" data-animated>
-                           		<s:if test="#session.assignmentList !=null && #session.assignmentList.size()>3"  >
-                           		<s:iterator value="#session.assignmentList" begin="0" end="2">
+                           		<s:if test="#session.assignmentReportList !=null && #session.assignmentReportList.size()>3"  >
+                           		<s:iterator value="#session.assignmentReportList" begin="0" end="2">
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
 												<div class="width_100p margin_bot4m">
@@ -211,10 +211,10 @@ function moduleDescription(moduleId,courseId){
 															is now over due for submission. 
 														</s:elseif>
 														<s:elseif test="assignmentStatus ==2">
-															has been submitted on &nbsp;<span class="color_black">${assignmentSubmittedDate}.</span>
+															 submitted on &nbsp;<span class="color_black">${assignmentSubmittedDate}.</span>
 														</s:elseif>
 														<s:elseif test="assignmentStatus ==3">
-															has been reviewed.
+															 reviewed.
 														</s:elseif>
 												</h5>
 												
@@ -272,7 +272,7 @@ function moduleDescription(moduleId,courseId){
                                     </s:iterator>
                                     </s:if>
                                     <s:else>
-                                    <s:iterator value="#session.assignmentList">
+                                    <s:iterator value="#session.assignmentReportList">
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
 												<div class="width_100p">
@@ -286,10 +286,10 @@ function moduleDescription(moduleId,courseId){
 															is now over due for submission 
 														</s:elseif>
 														<s:elseif test="assignmentStatus ==2">
-															has been submitted on &nbsp;<span class="color_blue">${assignmentSubmittedDate}</span>
+															 submitted on &nbsp;<span class="color_blue">${assignmentSubmittedDate}</span>
 														</s:elseif>
 														<s:elseif test="assignmentStatus ==3">
-															has been reviewed.
+															 reviewed.
 														</s:elseif>
 												</h5>
 												<div class="left">
@@ -333,7 +333,7 @@ function moduleDescription(moduleId,courseId){
                                 </ul>
                         </div>
                     </div>
-            </div> <!-- assignments closed-->
+            </div> --%> <!-- assignments closed-->
             </div>
 			
             </div> 
