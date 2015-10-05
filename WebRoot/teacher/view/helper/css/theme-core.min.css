@@ -9712,3 +9712,13 @@ option {
    font-weight: normal;
     font-size: 12px;
 }
+.ass_font{
+	font-size: 24px;
+    line-height: 35px;
+    color:#ba0032;
+    text-align:center;
+}
+                
+.botm-none{
+	    border-bottom: none;
+}             

@@ -143,9 +143,8 @@ public class DashBoardMasterDaoImpl extends LmsDaoAbstract implements DashBoardM
 	@Override
 	public String getPieChartDetail(DashBoardReportVo dashBoardReportVo) {
 		try {
-			/*String url=baseUrl+"rest/common/getFeeds"; */
-			
-				String url= "http://192.168.0.19:8080/SLMS/rest/teacher/getPercentage"; 
+			String url=baseUrl+"rest/teacher/getPercentage"; 
+			System.out.println("URL :- "+url);
 				
 				JSONObject regJsonObject = new JSONObject();
 				regJsonObject.put("userName", dashBoardReportVo.getUserName());

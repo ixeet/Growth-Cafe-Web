@@ -52,11 +52,13 @@ public class HomeServiceImpl implements HomeServiceIface{
 		try {
 			
 			String url=baseUrl+"rest/user/login";
+			System.out.println(url);
 			
 			JSONObject logingJsonObject = new JSONObject();
 			logingJsonObject.put("userName", registrationVo.getUserName());
 			logingJsonObject.put("userPassword", registrationVo.getUserPassword());
 			logger.debug("HomeServiceImpl method:-login  Request:-"+logingJsonObject);
+			System.out.println(logingJsonObject);
 			response = PostJsonObject.postJson(logingJsonObject, url);
 		} catch (Exception e) {
 			logger.error("HomeServiceImpl login:-getSchoolMasterData "+e.getMessage());

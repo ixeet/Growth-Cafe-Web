@@ -89,6 +89,7 @@ public class DashBoardReportVo {
 	private ArrayList<DashBoardReportVo> ratingParameters;
 	private ArrayList<DashBoardReportVo> childs;
 	private ArrayList<DashBoardReportVo> percentage;
+	private ArrayList<DashBoardReportVo> studentList;
 	
 	public String getSchoolName() {
 		return schoolName;
@@ -717,6 +718,14 @@ public class DashBoardReportVo {
 
 	public void setAssignmentNotEnabled(int assignmentNotEnabled) {
 		this.assignmentNotEnabled = assignmentNotEnabled;
+	}
+
+	public ArrayList<DashBoardReportVo> getStudentList() {
+		return studentList;
+	}
+
+	public void setStudentList(ArrayList<DashBoardReportVo> studentList) {
+		this.studentList = studentList;
 	}
 
  
