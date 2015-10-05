@@ -3,6 +3,9 @@ package com.slms.app.webapp.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,7 +25,7 @@ public class SettingAction extends ActionSupport implements ModelDriven<Registra
 	String response;
 	RegistrationVo registrationVo;
 	List<RegistrationVo> userList;
-	
+	int userAccessTypeId;
 	@Override
 	public RegistrationVo getModel() {
 		registrationVo = new RegistrationVo();
@@ -31,9 +34,11 @@ public class SettingAction extends ActionSupport implements ModelDriven<Registra
 	
 	
 	public String execute(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
 		SettingServiceIface settingService = new SettingServiceImpl();
 		try{
-		response = settingService.getFeedUser(registrationVo.getUserId());
+		response = settingService.getFeedUser(loginDetail.getUserId());
 		JSONObject jsonResponse = new JSONObject(response);
 		if(jsonResponse.getString("statusMessage").equalsIgnoreCase("success")){
 			userList = new ArrayList<RegistrationVo>();
@@ -43,10 +48,15 @@ public class SettingAction extends ActionSupport implements ModelDriven<Registra
 				JSONObject jsonUser = jsonUserArr.getJSONObject(i);
 				user.setUserId(jsonUser.getInt("userId"));
 				user.setUserName(jsonUser.getString("userName"));
-				if(jsonUser.getInt("isFollowUpAllowed")==1)
-				user.setFollowUpAllowed(true);
+				user.setIsFollowUpAllowed(jsonUser.getInt("isFollowUpAllowed"));
 				userList.add(user);
 			}
+		}
+		
+		response = settingService.getFeedAccessType(loginDetail.getUserId());
+		jsonResponse = new JSONObject(response);
+		if(jsonResponse.getString("statusMessage").equalsIgnoreCase("success")){
+			userAccessTypeId = jsonResponse.getInt("userAccessTypeId");
 		}
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -54,7 +64,46 @@ public class SettingAction extends ActionSupport implements ModelDriven<Registra
 		return SUCCESS;
 	}
 
+	
+	public void setFollowerStatus(){
+		
+		SettingServiceIface settingService = new SettingServiceImpl();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
+		try{
+			if(loginDetail !=null){
+				registrationVo.setUserId(loginDetail.getUserId());
+				response = settingService.setFollowerStatus(registrationVo);
+			}
+		JSONObject jsonResponse = new JSONObject(response);
+		if(jsonResponse.getString("statusMessage").equalsIgnoreCase("success")){
+			
+		}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
+	public String setFeedAccessType(){
+			
+			SettingServiceIface settingService = new SettingServiceImpl();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			RegistrationVo loginDetail = (RegistrationVo) request.getSession().getAttribute("loginDetail");
+			try{
+				if(loginDetail !=null){
+					registrationVo.setUserId(loginDetail.getUserId());
+					response = settingService.setFeedAccessType(registrationVo,userAccessTypeId);
+				}
+			JSONObject jsonResponse = new JSONObject(response);
+			if(jsonResponse.getString("statusMessage").equalsIgnoreCase("success")){
+				execute();
+			}
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			return SUCCESS;
+		}
+	
 	public List<RegistrationVo> getUserList() {
 		return userList;
 	}
@@ -62,6 +111,16 @@ public class SettingAction extends ActionSupport implements ModelDriven<Registra
 
 	public void setUserList(List<RegistrationVo> userList) {
 		this.userList = userList;
+	}
+
+
+	public int getUserAccessTypeId() {
+		return userAccessTypeId;
+	}
+
+
+	public void setUserAccessTypeId(int userAccessTypeId) {
+		this.userAccessTypeId = userAccessTypeId;
 	}
 
 	

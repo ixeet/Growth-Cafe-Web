@@ -30,7 +30,8 @@ public class RegistrationVo {
 	private ArrayList<RegistrationVo> schoolList;
 	private ArrayList<RegistrationVo> classList;
 	private ArrayList<RegistrationVo> homeList;
-	private boolean isFollowUpAllowed;
+	private int isFollowUpAllowed;
+	private String followStatus;
 	
 	/**
 	 * @return the userName
@@ -361,14 +362,21 @@ public class RegistrationVo {
 		this.userType = userType;
 	}
 
-	public boolean isFollowUpAllowed() {
+	public int getIsFollowUpAllowed() {
 		return isFollowUpAllowed;
 	}
 
-	public void setFollowUpAllowed(boolean isFollowUpAllowed) {
+	public void setIsFollowUpAllowed(int isFollowUpAllowed) {
 		this.isFollowUpAllowed = isFollowUpAllowed;
 	}
 
-	
+	public String getFollowStatus() {
+		return followStatus;
+	}
+
+	public void setFollowStatus(String followStatus) {
+		this.followStatus = followStatus;
+	}
+
 
 }
