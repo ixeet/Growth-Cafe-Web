@@ -935,7 +935,7 @@ cursor:pointer;
 .seeting_pad{
 padding:5px 0px 0px 34px;
     max-height: 300px;
-    overflow-y: auto;
+    overflow-y: auto !important;
 }
 
 .set_pic{
