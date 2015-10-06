@@ -753,6 +753,15 @@ border: 1px solid #ba0032;
     
 }
 
+.auto_dots235{
+	    width: 235px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    list-style: initial !important;
+    
+}
+
 .auto_dots250{
 	    width: 250px;
     white-space: nowrap;
@@ -909,6 +918,45 @@ border: 1px solid #ba0032;
   -webkit-box-shadow: inset 0 1px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 1px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
+
+.seeting_pic
+{
+display: block;
+    float: left;
+    margin-right: 10px;
+    margin-left: 0px;
+    padding-right: 0px;
+}
+img.setting_clicked.img-circle.width-60
+{
+cursor:pointer;
+}
+
+.seeting_pad{
+padding:5px 0px 0px 34px;
+    max-height: 300px;
+    overflow-y: auto !important;
+}
+
+.set_pic{
+box-shadow: 0 0 0 2pt #ba0032;
+}
+
+.text{
+display:none;
+}
+
+.text2{
+display:block;
+color:#ba0032;
+margin-top:-10px;
+margin-bottom: -3px;
+}
+.media-left.center.seeting_pic
+{
+    margin-bottom: 20px;
+	}
+	
 
 
  

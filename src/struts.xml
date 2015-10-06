@@ -60,6 +60,18 @@
 			<result name="login" type="chain">welcome</result>
 			<result name="success" type="tiles">/getModule</result>
 		</action>
+		<action name="setting" class="com.slms.app.webapp.controller.SettingAction">
+			<interceptor-ref name="authStack"></interceptor-ref> 
+			<result name="login" type="chain">welcome</result>
+			<result name="success" type="tiles">/setting</result>
+		</action>
+		<action name="setFollowerStatus" class="com.slms.app.webapp.controller.SettingAction" method="setFollowerStatus">
+		</action>
+		<action name="setFeedAccessType" class="com.slms.app.webapp.controller.SettingAction" method="setFeedAccessType">
+			<interceptor-ref name="authStack"></interceptor-ref> 
+			<result name="login" type="chain">welcome</result>
+			<result name="success" type="tiles">/setting</result>
+		</action>
 		<action name="moduleDescription" class="com.slms.app.webapp.controller.CoursesAction" method="moduleDescription">
 			<interceptor-ref name="authStack"></interceptor-ref> 
 			<result name="login" type="chain">welcome</result>

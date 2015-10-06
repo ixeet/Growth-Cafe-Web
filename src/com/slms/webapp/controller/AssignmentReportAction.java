@@ -82,7 +82,24 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 				dashBoardReportVo.setModuleId(0);
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
 				dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
+				/*response = courseReportDao.getSchoolList(dashBoardReportVo);
+				JSONObject jsonMasterObject = new JSONObject(response);
+				if(jsonMasterObject!=null && jsonMasterObject.getString("statusMessage").equalsIgnoreCase("success")){
+					JSONArray jsonMasterArray=jsonMasterObject.getJSONArray("schoolList");
+					schoolNameList = new ArrayList<DashBoardReportVo>();
+					for(int i=0; i<jsonMasterArray.length(); i++){
+						DashBoardReportVo dashvo = new DashBoardReportVo();
+						JSONObject  jsonbj = jsonMasterArray.getJSONObject(i);
+						dashvo.setSchoolId(jsonbj.getInt("schoolId"));
+						dashvo.setSchoolName(jsonbj.getString("schoolName"));
+						schoolNameList.add(dashvo);
+					}
+					dashBoardReportVo.setSchoolList(schoolNameList);
+				}*/
+				
 				schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
+			/*assignmentReportList = assignmentReportDao.getAssignmentDetailList(dashBoardReportVo);*/
+				
 				response = courseReportDao.getShowFilterData(dashBoardReportVo);
 				JSONObject jsonResponseObj= new JSONObject(response);
 				if(jsonResponseObj.getString("statusMessage").equalsIgnoreCase("success")){

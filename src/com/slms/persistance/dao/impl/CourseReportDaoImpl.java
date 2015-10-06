@@ -441,7 +441,6 @@ public class CourseReportDaoImpl extends LmsDaoAbstract implements CourseReportD
 	public String getShowFilterData(DashBoardReportVo dashBoardReportVo) {
 		try{
 			String url=baseTeacherUrl+"rest/course/getAssignments/teacher";
-			/*String url="http://192.168.0.18:8080/SLMS/rest/course/getAssignments/teacher";*/
 			System.out.println(url);
 			
 			JSONObject logingJsonObject = new JSONObject();
