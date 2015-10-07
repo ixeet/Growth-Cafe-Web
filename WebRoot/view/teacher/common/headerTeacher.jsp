@@ -154,10 +154,10 @@ return false;
                         
                     </li>
                   
-                    <li class="dropdown  dropdown_hover">
+                   <!--  <li class="dropdown  dropdown_hover">
                         <a href="javaScript:;" id="schoolTabId" onclick="return showSchool();" class="dropdown-toggle dropdown_hover" data-toggle="dropdown">Organizations</a>
                         
-                    </li>
+                    </li> -->
                     <li class="dropdown dropdown_hover">
                         <a href="javaScript:;" id="coursesTabId" onclick="return showCourse();" class="dropdown-toggle dropdown_hover" data-toggle="dropdown">Courses</a>
                         
@@ -190,6 +190,7 @@ return false;
                             <ul class="dropdown-menu dropdown-menu-box" role="menu">
                                 <li><a href="javaScript:;" onclick="return showDashboard();"><i class="fa fa-bar-chart-o"></i> Dashboard</a></li>
                                 <li><a href="javaScript:;" onclick="return profile('${teacherloginDetail.userId}');"><i class="fa fa-user"></i> Profile</a></li>
+                                <li><a href="javaScript:;" onclick="setting();"><i class="fa fa-wrench"></i> Settings</a></li>
                                 <li><a href="javaScript:;" onclick="return logoutTeacher();"><i class="fa fa-sign-out"></i> Logout</a></li>
                             </ul>
                         </li>
@@ -235,6 +236,11 @@ function showSchool(){
 
 function showCourse(){
 	window.location="courseDetail";
+}
+
+function setting(){
+	window.location="setting";
+	return false;
 }
 
 function showLeaderboard(){

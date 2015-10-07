@@ -5,7 +5,7 @@
 
 		<div class="panel panel-default botm-none curriculum paper-shadow" data-z="0.5"
 			style="padding: 0px;margin-top: -18px;">
-			<div class="panel-heading panel-collapse-trigger collapsed"
+			<div class="panel-heading panel-collapse-trigger collapsed pad-0"
 				data-toggle="collapse"
 				data-target="#<s:property value="#courseDtl.schoolId"/>-<s:property value="#courseDtl.classId"/>-<s:property value="#courseDtl.homeRoomId"/>-<s:property value="#courseDtl.courseId"/>"
 				aria-expanded="false">
@@ -15,22 +15,22 @@
 							<p class="col-sm-12 col-xs-12">
 								<i class="ass_font fa fa-fw fa-mortar-board"></i>
 							</p>
-							<h4 class="col-sm-12 col-xs-12">
+							<h5 class="col-sm-12 col-xs-12 txt-8px" >
 								<s:property value="courseName" />
-							</h4>
+							</h5>
 						</div>
 
 						<div class="col-sm-2 col-xs-2 center">
-							<p class="col-sm-12 col-xs-12 ass_font">150</p>
-							<h4 class="col-sm-12 col-xs-12">Students</h4>
+							<p class="col-sm-12 col-xs-12 ass_font"><s:property value="totalStudent"/></p>
+							<h5 class="col-sm-12 col-xs-12 txt-8px">Students</h5>
 						</div>
 						<div class="col-sm-2 col-xs-2 center">
-							<p class="col-sm-12 col-xs-12 ass_font">90</p>
-							<h4 class="col-sm-12 col-xs-12">Reviews Pending</h4>
+							<p class="col-sm-12 col-xs-12 ass_font"><s:property value="reviewPending"/></p>
+							<h5 class="col-sm-12 col-xs-12 txt-8px">Reviews Pending</h5>
 						</div>
 						<div class="col-sm-2 col-xs-2 center">
-							<p class="col-sm-12 col-xs-12 ass_font">20</p>
-							<h4 class="col-sm-12 col-xs-12">Assignments Pending</h4>
+							<p class="col-sm-12 col-xs-12 ass_font"><s:property value="assignPending"/></p>
+							<h5 class="col-sm-12 col-xs-12 txt-8px">Assignments Pending</h5>
 						</div>
 
 						<div class="col-sm-2  col-xs-2 center">
@@ -57,11 +57,11 @@
 						data-toggle="collapse"
 						data-target="#<s:property value="#courseDtl.schoolId"/>--<s:property value="#courseDtl.classId"/>--<s:property value="#courseDtl.homeRoomId"/>--<s:property value="#courseDtl.courseId"/>"
 						aria-expanded="false">
-						<h4>
+						<h5>
 							<s:property value="#courseDtl.className" />
 							->
 							<s:property value="#courseDtl.homeRoomName" />
-						</h4>
+						</h5>
 					</div>
 
 					<div class="list-group collapse"
@@ -73,7 +73,7 @@
 
 								<div class="panel panel-default botm-none  curriculum paper-shadow"
 									data-z="0.5">
-									<div class="panel-heading panel-collapse-trigger collapsed"
+									<div class="panel-heading panel-collapse-trigger collapsed pad-0"
 										data-toggle="collapse"
 										data-target="#<s:property value="#courseDtl.schoolId"/>--<s:property value="#courseDtl.classId"/>--<s:property value="#courseDtl.homeRoomId"/>--<s:property value="#courseDtl.courseId"/>--<s:property value="#module.moduleId"/>"
 										aria-expanded="false">
@@ -82,9 +82,9 @@
 
 												<div class="col-sm-3 col-xs-3 center">
 													<i class="ass_font fa fa-fw fa-book"></i><br>
-													<h4 class="col-sm-12 col-xs-12">
+													<h5 class="col-sm-12 col-xs-12 txt-8px">
 														<s:property value="#module.moduleName" />
-													</h4>
+													</h5>
 												</div>
 												<div class="col-sm-4 col-xs-4 center"></div>
 												<div class="col-sm-2 col-xs-2 center"></div>
@@ -113,7 +113,7 @@
 
 												<div class="panel panel-default botm-none  curriculum paper-shadow"
 													data-z="0.5">
-													<div class="panel-heading panel-collapse-trigger collapsed"
+													<div class="panel-heading panel-collapse-trigger collapsed pad-0"
 														data-toggle="collapse"
 														data-target="#<s:property value="#courseDtl.schoolId"/>--<s:property value="#courseDtl.classId"/>--<s:property value="#courseDtl.homeRoomId"/>-<s:property value="#module.moduleId"/>-<s:property value="#courseDtl.courseId"/>-<s:property value="#assignment.assignmentId"/>"
 														aria-expanded="false">
@@ -122,18 +122,18 @@
 																<div class="col-sm-2 col-xs-2 center"></div>
 																<div class="col-sm-3 col-xs-3 center">
 																	<i class="ass_font fa fa-fw  fa-pencil-square-o"></i><br>
-																	<h4 class="col-sm-12 col-xs-12">
+																	<h5 class="col-sm-12 col-xs-12 txt-8px">
 																		<s:property value="assignmentName" />
-																	</h4>
+																	</h5>
 																</div>
 																<div class="col-sm-4 col-xs-4 center"></div>
 																<div class="col-sm-2  col-xs-2 ">
 																	<div class="progress_n2" style="margin-left: 0px;">
 																		<span class="progress-val_n2"><s:property
-																				value="#module.completedPerStatus" />%</span> <span
+																				value="#module.assignmentsunmittedPercent" />%</span> <span
 																			class="progress-bar_n2"><span
 																			class="progress-in_n2"
-																			style="width:<s:property value="#module.completedPerStatus"/>%;"></span>
+																			style="width:<s:property value="#module.assignmentsunmittedPercent"/>%;"></span>
 																		</span>
 																	</div>
 																</div>
@@ -186,8 +186,8 @@
 																								test="assignmentStatus==2 || assignmentStatus==3">
 																								<tr>
 																									<td><span class="label"
-																										style="background-color: rgb(194, 194, 194);"><s:property
-																												value="%{#counter.index+1}" /> </span></td>
+																										style="background-color: rgb(194, 194, 194);">
+																										<s:property	value="%{#counter.index+1}" /> </span></td>
 																									<td><s:property value="studentName" />
 																									</td>
 																									<td><s:property
@@ -240,13 +240,13 @@
 																				</thead>
 																				<tbody id="responsive-table-body">
 
-																					<s:iterator value="studentList" status="counter">
+																					<s:iterator value="studentList" status="counterNo">
 																						<s:if test="assignmentStatus==1">
 
 																							<tr>
 																								<td><span class="label"
 																									style="background-color: rgb(194, 194, 194);">
-																										<s:property value="%{#counter.index+1}" /> </span></td>
+																										<s:property	value="%{#counterNo.index+1}" /> </span></td>
 																								<td><s:property value="studentName" />
 																								</td>
 																							</tr>

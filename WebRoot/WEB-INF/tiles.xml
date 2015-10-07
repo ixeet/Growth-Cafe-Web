@@ -148,4 +148,9 @@
 		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
 	  	<put-attribute name="body" value="/view/teacher/pages/teacherPersonalProfile.jsp" /> 
 	</definition>
+	
+	<definition name="/teacherSetting" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/teacherSetting.jsp" /> 
+	</definition>
 </tiles-definitions>

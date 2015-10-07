@@ -387,7 +387,9 @@ public class CourseReportDaoImpl extends LmsDaoAbstract implements CourseReportD
 	@Override
 	public String getCourse(DashBoardReportVo dashBoardReportVo) {
 		try {
-			String url=baseUrl+"rest/course/getCourses/teacher";
+			String url=baseUrl+"rest/course/getCourseDetail/teacher";
+			
+			//String url = "http://192.168.0.19:8080/SLMS/rest/course/getCourseDetail/teacher";
 			System.out.println(url);
 			
 			JSONObject logingJsonObject = new JSONObject();
@@ -396,9 +398,6 @@ public class CourseReportDaoImpl extends LmsDaoAbstract implements CourseReportD
 			logingJsonObject.put("schoolId",dashBoardReportVo.getSchoolId());
 			logingJsonObject.put("classId",dashBoardReportVo.getClassId());
 			logingJsonObject.put("hrmId",dashBoardReportVo.getHomeRoomId());
-			
-			
-			
 			System.out.println("CoursesServiceImpl method:-courses Request:-"+logingJsonObject);
 			response = PostJsonObject.postJson(logingJsonObject, url);
 		} catch (Exception e) {

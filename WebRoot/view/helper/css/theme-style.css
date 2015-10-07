@@ -958,5 +958,11 @@ margin-bottom: -3px;
 	}
 	
 
-
+.auto_dots100 {
+    list-style: initial !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100px;
+}
  

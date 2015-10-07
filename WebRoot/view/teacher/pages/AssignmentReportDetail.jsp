@@ -14,9 +14,9 @@ $(document).ready(function(){
 </script>
 <script type="text/javascript">
 
-	function loadClassMethodShow(){
+	/* function loadClassMethodShow(){
 		var schoolId=$("#schoolIds").val();
-		var url="loadDashboardClassMethod.action";
+		var url="loadAssignmentClassMethod.action";
 		$.ajax({
 			type		:	"POST",
 			url			:	url,
@@ -45,7 +45,7 @@ $(document).ready(function(){
 		});
 	return false;
 	}
-
+ */
 	function loadRoomType(){
 		var schoolId	=	$("#schoolIds").val();
 		var classId		=	$("#classIds").val();
@@ -81,7 +81,7 @@ $(document).ready(function(){
 	}
 	
 	
-	function courseDetail(){
+	function loadClassMethodShow(){
 		var schoolId	=	$("#schoolIds").val();
 		var classId		=	$("#classIds").val();
 		var homeRoomId	=	$("#homeRoomIds").val();
@@ -219,7 +219,7 @@ $(document).ready(function(){
 			name="schoolId" id="schoolIds"
 			onchange="return loadClassMethodShow();"></s:select>
 	</div>
-	<div class="col-md-2">
+	<%-- <div class="col-md-2">
 		<div id="loadClassDetail">
 		<select class="form-control panel-default bgsize" name="classId">
 			 <option value="0">DEPARTMENT(ALL)</option>
@@ -233,7 +233,7 @@ $(document).ready(function(){
 				 <option value="0">GROUP(ALL)</option>
 			</select>
 		</div>
-	</div>
+	</div> --%>
 
 	<div class="col-md-2 ">
 		<div id="loadCourseDetail">
@@ -263,7 +263,7 @@ $(document).ready(function(){
 		<input type="button" class="btn-pad normalbutton btn-height" value="Filter" style="height:35px;" onclick="return filterAllValue();">
 	</div> -->
 	
-	<div class="col-md-2 paper-shadow">
+	<div class="col-md-6 paper-shadow">
 		 <div class="media v-middle">
 		 <a class="pad4 normalbutton btn-height btn_mar_left" href="javaScript:;" onclick="return filterAllValue();" >Filter</a>
 		<!-- <input type="button" onclick="return filterData();"

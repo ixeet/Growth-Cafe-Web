@@ -67,7 +67,12 @@ public class DashBoardReportVo {
 	private int assignmentComplete;
 	private int assignmentOpen;
 	private int assignmentNotEnabled;
-	
+	private int totalStudent;
+	private int reviewPending;
+	private int assignPending;
+	private int courseSize;
+	private int homeRoomSize;
+	private int departSize;
 	
 	
  
@@ -728,7 +733,55 @@ public class DashBoardReportVo {
 		this.studentList = studentList;
 	}
 
- 
+	public int getTotalStudent() {
+		return totalStudent;
+	}
+
+	public void setTotalStudent(int totalStudent) {
+		this.totalStudent = totalStudent;
+	}
+
+	public int getReviewPending() {
+		return reviewPending;
+	}
+
+	public void setReviewPending(int reviewPending) {
+		this.reviewPending = reviewPending;
+	}
+
+	public int getAssignPending() {
+		return assignPending;
+	}
+
+	public void setAssignPending(int assignPending) {
+		this.assignPending = assignPending;
+	}
+
+	public int getCourseSize() {
+		return courseSize;
+	}
+
+	public void setCourseSize(int courseSize) {
+		this.courseSize = courseSize;
+	}
+
+	public int getHomeRoomSize() {
+		return homeRoomSize;
+	}
+
+	public void setHomeRoomSize(int homeRoomSize) {
+		this.homeRoomSize = homeRoomSize;
+	}
+
+	public int getDepartSize() {
+		return departSize;
+	}
+
+	public void setDepartSize(int departSize) {
+		this.departSize = departSize;
+	}
+
+	 
  
 
 }

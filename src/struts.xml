@@ -324,6 +324,16 @@
 		<action name="paginationNotification" class="com.slms.webapp.controller.TeacherUpdatesAction" method="getNotifications">
 			<result name="success">/view/teacher/pages/notificationPage.jsp</result>
 		</action>
+		
+		<action name="setting" class="com.slms.webapp.controller.TeacherSettingAction">
+			<result name="success" type="tiles">/teacherSetting</result>
+		</action>
+		
+		<action name="setFollowerStatus" class="com.slms.webapp.controller.TeacherSettingAction" method="setFollowerStatus">
+		</action>
+		<action name="setFeedAccessType" class="com.slms.webapp.controller.TeacherSettingAction" method="setFeedAccessType">
+			<result name="success" type="tiles">/teacherSetting</result>
+		</action>
         </package>
 	
 </struts>    
