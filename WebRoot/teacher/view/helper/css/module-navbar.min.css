@@ -208,7 +208,7 @@
 		color: white;
 	}
 	.navbar.navbar-size-large .navbar-nav>li>a>i {
-		font-size: 25px
+		font-size: 19px
 	}
 	.navbar.navbar-size-large .navbar-btn,.navbar.navbar-size-large .navbar-form
 		{
@@ -257,7 +257,7 @@
 		color: white;
 	}
 	.navbar.navbar-size-xlarge .navbar-nav>li>a>i {
-		font-size: 25px
+		font-size: 19px
 	}
 	.navbar.navbar-size-xlarge .navbar-btn,.navbar.navbar-size-xlarge .navbar-form
 		{
@@ -305,7 +305,7 @@
 
 @media ( min-width :768px) and (min-width:992px) {
 	.navbar.navbar-size-large .navbar-nav-margin-left {
-		margin-left: 15px
+		margin-left: 16.5%;
 	}
 }
 
@@ -1262,8 +1262,8 @@ li.dropdown.dropdown_hover {
 	}
 	.navtop-barn {
 		position: relative;
-		margin-left: 28%;
-		margin-top: -10.4%;
+		margin-left: 17%;
+		margin-top: -9.7%;
 	}
 }
 

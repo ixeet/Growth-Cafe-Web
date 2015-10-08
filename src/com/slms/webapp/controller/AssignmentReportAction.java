@@ -700,9 +700,14 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 			JSONObject jsonResponseObj= new JSONObject(response);
 			if(jsonResponseObj.getString("statusMessage").equalsIgnoreCase("success")){
 				JSONArray jsonCouArray = jsonResponseObj.getJSONArray("courseList");
+				ArrayList<DashBoardReportVo> assignReview = new ArrayList<DashBoardReportVo>();
+				ArrayList<DashBoardReportVo> assignNotReview = new ArrayList<DashBoardReportVo>();
 				ArrayList<DashBoardReportVo> course = new  ArrayList<DashBoardReportVo>();
 					if(jsonCouArray.length()>0){
 						for(int i=0; i <jsonCouArray.length(); i++){
+							int unReviewed =0;
+							int assUnsubmit=0;
+							int totalStudent=0;
 							DashBoardReportVo courseObj= new DashBoardReportVo();
 							JSONObject jsonCourseObject=jsonCouArray.getJSONObject(i);
 							courseObj.setSchoolId(jsonCourseObject.getInt("schoolId"));
@@ -742,11 +747,12 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 										
 										JSONArray assignArray = assignObj.getJSONArray("studentList");
 										ArrayList<DashBoardReportVo> studentList = new ArrayList<DashBoardReportVo>();
-										
+										courseObj.setTotalStudent(assignArray.length());
 										if(assignArray.length()>0){
 											
 											ArrayList<DashBoardReportVo> assignListNotSubmit = new ArrayList<DashBoardReportVo>();
 											ArrayList<DashBoardReportVo> assignListSubmit = new ArrayList<DashBoardReportVo>();
+											
 											for(int t=0; t<assignArray.length(); t++){
 													DashBoardReportVo assignListRes= new DashBoardReportVo();
 													JSONObject assignmentObj = assignArray.getJSONObject(t);
@@ -755,6 +761,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 														assignListRes.setAssignmentStatus(assignmentObj.getInt("assignmentStatus"));
 														assignListRes.setStudentName(assignmentObj.getString("assignmentSubmittedBy"));
 														assignListNotSubmit.add(assignListRes);
+														assUnsubmit++;
 														}
 														
 
@@ -791,6 +798,8 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 														
 														}
 														assignListSubmit.add(assignListRes);
+														assignNotReview.add(assignListRes);
+														unReviewed++;
 													}
 													if(assignmentObj.getInt("assignmentStatus") == 3){
 														/*	assignListRes.setAssignmentId(assignmentObj.getInt("assignmentId"));*/
@@ -813,10 +822,11 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 															assignListRes.setChilds(attachResList);
 															}
 															assignListSubmit.add(assignListRes);
+															assignReview.add(assignListRes);
 														}
 													
-													
 												}
+											
 												int totalsize=assignArray.length();
 												int submit=assignListSubmit.size();
 												int percent=  (submit*100/totalsize);
@@ -825,6 +835,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 												studentList.addAll(assignListNotSubmit);
 												assignListVo.setStudentList(studentList);
 												
+												totalStudent=studentList.size();
 												
 										}
 										assignListStudent.add(assignListVo);
@@ -833,8 +844,14 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 										}
 								}
 								courseObj.setModulesList(moduDetail);
+								/*courseObj.setReviewPending(assignListSubmit.size() - assignReview.size());
+								courseObj.setAssignPending(assignListNotSubmit.size());*/
 							}
+							courseObj.setReviewPending(unReviewed);
+							courseObj.setAssignPending(assUnsubmit);
+							courseObj.setTotalStudent(totalStudent);
 							course.add(courseObj);
+							
 						}
 					}
 					courseListDetails.addAll(course);

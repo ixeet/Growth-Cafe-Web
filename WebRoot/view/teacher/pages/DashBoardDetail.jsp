@@ -186,8 +186,8 @@ function courseStatusPaiChart(){
 			
 				
 				{  y: courseNotStartStatus(), name: "In Progress", legendMarkerType: "square"},
-				{  y: courseCompleteStatus(), name: "Not Started", legendMarkerType: "square"},
-				{  y: courseInProgressStatus(), name: "Completed", legendMarkerType: "square"}
+				{  y: courseInProgressStatus(), name: "Not Started", legendMarkerType: "square"},
+				{  y: courseCompleteStatus(), name: "Completed", legendMarkerType: "square"}
 			]
 		}
 		]

@@ -12,7 +12,7 @@
 
 						<div class="col-sm-3 col-xs-3 center">
 							<p class="col-sm-12 col-xs-12">
-								<i class="ass_font fa fa-fw fa-mortar-board"></i>
+								<i class="ass_font fa fa-fw fa-bank"></i>
 							</p>
 							<h5 class="col-sm-12 col-xs-12 txt-8px">
 								<s:property value="schoolName" />
@@ -46,14 +46,6 @@
 													</span>
 												</div>
 						
-						
-						
-							<%-- <div class="progress_n2" style="margin-left: 0px;">
-								<span class="progress-val_n2"> <s:property value="completedPerStatus"/>%</span> <span class="progress-bar_n2"><span
-									class="progress-in_n2"
-									style="width:<s:property value="completedPerStatus"/>%;"></span>
-								</span>
-							</div> --%>
 						</div>
 					</div>
 				</div>
@@ -83,6 +75,7 @@
 								 					data-target="#<s:property value="#schoolparent.schoolId"/>--<s:property value="#homelist.homeRoomId"/>-<s:property value="#coulist.courseId"/>" aria-expanded="false">
 									<div class="media">
 										<div class="media-body">
+										
 											<div class="col-sm-3 col-xs-3 center">
 												<p class="col-sm-12 col-xs-12">
 													<i class="ass_font fa fa-fw fa-mortar-board"></i>
@@ -90,6 +83,10 @@
 												<h5 class="col-sm-12 col-xs-12 txt-8px">
 													<s:property value="#coulist.courseName" />
 												</h5>
+											</div>
+											<div class="col-sm-3 col-xs-3">
+										</div>
+											<div class="col-sm-4 col-xs-4 center">
 											</div>
 											<div class="col-sm-2  col-xs-2 center">
 												<div class="progress_n2" style="margin-left: 0px;">
@@ -101,6 +98,8 @@
 													</span>
 												</div>
 											</div>
+											
+											
 										</div>
 									</div>
 									</div>
