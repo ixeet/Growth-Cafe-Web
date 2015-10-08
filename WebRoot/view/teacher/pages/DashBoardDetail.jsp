@@ -1,42 +1,85 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
+   
+
+
 
 <script type="text/javascript">
 
 
 $(document).ready(function(){
+$("#highcharts-0").removeClass("highcharts-button");
 	setTimeout("courseStatusPaiChart()", 3000);
 	setTimeout("assignmentStatusPaiChart()", 3000);
-	setTimeout("picode()", 3000);
+	setTimeout("columnChart()", 3000);
+
 	
 });
 
 
-var courseComplete = 20;
-var courseNotStart = 50;
-var courseInProgress = 30;
+	function columnChart(){
+	
+ $('#containerOne').highcharts({
+        title: {
+            text: 'Combination chart'
+        },
+        xAxis: {
+            categories: ['A', 'A+', 'B', 'B+', 'C','C+','D']
+        },
+        series: [{
+            type: 'column',
+            name: 'Grades',
+             data: [15, 22, 13, 10, 25,8,20]
+                  
+        }, {
+            type: 'pie',
+            name: 'Total consumption',
+           
+            center: [100, 80],
+            size: 100,
+            showInLegend: false,
+            dataLabels: {
+                enabled: false
+            }
+        }]
+    });
+ 
+	}
 
-var assignmentComplete = 40;
-var assignmentNotStart = 20;
-var assignmentInProgress = 40;
-
+ 
 function courseCompleteStatus(){
-	return courseComplete;
+var courseComplete = $("#courseCompleteId").val();
+var temp = parseInt(courseComplete);
+	return temp;
 }
 function courseNotStartStatus(){
-	return courseNotStart;
+var courseNotStart = $("#courseNotStartedId").val();
+var temp1 = parseInt(courseNotStart);
+	return temp1;
+	//return courseNotStart;
 }
 function courseInProgressStatus(){
-	return courseInProgress;
+var courseInProgress =$("#courseProgressId").val();
+var temp2 = parseInt(courseInProgress);
+	return temp2;
+	//return courseInProgress;
 }
 
+ 
+
 function assignmentCompleteStatus(){
-	return assignmentComplete;
+var assignmentId = $("#assignmentCompleteId").val();
+var assigStatus = parseInt(assignmentId);
+	return assigStatus;
 }
 function assignmentNotStartStatus(){
-	return assignmentNotStart;
+	var assignmentStatusId = $("#assignmentNotEnabledId").val();
+var assignStatus = parseInt(assignmentStatusId);
+	return assignStatus;
 }
 function assignmentInProgressStatus(){
-	return assignmentInProgress;
+	var assignmentStatusId = $("#assignmentOpenId").val();
+var assignmentssStatus = parseInt(assignmentStatusId);
+	return assignmentssStatus;
 }
 
 function assignmentStatusPaiChart(){
@@ -82,9 +125,9 @@ function assignmentStatusPaiChart(){
 			showInLegend: true,
 			indexLabel: "#percent%", 
 			dataPoints: [
-				{  y: assignmentCompleteStatus(), name: "Submitted", legendMarkerType: "square"},
-				{  y: assignmentNotStartStatus(), name: "Not Submitted", legendMarkerType: "square"},
-				{  y: assignmentInProgressStatus(), name: "Reviewed", legendMarkerType: "square"}
+				{  y: assignmentCompleteStatus(), name: "Open", legendMarkerType: "square"},
+				{  y: assignmentNotStartStatus(), name: "Not Enabled", legendMarkerType: "square"},
+				{  y: assignmentInProgressStatus(), name: "Closed", legendMarkerType: "square"}
 			]
 		}
 		]
@@ -141,9 +184,10 @@ function courseStatusPaiChart(){
 			dataPoints: [
 			
 			
-				{  y: courseCompleteStatus(), name: "Completed", legendMarkerType: "square"},
-				{  y: courseNotStartStatus(), name: "Not Started", legendMarkerType: "square"},
-				{  y: courseInProgressStatus(), name: "In Progress", legendMarkerType: "square"}
+				
+				{  y: courseNotStartStatus(), name: "In Progress", legendMarkerType: "square"},
+				{  y: courseInProgressStatus(), name: "Not Started", legendMarkerType: "square"},
+				{  y: courseCompleteStatus(), name: "Completed", legendMarkerType: "square"}
 			]
 		}
 		]
@@ -156,9 +200,7 @@ function courseStatusPaiChart(){
 function picode(){
  var chart = new CanvasJS.Chart("chartConta",
     {
-     /*  title:{
-        text: "Top Oil Reserves"    
-      }, */
+     
       axisY: {
         title: "Number of Student"
       },
@@ -166,6 +208,7 @@ function picode(){
         verticalAlign: "bottom",
         horizontalAlign: "center"
       },
+      
       data: [
 
       {        
@@ -275,7 +318,6 @@ function filterData(){
 		},
 		success		:	function(result){
 		$("#courseDetailDiv").html(result);
-		
 		},
 		complete		:	function(){
 		endwindowDisable();
@@ -284,10 +326,40 @@ function filterData(){
 		});
 	return false;
 	}
+	
+	
+	function filterData(){
+		var schoolId	=	$("#schoolIds").val();
+		var classId		=	$("#classIds").val();
+		var homeRoomId	=	$("#homeRoomIds").val();
+		var url="filterCourseData.action";
+		$.ajax({
+			type	:	"POST",
+			url		:	url,
+			data	:	{"schoolId":schoolId,"classId":classId, "homeRoomId":homeRoomId},
+			beforeSend	:	function(){
+			startwindowDisable();
+			},
+			success		:	function(result){
+			$("#dashBoardPieChartId").html(result);
+			courseStatusPaiChart();
+			assignmentStatusPaiChart();
+			
+		
+			
+			},
+			complete	:	function(){
+				endwindowDisable();
+			}
+		});		
+	return false;
+	}
+
+
 
 </script>
 
-<script type="text/javascript" src="view/helper/js/canvasjs.min.js"></script>
+
 
 <style>
 .loadImg{
@@ -322,15 +394,18 @@ function filterData(){
 		</div>
 	</div>
 	<div class="col-md-3 paper-shadow">
-		 <a class="pad4 normalbutton btn-height btn_mar_left" href="javaScript:;" onclick="" >Filter</a>
+		 <a class="pad4 normalbutton btn-height btn_mar_left" href="javaScript:;" onclick="return filterData();" >Filter</a>
 		</div>
-		
-		<div class="col-md-12" style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
 		<img  class="loadImg" src='view/helper/images/ajax-loader-large.gif'/>
+		<div class="col-md-12" style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
 		<s:include value="PieChartReport.jsp"/>
 		</div>
-		<div class="col-md-12"  style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
-		<div id="chartConta" style="height: 300px; width: 100%;"></div>
+		<!-- <div class="col-md-12"  style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
+		<div id="containerOne" style="height: 300px; width: 100%;"></div>
+	</div> -->
+	
+	<div id="dashBoardPieChartId">
+	<s:include value="DashBoardPieChartDetail.jsp"/>
 	</div>
 	</div>
 	
@@ -338,5 +413,7 @@ function filterData(){
 		<s:include value="teacherRecentUpdates.jsp"/>
 	
 	</div>
+	
+	
 </div>
 </div>

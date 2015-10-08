@@ -201,6 +201,12 @@
 		
 		<action name="dashboardHomeRoom" class="com.slms.webapp.controller.DashBoardAction" method="dashboardHomeRoom"/>
 		
+		
+		<action name="filterCourseData" class="com.slms.webapp.controller.DashBoardAction" method="filterCourseData">
+			<result name="success">/view/teacher/pages/DashBoardPieChartDetail.jsp</result>
+		</action>
+		
+		
 								<!-- school Detail  -->
 		<action name="schoolDetail" class="com.slms.webapp.controller.SchoolReportAction" method="schoolDetails">
 				<result name="success" type="tiles">/schoolDetail</result>
@@ -209,6 +215,7 @@
 		<action name="filterSchoolDetails" class="com.slms.webapp.controller.SchoolReportAction" method="filterSchoolDetails">
 			<result name="success">/view/teacher/pages/schoolReportDiaplayTable.jsp</result>
 		</action>
+		
 		
 		
 								<!-- course Detail  -->		
@@ -245,6 +252,10 @@
 		
 		<action name="studentAssignmentViewDetail" class="com.slms.webapp.controller.AssignmentReportAction" method="studentAssignmentViewDetail">
 			<result name="success" type="tiles">/assignmentResourceDetail</result>
+		</action>
+		
+		<action name="rateAssignment" class="com.slms.webapp.controller.AssignmentReportAction" method="rateAssignment">
+			<result name="success">/view/teacher/pages/AssignmentReview.jsp</result>
 		</action>
 		
 		<action name="loadClassMethodDetails" class="com.slms.webapp.controller.CourseReportAction" method="loadClassMethod"/>
@@ -312,6 +323,16 @@
 		</action>
 		<action name="paginationNotification" class="com.slms.webapp.controller.TeacherUpdatesAction" method="getNotifications">
 			<result name="success">/view/teacher/pages/notificationPage.jsp</result>
+		</action>
+		
+		<action name="setting" class="com.slms.webapp.controller.TeacherSettingAction">
+			<result name="success" type="tiles">/teacherSetting</result>
+		</action>
+		
+		<action name="setFollowerStatus" class="com.slms.webapp.controller.TeacherSettingAction" method="setFollowerStatus">
+		</action>
+		<action name="setFeedAccessType" class="com.slms.webapp.controller.TeacherSettingAction" method="setFeedAccessType">
+			<result name="success" type="tiles">/teacherSetting</result>
 		</action>
         </package>
 	

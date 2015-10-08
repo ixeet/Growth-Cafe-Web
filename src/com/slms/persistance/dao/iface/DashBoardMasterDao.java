@@ -24,4 +24,6 @@ public interface DashBoardMasterDao {
 
 	public String getSchoolDetail(DashBoardReportVo dashBoardReportVo);
 
+	public String getPieChartDetail(DashBoardReportVo dashBoardReportVo);
+
 }

@@ -154,7 +154,7 @@ function filterData(){
 		$.ajax({
 		type		:	"POST",
 		url			:	url,
-		data		:	{"courseId " :courseId, "schoolId":schoolId, "classId":classId,"homeRoomId":homeRoomId},
+		data		:	{"courseId " :0, "schoolId":schoolId, "classId":0,"homeRoomId":0},
 		/* data		:	datas, */
 		beforeSend		:	function(){
 			startwindowDisable();
@@ -221,7 +221,7 @@ return false;
 			name="schoolId" id="schoolIds"
 			onchange="return loadClassMethodShow();"></s:select>
 	</div>
-	<div class="col-md-2 ">
+	<%-- <div class="col-md-2 ">
 		<div id="loadClassDetail">
 		<select class="form-control panel-default bgsize " name="classId" >
 			 <option value="0">DEPARTMENT (ALL)</option>
@@ -242,9 +242,9 @@ return false;
 			 <option value="0">COURSE (ALL)</option>
 		</select>
 		</div>
-	</div>
+	</div> --%>
  
-		<div class="col-md-4 paper-shadow">
+		<div class="col-md-10 paper-shadow">
 		 <div class="media v-middle">
 		 <a class="pad4 normalbutton btn-height btn_mar_left" href="javaScript:;" onclick="return filterData();" >Filter</a>
 		<!-- <input type="button" onclick="return filterData();"

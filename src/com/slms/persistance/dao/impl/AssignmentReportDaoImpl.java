@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.slms.app.domain.utility.PostJsonObject;
@@ -289,6 +290,36 @@ public class AssignmentReportDaoImpl extends LmsDaoAbstract implements Assignmen
 	}
 	System.out.println("CoursesServiceImpl method:-courses Response:-"+response);
 	return response;
+	}
+
+	@Override
+	public String getRateAssignment(DashBoardReportVo dashBoardReportVo) {
+		try{
+			String url=baseTeacherUrl+"rest/course/rateAssignment";
+			System.out.println(url);
+			  String regExp = "[,\\s]+";
+			String [] key = dashBoardReportVo.getTempKey().split(regExp);
+			String [] value = dashBoardReportVo.getTempValue().split(regExp);
+			
+					JSONArray jsonParmeter = new JSONArray();
+					for(int x=0;x<key.length;x++){
+					JSONObject jsonParmeterObj= new JSONObject();
+					jsonParmeterObj.put("value", value[x]);
+					jsonParmeterObj.put("key", key[x]);
+					jsonParmeter.put(jsonParmeterObj);
+					}
+			JSONObject logingJsonObject = new JSONObject();
+			logingJsonObject.put("userId", dashBoardReportVo.getUserId());
+			logingJsonObject.put("assignmentResourceTxnId",dashBoardReportVo.getAssignmentResourceTxnId());
+			logingJsonObject.put("ratingParameters",jsonParmeter);
+			
+			System.out.println("CoursesServiceImpl method:-courses Request:-"+logingJsonObject);
+			response = PostJsonObject.postJson(logingJsonObject, url);
+		} catch (Exception e) {
+			System.out.println("CoursesServiceImpl method:-courses "+e.getMessage());
+		}
+		System.out.println("CoursesServiceImpl method:-courses Response:-"+response);
+		return response;
 	}
 
 }//end of class
