@@ -180,6 +180,20 @@
 		<action name="getNotificationDetail" class="com.slms.app.webapp.controller.UpdatesAction" method="getNotificationDetail">
 			<result name="success" type="tiles">/updates</result>
 		</action>
+		<action name="categorySearch" class="com.slms.app.webapp.controller.SearchAction" method="categorySearch">
+			<result name="success" type="tiles">/search</result>
+		</action>
+		
+		<action name="getMoreUpdatesStudents" class="com.slms.app.webapp.controller.SearchAction" method="getMoreUpdates"/>
+		
+		<action name="getMoreAssignmentStudent" class="com.slms.app.webapp.controller.SearchAction" method="getMoreAssignment"/>
+		
+		
+		<action name="getMoreCourseStudent" class="com.slms.app.webapp.controller.SearchAction" method="getMoreCourse"/>
+		
+		<action name="getMoreProfileStudent" class="com.slms.app.webapp.controller.SearchAction" method="getMoreProfile"/>
+		
+		
 	</package>
 	
 	<package name="teacher" namespace="/teacher" extends="struts-default">
@@ -190,7 +204,8 @@
         
 		<action name="log_out" class="com.slms.app.webapp.controller.HomeAction" method="logoutTeacher">
 		</action>
-		
+		<action name="viewNotificationDetail" class="com.slms.webapp.controller.DashBoardAction" method="viewNotification">
+		</action>
 		 
 			<!-- Dashboard Data  -->
 		<action name="dashboard" class="com.slms.webapp.controller.DashBoardAction"  method="showDashboardData">
@@ -201,6 +216,12 @@
 		
 		<action name="dashboardHomeRoom" class="com.slms.webapp.controller.DashBoardAction" method="dashboardHomeRoom"/>
 		
+		
+		<action name="filterCourseData" class="com.slms.webapp.controller.DashBoardAction" method="filterCourseData">
+			<result name="success">/view/teacher/pages/DashBoardPieChartDetail.jsp</result>
+		</action>
+		
+		
 								<!-- school Detail  -->
 		<action name="schoolDetail" class="com.slms.webapp.controller.SchoolReportAction" method="schoolDetails">
 				<result name="success" type="tiles">/schoolDetail</result>
@@ -209,6 +230,9 @@
 		<action name="filterSchoolDetails" class="com.slms.webapp.controller.SchoolReportAction" method="filterSchoolDetails">
 			<result name="success">/view/teacher/pages/schoolReportDiaplayTable.jsp</result>
 		</action>
+		
+		
+		
 		
 		
 								<!-- course Detail  -->		
@@ -232,6 +256,17 @@
 			<result name="success">/view/teacher/pages/CoursesDisplayTable.jsp</result>
 		</action>
 		
+		<action name="changeCourseDetail" class="com.slms.webapp.controller.CourseReportAction" method="changeCourseDetail">
+			<result name="success">/view/teacher/pages/CoursesDisplayTable.jsp</result>
+		</action>
+		
+		
+		<action name="assignmentStatusDate" class="com.slms.webapp.controller.CourseReportAction" method="assignmentStatusDate">
+			<!-- <result name="success">/view/teacher/pages/StatusChangeByTeacher.jsp</result> -->
+			<result name="success" type="tiles">/viewDetail</result>
+		</action>
+		
+		
 		<action name="courseDetailList" class="com.slms.webapp.controller.CourseReportAction" method="courseDetailList"/>
 		
 		<action name="homeRoom" class="com.slms.webapp.controller.CourseReportAction" method="homeRoom"/>
@@ -245,6 +280,10 @@
 		
 		<action name="studentAssignmentViewDetail" class="com.slms.webapp.controller.AssignmentReportAction" method="studentAssignmentViewDetail">
 			<result name="success" type="tiles">/assignmentResourceDetail</result>
+		</action>
+		
+		<action name="rateAssignment" class="com.slms.webapp.controller.AssignmentReportAction" method="rateAssignment">
+			<result name="success">/view/teacher/pages/AssignmentReview.jsp</result>
 		</action>
 		
 		<action name="loadClassMethodDetails" class="com.slms.webapp.controller.CourseReportAction" method="loadClassMethod"/>
@@ -313,6 +352,30 @@
 		<action name="paginationNotification" class="com.slms.webapp.controller.TeacherUpdatesAction" method="getNotifications">
 			<result name="success">/view/teacher/pages/notificationPage.jsp</result>
 		</action>
+		
+		<action name="setting" class="com.slms.webapp.controller.TeacherSettingAction">
+			<result name="success" type="tiles">/teacherSetting</result>
+		</action>
+		
+		<action name="setFollowerStatus" class="com.slms.webapp.controller.TeacherSettingAction" method="setFollowerStatus">
+		</action>
+		<action name="setFeedAccessType" class="com.slms.webapp.controller.TeacherSettingAction" method="setFeedAccessType">
+			<result name="success" type="tiles">/teacherSetting</result>
+		</action>
+		
+		<action name="categorySearchTeacher" class="com.slms.webapp.controller.TeacherSearchAction" method="categorySearch">
+			<result name="success" type="tiles">/teacherSearch</result>
+		</action>
+		
+		<action name="getMoreUpdates" class="com.slms.webapp.controller.TeacherSearchAction" method="getMoreUpdates"/>
+		
+		<action name="getMoreAssignment" class="com.slms.webapp.controller.TeacherSearchAction" method="getMoreAssignment"/>
+		
+		
+		<action name="getMoreCourse" class="com.slms.webapp.controller.TeacherSearchAction" method="getMoreCourse"/>
+		
+		<action name="getMoreProfile" class="com.slms.webapp.controller.TeacherSearchAction" method="getMoreProfile"/>
+		
         </package>
 	
 </struts>    

@@ -5,14 +5,31 @@
 
 <script type="text/javascript">
 
-$(document).on('click','.t', function(){
+/* $(document).on('click','.t', function(){
 var resourceId = $(this).attr("value");
 $('.t').removeAttr("style");
 $(this).css("border","1px solid white");
-window.location="moduleDescription?moduleId="+moduleId+"&courseId="+courseId+"&resourceId="+resourceId;
+window.location="moduleDescription?moduleId="+moduleId+"&courseId="+courseId+"&resourceId="+resourceId; 
+}); */
+
+/* $(document).on('click','.t', function(){
+
+}); */
+
+$(document).ready(function(){
+var resource='${resourceLinkId}';
+$("#markBtn_"+resource).show();
+$( "#datepicker-3" ).datepicker({
+               dateFormat:"'dd-mm-yy'",
+            });
+            endwindowDisable();
 });
 
 
+function temp_(id){
+$("[id^=markBtn_]").hide();
+$("#markBtn_"+id).show();
+}
 </script>
 
 
@@ -249,12 +266,10 @@ window.location="moduleDescription?moduleId="+moduleId+"&courseId="+courseId+"&r
             //responsive code end
         });
     </script>
-<s:if test="selectResourceDetail!= null">
-					<s:iterator value="selectResourceDetail">
-
-
+<%-- <s:if test="selectResourceDetail!= null">
+	<s:iterator value="selectResourceDetail">
  </s:iterator>
-</s:if>
+</s:if> --%>
 
 <div class="container">
             <div class="row  panel-default">
@@ -288,10 +303,9 @@ window.location="moduleDescription?moduleId="+moduleId+"&courseId="+courseId+"&r
 								<div class="vide" onclick="playPause()">
 									<video id="vide-1" width="580" height="340" controls>
 										  <source src='<s:property value="resourceUrl"/>'/>
-										  
 										</video>
 								</div>
-								<img u="thumb" id="testId" src='<s:property value="thumbImg" />' value="<s:property value="resourceId"/>" />
+								<img onclick="temp_(<s:property value="resourceId"/>);" u="thumb" id="testId" src='<s:property value="thumbImg" />' value="<s:property value="resourceId"/>" />
 								</div>
 								</s:iterator>
 								</s:if>
@@ -366,18 +380,14 @@ window.location="moduleDescription?moduleId="+moduleId+"&courseId="+courseId+"&r
                         </div>
                         <div class="panel-body">
                         
-                        <a href="javaScript:;"  
-											onclick=""
-											class="btn-pad normalbutton btn-height" data-toggle="tooltip"
-											data-placement="top" title="Enable Assignments">Enable Assignments</a>
+                        ${dashBoardReportVo.assignmentName}
                         
+                         <!-- <p>Enter Date: <input class="dateTemp" type="text" id="datepicker-3"></p>
                         
-                        
-							 
+                        <a href="javaScript:;"  onclick="return submitDate();"
+							class="btn-pad normalbutton btn-height" data-toggle="tooltip"
+							data-placement="top" title="Enable Assignments">Enable Assignments</a> -->
 						</div> 
-                        <hr class="margin-none" />
-                       <br/>
-                      
                     </div>
 					
 				
@@ -385,25 +395,22 @@ window.location="moduleDescription?moduleId="+moduleId+"&courseId="+courseId+"&r
             </div> <!-- ends right side columns -->
 				<div class="col-md-6">
 				<s:if test="selectResourceDetail !=null && selectResourceDetail.size()>0">
-											<s:iterator value="selectResourceDetail">
-					<s:if test="CompletedStatus != 1">
-									<%-- <input type="button" value="Mark As Completed"
-										style="margin-left: 25px; height: 38px;" class="btn-pad normalbutton btn-height"
-										onclick="return showCurrentDetail('<s:property value="tcsMainId" />',1,${dashBoardReportVo.courseId},${dashBoardReportVo.moduleId},<s:property value="resourceId" />)">
-									 --%>	<a href="javaScript:;"   style="float: left;"
-											onclick="return showCurrentDetail('<s:property value="tcsMainId" />',1,${dashBoardReportVo.courseId},${dashBoardReportVo.moduleId},<s:property value="resourceId" />)"
-											class="btn-pad normalbutton btn-height" data-toggle="tooltip"
-											data-placement="top" title="Mark As Completed">Mark As Completed</a>
-										
-										
-										</s:if>
-										<%-- <s:elseif test="CompletedStatus == 1">
-									<input type="button" value="Start" 
-										style="margin-left: 25px; height: 38px;" class="btn loginbutton"
-										onclick="return showCurrentDetail('<s:property value="tcsMainId" />','<s:property value="id" />')">
-										</s:elseif> --%>
-										</s:iterator>
-										</s:if>
+							<s:iterator value="selectResourceDetail">
+					<%-- <s:if test="CompletedStatus != 1 && CompletedStatus != 2">
+						<a href="javaScript:;"   style="float: left;"
+								onclick="return showCurrentDetail(<s:property value="tcsMainId" />,1,${dashBoardReportVo.courseId},${dashBoardReportVo.moduleId},<s:property value="resourceId" />)"
+								class="btn-pad normalbutton btn-height" data-toggle="tooltip"
+								data-placement="top" title="Mark As Completed">Mark As Completed</a>
+							</s:if> --%>
+							
+							<s:if test="CompletedStatus == 0">
+						<a href="javaScript:;" id="markBtn_<s:property value="resourceId" />"   style="float: left; display: none;"
+								onclick="return showCurrentDetail(<s:property value="tcsMainId" />,1,${dashBoardReportVo.courseId},${dashBoardReportVo.moduleId},<s:property value="resourceId" />)"
+								class="btn-pad normalbutton btn-height" data-toggle="tooltip"
+								data-placement="top" title="Mark As Completed">Mark As Completed<s:property value="tcsMainId" /></a>
+							</s:if>
+							</s:iterator>
+							</s:if>
 										
 					
                </div>
@@ -418,6 +425,9 @@ window.location="moduleDescription?moduleId="+moduleId+"&courseId="+courseId+"&r
                         <strong>Lorem ipsum</strong> dolor sit amet, consectetur adipisicing elit. Ad aperiam autem cumque deleniti dicta iusto laboriosam laudantium omnis, possimus praesentium provident quam quas, sapiente sint, ut! Adipisci aliquid assumenda consequuntur cupiditate deleniti dicta dolore dolorem
                         <strong>dolores enim </strong>eos hic illo inventore iure libero.
                     			 --%>
+                    			 
+                    			
+   
 						</p>
 						
 						</s:iterator>

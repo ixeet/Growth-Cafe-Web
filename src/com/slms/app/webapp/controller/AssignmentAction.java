@@ -107,16 +107,32 @@ public class AssignmentAction extends ActionSupport implements ModelDriven<Assig
 								}
 								
 								if(jsonAssignmentObj.has("ratingParameters")){
-									String[][] ratingParameter=new String[3][2];
 									JSONArray jsonRatingParameter = jsonAssignmentObj.getJSONArray("ratingParameters");
+									ArrayList<AssignmentVo> ratingParameterList = new ArrayList<AssignmentVo>();
 									for(int x=0;x<jsonRatingParameter.length();x++){
+										AssignmentVo assign = new AssignmentVo();
 										JSONObject jsonParameterObj = jsonRatingParameter.getJSONObject(x);
-										String[] key = jsonParameterObj.getString("key").split("-");
-										String[] val = jsonParameterObj.getString("value").split("-");
-										ratingParameter[x][0]= key[1];
-										ratingParameter[x][1]= val[1];
+										assign.setKey(jsonParameterObj.getInt("key"));
+										assign.setValue(jsonParameterObj.getString("value"));
+										
+										
+										JSONArray jsonRatingchild = jsonParameterObj.getJSONArray("childs");
+										if(jsonRatingchild.length()>0){
+											ArrayList<AssignmentVo> ratingChildParameterList = new ArrayList<AssignmentVo>();
+											for(int l=0; l<jsonRatingchild.length(); l++){
+												JSONObject jsonchildObj = jsonRatingchild.getJSONObject(l);
+												AssignmentVo assignList = new AssignmentVo();
+												assignList.setKey(jsonchildObj.getInt("key"));
+												assignList.setValue(jsonchildObj.getString("value"));
+												ratingChildParameterList.add(assignList);
+											}
+											assign.setRatingChildParameter(ratingChildParameterList);
+										}
+										
+										ratingParameterList.add(assign);
 									}
-									assignment.setRatingParameter(ratingParameter);
+									
+									assignment.setRatingParameter(ratingParameterList);
 								}
 								assignmentList.add(assignment);
 								

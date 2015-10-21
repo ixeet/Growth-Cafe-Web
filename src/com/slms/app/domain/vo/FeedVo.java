@@ -11,6 +11,11 @@ public class FeedVo {
 	private boolean likeStatus;
 	private String feedText;
 	private String feedTextPost;
+	private int userId;
+	private String profilePhotoContentType;
+	
+	
+	
 	public String getFeedTextPost() {
 		return feedTextPost;
 	}
@@ -129,6 +134,18 @@ public class FeedVo {
 	}
 	public void setLikeStatus(boolean likeStatus) {
 		this.likeStatus = likeStatus;
+	}
+	public String getProfilePhotoContentType() {
+		return profilePhotoContentType;
+	}
+	public void setProfilePhotoContentType(String profilePhotoContentType) {
+		this.profilePhotoContentType = profilePhotoContentType;
+	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	
 }

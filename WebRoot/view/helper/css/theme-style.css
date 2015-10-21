@@ -716,6 +716,7 @@ border: 1px solid #ba0032;
 
 .height23{
 	height:23px !important;
+	padding: 0 12px !important;
 }
 .height_237{
 	max-height:237px !important;
@@ -958,5 +959,46 @@ margin-bottom: -3px;
 	}
 	
 
+.auto_dots100 {
+    list-style: initial !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100px;
+}
+ #sresult 
+{
+}
+
+#sresult img
+{
+	width:90px;
+	height:90px;
+	border:1px solid #ddd;
+	padding:2px;
+}
+
+#sresult .media-right
+{
+	float:right;
+}
+
+#sresult .media
+{
+	margin-bottom:20px;
+	padding:20px 10px;
+	border-bottom:1px solid #ddd;
+}
+
+#sresult .nav-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+
+}
+
+#sresult .fa
+{
+	margin-right:5px;
+}
 
  

@@ -7,6 +7,7 @@
 		<div class="panel-body list-group pad_0">
 			<ul class="list-group relative paper-shadow" data-hover-z="0.5"
 				data-animated>
+				<s:if test="#session.feedList!=null && #session.feedList.size()>0">
 				<s:iterator value="#session.feedList">
 					<li class="list-group-item paper-shadow">
 						<div class="media v-middle">
@@ -37,6 +38,11 @@
 
 						</div></li>
 				</s:iterator>
+				</s:if>
+				<s:else>
+				<span style="margin-left: 41%;"> There is no Update</span>
+				
+				</s:else>
 
 			</ul>
 		</div>

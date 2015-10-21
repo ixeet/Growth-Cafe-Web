@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -208,6 +209,7 @@ public class CourseReportDaoImpl extends LmsDaoAbstract implements CourseReportD
 	public String getShowList( DashBoardReportVo dashBoardReportVo) {
 		String response="";
 		try {
+			/*String url=baseUrl+"rest/teacher/updateResourseStatus/id/"+dashBoardReportVo.getTcsMainId()+"/statusCode/"+dashBoardReportVo.getCompletedStatus();*/
 			String url=baseUrl+"rest/teacher/updateResourseStatus/id/"+dashBoardReportVo.getTcsMainId()+"/statusCode/"+dashBoardReportVo.getCompletedStatus();
 			System.out.println(url);
 			
@@ -387,7 +389,9 @@ public class CourseReportDaoImpl extends LmsDaoAbstract implements CourseReportD
 	@Override
 	public String getCourse(DashBoardReportVo dashBoardReportVo) {
 		try {
-			String url=baseUrl+"rest/course/getCourses/teacher";
+			String url=baseUrl+"rest/course/getCourseDetail/teacher";
+			
+			//String url = "http://192.168.0.19:8080/SLMS/rest/course/getCourseDetail/teacher";
 			System.out.println(url);
 			
 			JSONObject logingJsonObject = new JSONObject();
@@ -396,9 +400,6 @@ public class CourseReportDaoImpl extends LmsDaoAbstract implements CourseReportD
 			logingJsonObject.put("schoolId",dashBoardReportVo.getSchoolId());
 			logingJsonObject.put("classId",dashBoardReportVo.getClassId());
 			logingJsonObject.put("hrmId",dashBoardReportVo.getHomeRoomId());
-			
-			
-			
 			System.out.println("CoursesServiceImpl method:-courses Request:-"+logingJsonObject);
 			response = PostJsonObject.postJson(logingJsonObject, url);
 		} catch (Exception e) {
@@ -457,6 +458,51 @@ public class CourseReportDaoImpl extends LmsDaoAbstract implements CourseReportD
 			System.out.println("CoursesServiceImpl method:-courses "+e.getMessage());
 		}
 		System.out.println("CoursesServiceImpl method:-courses Response:-"+response);
+		return response;
+	}
+
+	@Override
+	public String getChangeCourseStatus(DashBoardReportVo dashBoardReportVo) {
+		try{
+			String url=baseUrl+"rest/teacher/updateCourseStatus/id/"+dashBoardReportVo.getCourseSessionId()+"/statusCode/"+dashBoardReportVo.getStatusCode()+"";
+			System.out.println("CoursesServiceImpl method : - master data Request"+url);
+			response = GetJsonObject.getWebServceObj(url);
+		}
+		catch (Exception e) {
+			System.out.println("CoursesServiceImpl method : - master data Request"+e.getMessage());
+			e.printStackTrace();
+		}
+		System.out.println("CoursesServiceImpl method : - master data Response:-"+response);
+		return response;
+	}
+
+	@Override
+	public String getChangeAssignmentStatus(DashBoardReportVo dashBoardReportVo) {
+		try{
+			String url="";
+			
+			Date myDate = new Date();
+			if(dashBoardReportVo.getAsignmentEnableStatus()!=null){
+				
+				String temp[]=dashBoardReportVo.getAsignmentEnableStatus().split("/");
+				String selectedDate = temp[2]+"-"+temp[0]+"-"+temp[1];
+				url=baseUrl+"rest/teacher/updateAssignmentStatus/"+dashBoardReportVo.getUserName()+"/"+dashBoardReportVo.getSchoolId()+"/"+dashBoardReportVo.getClassId()+"/"+dashBoardReportVo.getHomeRoomId()+"/"+dashBoardReportVo.getCourseId()+"/"+dashBoardReportVo.getModuleId()+"/statusCode/"+1+"/"+selectedDate+"";
+				
+			}
+			else if(dashBoardReportVo.getAsignmentEnableStatus()==null){
+				url=baseUrl+"rest/teacher/updateAssignmentStatus/"+dashBoardReportVo.getUserName()+"/"+dashBoardReportVo.getSchoolId()+"/"+dashBoardReportVo.getClassId()+"/"+dashBoardReportVo.getHomeRoomId()+"/"+dashBoardReportVo.getCourseId()+"/"+dashBoardReportVo.getModuleId()+"/statusCode/"+0+"/"+new SimpleDateFormat("yyyy-MM-dd").format(myDate)+"";
+				
+			}
+			
+			System.out.println("CoursesServiceImpl method : - master data Request = "+url);
+			response = GetJsonObject.getWebServceObj(url);
+			System.out.println(response);
+		}
+		catch (Exception e) {
+			System.out.println("CoursesServiceImpl method : - master data Request"+e.getMessage());
+			e.printStackTrace();
+		}
+		System.out.println("CoursesServiceImpl method : - master data Response:-"+response);
 		return response;
 	}
 

@@ -27,6 +27,7 @@ public class DashBoardReportVo {
 	private int attendance;
 	private int totalPoints;
 	private int id;
+	private int courseSessionId;
 	private int userId;
 	private int tcsMainId;
 	private String userName;
@@ -49,6 +50,7 @@ public class DashBoardReportVo {
 	private int resourceSessionId;
 	private int statusId;
 	private String completedPerStatus;
+	private String asignmentEnableStatus;
 	private int moduleStatuId;
 	private int assignmentId;
 	private int assignmentStatus;
@@ -58,8 +60,30 @@ public class DashBoardReportVo {
 	private String assignmentName;
 	private String assignmentDesc;
 	private String assignmentDueDate;
+	private String value;
+	private int key;
+	
+	private String courseComplete;
+	private String courseProgress;
+	private String courseNotStarted;
+	private String assignmentComplete;
+	private String assignmentOpen;
+	private String assignmentNotEnabled;
+	
+	private int totalStudent;
+	private int reviewPending;
+	private int assignPending;
+	private int courseSize;
+	private int homeRoomSize;
+	private int departSize;
 	
 	
+ 
+	
+	
+	private String tempKey;
+	private String tempValue;
+	private int assignmentResourceTxnId;
 	private ArrayList<DashBoardReportVo> modulesList;
 	private ArrayList<DashBoardReportVo> resourceList;
 	private ArrayList<DashBoardReportVo> assignmentList;
@@ -70,9 +94,10 @@ public class DashBoardReportVo {
 	private ArrayList<DashBoardReportVo> attachedResources;
 	private ArrayList<DashBoardReportVo> classList;
 	private ArrayList<DashBoardReportVo> homeRoomList;
-	
-	
-	
+	private ArrayList<DashBoardReportVo> ratingParameters;
+	private ArrayList<DashBoardReportVo> childs;
+	private ArrayList<DashBoardReportVo> percentage;
+	private ArrayList<DashBoardReportVo> studentList;
 	
 	public String getSchoolName() {
 		return schoolName;
@@ -591,7 +616,192 @@ public class DashBoardReportVo {
 		this.homeRoomList = homeRoomList;
 	}
 
- 
+	public ArrayList<DashBoardReportVo> getRatingParameters() {
+		return ratingParameters;
+	}
+
+	public void setRatingParameters(ArrayList<DashBoardReportVo> ratingParameters) {
+		this.ratingParameters = ratingParameters;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public int getKey() {
+		return key;
+	}
+
+	public void setKey(int key) {
+		this.key = key;
+	}
+
+	public ArrayList<DashBoardReportVo> getChilds() {
+		return childs;
+	}
+
+	public void setChilds(ArrayList<DashBoardReportVo> childs) {
+		this.childs = childs;
+	}
+
+	public int getAssignmentResourceTxnId() {
+		return assignmentResourceTxnId;
+	}
+
+	public void setAssignmentResourceTxnId(int assignmentResourceTxnId) {
+		this.assignmentResourceTxnId = assignmentResourceTxnId;
+	}
+
+	public String getTempKey() {
+		return tempKey;
+	}
+
+	public void setTempKey(String tempKey) {
+		this.tempKey = tempKey;
+	}
+
+	public String getTempValue() {
+		return tempValue;
+	}
+
+	public void setTempValue(String tempValue) {
+		this.tempValue = tempValue;
+	}
+
+	
+	public int getTotalStudent() {
+		return totalStudent;
+	}
+
+	public void setTotalStudent(int totalStudent) {
+		this.totalStudent = totalStudent;
+	}
+
+	public int getReviewPending() {
+		return reviewPending;
+	}
+
+	public void setReviewPending(int reviewPending) {
+		this.reviewPending = reviewPending;
+	}
+
+	public int getAssignPending() {
+		return assignPending;
+	}
+
+	public void setAssignPending(int assignPending) {
+		this.assignPending = assignPending;
+	}
+
+	public int getCourseSize() {
+		return courseSize;
+	}
+
+	public void setCourseSize(int courseSize) {
+		this.courseSize = courseSize;
+	}
+
+	public int getHomeRoomSize() {
+		return homeRoomSize;
+	}
+
+	public void setHomeRoomSize(int homeRoomSize) {
+		this.homeRoomSize = homeRoomSize;
+	}
+
+	public int getDepartSize() {
+		return departSize;
+	}
+
+	public void setDepartSize(int departSize) {
+		this.departSize = departSize;
+	}
+
+	public int getCourseSessionId() {
+		return courseSessionId;
+	}
+
+	public void setCourseSessionId(int courseSessionId) {
+		this.courseSessionId = courseSessionId;
+	}
+
+	public String getCourseProgress() {
+		return courseProgress;
+	}
+
+	public void setCourseProgress(String courseProgress) {
+		this.courseProgress = courseProgress;
+	}
+
+	public String getCourseComplete() {
+		return courseComplete;
+	}
+
+	public void setCourseComplete(String courseComplete) {
+		this.courseComplete = courseComplete;
+	}
+
+	public String getCourseNotStarted() {
+		return courseNotStarted;
+	}
+
+	public void setCourseNotStarted(String courseNotStarted) {
+		this.courseNotStarted = courseNotStarted;
+	}
+
+	public String getAssignmentComplete() {
+		return assignmentComplete;
+	}
+
+	public void setAssignmentComplete(String assignmentComplete) {
+		this.assignmentComplete = assignmentComplete;
+	}
+
+	public String getAssignmentOpen() {
+		return assignmentOpen;
+	}
+
+	public void setAssignmentOpen(String assignmentOpen) {
+		this.assignmentOpen = assignmentOpen;
+	}
+
+	public String getAssignmentNotEnabled() {
+		return assignmentNotEnabled;
+	}
+
+	public void setAssignmentNotEnabled(String assignmentNotEnabled) {
+		this.assignmentNotEnabled = assignmentNotEnabled;
+	}
+
+	public ArrayList<DashBoardReportVo> getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(ArrayList<DashBoardReportVo> percentage) {
+		this.percentage = percentage;
+	}
+
+	public ArrayList<DashBoardReportVo> getStudentList() {
+		return studentList;
+	}
+
+	public void setStudentList(ArrayList<DashBoardReportVo> studentList) {
+		this.studentList = studentList;
+	}
+
+	public String getAsignmentEnableStatus() {
+		return asignmentEnableStatus;
+	}
+
+	public void setAsignmentEnableStatus(String asignmentEnableStatus) {
+		this.asignmentEnableStatus = asignmentEnableStatus;
+	}
+
+	 
  
 
 }

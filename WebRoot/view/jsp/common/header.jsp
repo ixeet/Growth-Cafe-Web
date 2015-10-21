@@ -50,11 +50,28 @@ function personalProfile(userId){
 }
 
 $(document).ready(function(){
-var tabId ='${selectedTab}';
-$("#"+tabId).parent().addClass("active");
+	var tabId ='${selectedTab}';
+	$("#"+tabId).parent().addClass("active");
 });
 
+function categorySearch(){
+	var searchText =$("[name~=searchText]").val();
+	var tabId ='${selectedTab}';
+	if("updatesTabId"==tabId){
+		window.location="categorySearch?category=Update&searchText="+searchText;
+	}else if("coursesTabId"==tabId){
+		window.location="categorySearch?category=Course&searchText="+searchText;
+	}else if("assignmentsTabId"==tabId){
+		window.location="categorySearch?category=Assignment&searchText="+searchText;
+	}else{
+		window.location="categorySearch?category=People&searchText="+searchText;
+	}
+}
 
+function search(){
+		var searchText =$("[name~=searchText]").val();
+		window.location="categorySearch?searchText="+searchText;
+}
 
 function logout(){
  	//FB.logout(function () { document.location.reload(); });
@@ -71,19 +88,19 @@ function setting(){
 
 
 function showErrorMessage(message){
-	$("#errorMessageDivId").html("<p>"+message+"</p>");
+	$("#errorMessageDivId div").html("<p>"+message+"</p>");
 	document.getElementById('errorMessageDivId').style.display == 'block';
 	$("#errorMessageDivId").show();
 	$("#successMessageId").hide();
-	$("#errorMessageDivId").append("<input type='button' class='loginbutton' style='width: 50px;' onclick='toggle_visibility()' value='ok'/>");
+	$("#errorMessageDivId div").append("<input type='button' class='loginbutton' style='width: 50px;' onclick='toggle_visibility()' value='ok'/>");
 	//setTimeout(function() {$("#errorMessageDivId").hide();},2250);
 }
 
 function showSuccessMessage(message){
-	$("#successMessageId").html("<p>"+message+"</p>");
+	$("#successMessageId div").html("<p>"+message+"</p>");
 	document.getElementById('successMessageId').style.display == 'block';
 	$("#successMessageId").show();
-	$("#successMessageId").append("<input type='button' class='loginbutton' style='width: 50px;' onclick='toggle_visibility()' value='OK'/>");
+	$("#successMessageId div").append("<input type='button' class='loginbutton' style='width: 50px;' onclick='toggle_visibility()' value='OK'/>");
 	$("#errorMessageDivId").hide();
 }
 
@@ -118,7 +135,7 @@ function courses(){
 }
 
 function updates(){
-	$("#loader").append("<div id='top'><img  style='margin:252px 0 0 259px;' width='160px' height='120px' src='view/helper/images/animatedLoading.gif'/></div>");
+	$("#loader").append("<div id='top'><img  style='margin-left: 48%;margin-top: 50%;' height='100px'  src='view/helper/images/ajax-loader-large.gif'/></div>");
 	window.location="updates";
 	
 }
@@ -151,7 +168,8 @@ function viewNotification(){
 				beforeSend :function(){
 				},
 				success : function(data){
-					//var response = data.feedList;
+					var response = data.length;
+					if(response>0){
 					var contentElement = $("#notificatioDivId");
 					var notificationContent=" <ul class='dropdown-menu' role='notification'> <li class='dropdown-header'>Notifications</li>";
 						for(var i=0;i<data.length;i++){
@@ -173,6 +191,22 @@ function viewNotification(){
                             contentElement.html(notificationContent);	
                             $("#notificatioDivId .dropdown-menu").show();
                              $("#notificatioDivId").show();
+                             }
+				else{
+				var contentElement = $("#notificatioDivId");
+					var notificationContent=" <ul class='dropdown-menu' role='notification'> <li class='dropdown-header'>Notifications</li>";
+					notificationContent = notificationContent +"<li style='text-align: center;'>"+
+                                    "<div>"+
+                                       "<p align='center'>" +"There is no Notification"+"</p>"+
+                                    "</div>"+
+                                "</li>";
+					
+						  
+                             contentElement.html(notificationContent);	
+                             $("#notificatioDivId .dropdown-menu").show();
+                             $("#notificatioDivId").show();
+				
+				}
 				}
 	        });
 	        var tabId ='${selectedTab}';
@@ -219,16 +253,18 @@ $(document).mouseup(function (e)
     background-size: cover;*/
 }
 .vinDivClass {
-    border: 4px solid #7e0000;
     padding: 15px;
-    position: absolute;
     right:0;
     left:0;
    	top:10%;
     width: 260px;
-    z-index: 99999;
+    z-index: 999999;
     margin:0px auto;
     text-align:center;
+    border: 3px solid #72142d;
+     position: fixed;
+     background-color: #ba0032;
+     color: white;
     }
     
     
@@ -237,10 +273,27 @@ $(document).mouseup(function (e)
    		position: fixed;
     	z-index: 999;
 		}
+		
+.overlay {
+ position: fixed;
+ left: 0;
+ right: 0;
+ top: 0;
+ bottom: 0;
+ background: (0,255,255 0.8);
+ //Cross-browser opacity below
+ -moz-opacity:.80;
+ filter:alpha(opacity=80);
+ opacity:.80;
+ z-index: 99999;
+}
 </style>
-
-<div id="successMessageId" class="vinDivClass signpop" style=" display:none; background-color: rgba(0, 102,0, .3); border: 3px solid rgb(0, 102, 0); padding: 20px; position: fixed;"></div>
-   <div id="errorMessageDivId" class="vinDivClass signpop" style="display:none; background-color: rgba(255,0,0, .3); padding: 20px; position: fixed;"></div>
+<div id="successMessageId" class="overlay"  style=" display:none; ">
+		<div  class="vinDivClass signpop"></div>
+</div>
+<div  id="errorMessageDivId" class="overlay" style="display:none;">
+   <div class="vinDivClass signpop" ></div>
+  </div>
 <s:if test="#session.loginDetail ==null">
 <body class="home_bg">
 
@@ -288,7 +341,7 @@ $(document).mouseup(function (e)
   
   <body class="home_bg1">
   <div id="loadingImgId" class="loadingCenter" style="display: none;">
-  		<img src="view/helper/images/animatedLoading.gif" alt="loading please wait">
+  		<img src="view/helper/images/animatedLoading.gif" style=" height: 90px;" alt="loading please wait">
   </div>
   
   <div class="navbar navbar-min-height navbar-default navbar-fixed-top navbar-size-large navbar-size-xlarge paper-shadow" data-z="0" data-animated role="navigation">
@@ -307,9 +360,9 @@ $(document).mouseup(function (e)
                 </div>
 				<div class="col-sm-12 navtop-barn s_bar">
                                         <div class="input-group search-bar-width">
-                                            <input type="text" class="form-control search_bar form-bar-control height23 ">
+                                            <input type="text" onkeydown="if (event.keyCode == 13)search();" class="form-control search_bar form-bar-control height23" id="studentSearchTextId" name="searchText">
                                             <span class="input-group-btn"> 
-                                                <button class="btn btn-inverse search_button search_btn hw_23_47  pad_0 zindex_3" type="button"><i class="fa fa-fw fa-search "></i></button>
+                                                <button onclick="search();" class="btn btn-inverse search_button search_btn hw_23_47  pad_0 zindex_3" type="button"><i class="fa fa-fw fa-search "></i></button>
                                             </span>
                                         </div>
                  </div>
@@ -345,7 +398,7 @@ $(document).mouseup(function (e)
                         </li>
                         
                          <li class="dropdown user">
-		                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                            <a href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown">
 		                                <img src="${loginDetail.profilePhotoFileName}" alt="" class="img-circle width-30" /> ${loginDetail.firstName}<span class="caret"></span>
 		                            </a>
 		                            <ul class="dropdown-menu dropdown-menu-box" role="menu">

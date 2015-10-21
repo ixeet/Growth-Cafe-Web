@@ -18,6 +18,8 @@ import com.slms.app.domain.vo.CommentVo;
 import com.slms.app.domain.vo.CoursesVo;
 import com.slms.app.domain.vo.FeedVo;
 import com.slms.app.domain.vo.RegistrationVo;
+import com.slms.app.service.iface.UpdatesServiceIface;
+import com.slms.app.service.impl.UpdatesServiceImpl;
 import com.slms.domain.vo.DashBoardReportVo;
 import com.slms.persistance.dao.iface.CourseReportDao;
 import com.slms.persistance.dao.iface.DashBoardMasterDao;
@@ -40,7 +42,10 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 	List<DashBoardReportVo> dashBoardReportList;
 	ArrayList<DashBoardReportVo> schoolNameList;
 	List<DashBoardReportVo> classNameList;
+	
 	String response="";
+	
+	String responsePai="";
 	 
 	public String execute(){
 		try{
@@ -63,6 +68,59 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 		try{
 			if(loginTeacherDetail!=null){
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
+				dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
+				dashBoardReportVo.setSchoolId(0);
+				dashBoardReportVo.setClassId(0);
+				dashBoardReportVo.setHomeRoomId(0);
+				responsePai = dashBoardMasterDao.getPieChartDetail(dashBoardReportVo);
+				System.out.println(responsePai);
+				JSONObject jsonPaiChartObject = new JSONObject(responsePai);
+				if(jsonPaiChartObject!=null && jsonPaiChartObject.getString("statusMessage").equalsIgnoreCase("success")){
+					
+					JSONObject jsonPercentage = jsonPaiChartObject.getJSONObject("percentage");
+					
+						if(jsonPercentage.has("courseProgress")){
+						dashBoardReportVo.setCourseProgress(jsonPercentage.getString("courseProgress"));
+					}
+					else{
+						dashBoardReportVo.setCourseProgress("0");
+					}
+					
+					if(jsonPercentage.has("courseComplete")){
+						dashBoardReportVo.setCourseComplete(jsonPercentage.getString("courseComplete"));
+					}
+					else{
+						dashBoardReportVo.setCourseComplete("0");
+					}
+					if(jsonPercentage.has("courseNotStarted")){
+						dashBoardReportVo.setCourseNotStarted(jsonPercentage.getString("courseNotStarted"));
+					}
+					else{
+					dashBoardReportVo.setCourseNotStarted("0");
+					}
+					
+					if(jsonPercentage.has("assReviewed")){
+						dashBoardReportVo.setAssignmentComplete(jsonPercentage.getString("assReviewed"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentComplete("0");
+					}
+					if(jsonPercentage.has("assSubmitted")){
+						dashBoardReportVo.setAssignmentOpen(jsonPercentage.getString("assSubmitted"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentOpen("0");
+					}
+					if(jsonPercentage.has("assNotSubmit")){
+						dashBoardReportVo.setAssignmentNotEnabled(jsonPercentage.getString("assNotSubmit"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentNotEnabled("0");
+					}
+					
+				}
+				
+				
 				response = dashBoardMasterDao.getSchoolDetail(dashBoardReportVo);
 				System.out.println(response);
 				JSONObject jsonMasterObject = new JSONObject(response);
@@ -109,10 +167,6 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 												courseVo.setCourseName(jsonCourseObj.getString("courseName"));
 												courseList.add(courseVo);
 											}
-											/**
-											 * in resourceSize setting a number of courses teacher teach in an organistation
-											 * */
-											schoolVo.setResourceSize(schoolVo.getResourceSize()+courseList.size());
 											homeVo.setCourseList(courseList);
 										}
 										homeVo.setHomeRoomId(jsonHomeObj.getInt("homeRoomId"));
@@ -271,17 +325,118 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 								 }
 					feedList.add(feedObj);
 				}
+				
+				
+				
 				request.getSession().setAttribute("feedList", feedList);
 			}
 			
+			
+			
+			
 			}
-		catch (Exception e) {
+		catch (Exception e) {	
 			e.printStackTrace();
 		}
 		return SUCCESS;
 	}
 
-
+public void viewNotification() {
+		
+		try {
+			HttpServletRequest request = ServletActionContext.getRequest();
+			RegistrationVo registrationVo = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+			if(registrationVo !=null){
+				JSONArray notificationArr = new JSONArray();
+				UpdatesServiceIface updatesServiceIface = new UpdatesServiceImpl();
+				response = updatesServiceIface.viewNotification(registrationVo,3,0);
+				JSONObject jsonResponseObj = new JSONObject(response);
+				if(jsonResponseObj.getString("statusMessage").equalsIgnoreCase("success")){
+					JSONArray jsonFeedList = jsonResponseObj.getJSONArray("feedList");
+					feedList = new ArrayList<FeedVo>();
+					for(int i=0;i<jsonFeedList.length();i++){
+						/**
+						 * feed parsing
+						 */
+						JSONObject jsonFeedObj = (JSONObject) jsonFeedList.get(i);
+						FeedVo feedObj = new FeedVo();
+						if(jsonFeedObj.has("commentCounts")){
+						feedObj.setCommentCounts(jsonFeedObj.getInt("commentCounts"));
+						}
+						if(jsonFeedObj.has("feedId")){
+						feedObj.setFeedId(jsonFeedObj.getInt("feedId"));
+						} 
+						if(jsonFeedObj.has("feedOn")){
+							feedObj.setFeedOn(Utility.getBeforeTime(jsonFeedObj.getString("feedOn")));
+							} 
+						if(jsonFeedObj.has("likeCounts")){
+							feedObj.setLikeCounts(jsonFeedObj.getInt("likeCounts"));
+							}
+						if(jsonFeedObj.has("isLiked")){
+						feedObj.setLikeStatus(jsonFeedObj.getBoolean("isLiked"));
+						}if(jsonFeedObj.has("feedText")){
+							String feedText=jsonFeedObj.getString("feedText");
+							if(feedText.contains("$")){
+							String[] feedTextArr =feedText.split("\\$");
+							JSONArray feedTextContentArr = jsonFeedObj.getJSONArray("feedTextArray");
+							//String[] content = new String[feedTextContentArr.length()];
+							feedText="";
+							String feedTextPost="";
+							for(int j=0;j<feedTextContentArr.length();j++){
+								JSONObject jsonFeedContentObj = feedTextContentArr.getJSONObject(j);
+								String type=jsonFeedContentObj.getString("type");
+								String value=jsonFeedContentObj.getString("value");
+								int key=jsonFeedContentObj.getInt("key");
+								feedText=feedText+feedTextArr[j]+"<a href='javaScript:;' onclick=\"clickableResource("+feedObj.getFeedId()+",'"+type+"',"+key+");\">"+value+"</a>";
+								feedTextPost=feedTextPost+feedTextArr[j]+value;
+								}
+							if(feedTextArr.length > feedTextContentArr.length() && feedTextArr[feedTextContentArr.length()] != null){
+								feedText=feedText+feedTextArr[feedTextContentArr.length()];
+								feedTextPost=feedTextPost+feedTextArr[feedTextContentArr.length()];
+							}
+								feedObj.setFeedText(feedText);
+								feedObj.setFeedTextPost(feedTextPost);
+							}
+						}
+						
+						/**
+						 * user detail
+						 */if(jsonFeedObj.has("user")){
+							JSONObject jsonUserObj = jsonFeedObj.getJSONObject("user");
+							RegistrationVo user = new RegistrationVo();
+							user.setUserId(jsonUserObj.getInt("userId"));
+							user.setUserName(jsonUserObj.getString("userName"));
+							if(jsonUserObj.has("userFbId")){
+							user.setUserFbId(jsonUserObj.getString("userFbId"));
+							}
+							user.setFirstName(jsonUserObj.getString("firstName"));
+							user.setLastName(jsonUserObj.getString("lastName"));
+							if(jsonUserObj.has("title")){
+							user.setTitle(jsonUserObj.getString("title"));
+						 	}
+							user.setProfilePhotoFileName(jsonUserObj.getString("profileImage"));
+							user.setEmailId(jsonUserObj.getString("emailId"));
+							feedObj.setUser(user);
+						 }
+						
+						feedList.add(feedObj);
+						
+						JSONObject jsonNotificationObj = new JSONObject();
+						jsonNotificationObj.put("feedText", feedObj.getFeedTextPost());
+						jsonNotificationObj.put("feedOn", feedObj.getFeedOn());
+						jsonNotificationObj.put("profileImage", feedObj.getUser().getProfilePhotoFileName());
+						jsonNotificationObj.put("feedId", feedObj.getFeedId());
+						notificationArr.put(jsonNotificationObj);
+					 }
+						
+					}
+				getServletResponse().getWriter().print(notificationArr);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	
 	public String loadDashboardClassMethod(){
@@ -293,7 +448,7 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 			int selectSchoolId=dashBoardReportVo.getSchoolId();
 			dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
 			classNameList = new ArrayList<DashBoardReportVo>();
-			 schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
+			schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
 			System.out.println(schoolNameList.size());
 				JSONArray jsonMasterArray=new JSONArray(schoolNameList);
 				for(int i=0; i<jsonMasterArray.length(); i++){
@@ -395,7 +550,72 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 	}
 	
 	
-	
+
+	public String filterCourseData(){
+		
+		HttpServletRequest request= ServletActionContext.getRequest();
+		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+		 dashBoardMasterDao = new  DashBoardMasterDaoImpl();
+		try{
+			if(loginTeacherDetail!=null){
+				dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
+				responsePai = dashBoardMasterDao.getPieChartDetail(dashBoardReportVo);	
+				System.out.println(responsePai);
+				JSONObject jsonPaiChartObject = new JSONObject(responsePai);
+				if(jsonPaiChartObject!=null && jsonPaiChartObject.getString("statusMessage").equalsIgnoreCase("success")){
+					
+					JSONObject jsonPercentage = jsonPaiChartObject.getJSONObject("percentage");
+					
+						if(jsonPercentage.has("courseProgress")){
+						dashBoardReportVo.setCourseProgress(jsonPercentage.getString("courseProgress"));
+					}
+					else{
+						dashBoardReportVo.setCourseProgress("0");
+					}
+					
+					if(jsonPercentage.has("courseComplete")){
+						dashBoardReportVo.setCourseComplete(jsonPercentage.getString("courseComplete"));
+					}
+					else{
+						dashBoardReportVo.setCourseComplete("0");
+					}
+					if(jsonPercentage.has("courseNotStarted")){
+						dashBoardReportVo.setCourseNotStarted(jsonPercentage.getString("courseNotStarted"));
+					}
+					else{
+					dashBoardReportVo.setCourseNotStarted("0");
+					}
+					
+					if(jsonPercentage.has("assReviewed")){
+						dashBoardReportVo.setAssignmentComplete(jsonPercentage.getString("assReviewed"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentComplete("0");
+					}
+					if(jsonPercentage.has("assSubmitted")){
+						dashBoardReportVo.setAssignmentOpen(jsonPercentage.getString("assSubmitted"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentOpen("0");
+					}
+					if(jsonPercentage.has("assNotSubmit")){
+						dashBoardReportVo.setAssignmentNotEnabled(jsonPercentage.getString("assNotSubmit"));
+					}
+					else{
+					dashBoardReportVo.setAssignmentNotEnabled("0");
+					}
+					
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return SUCCESS;
+	}
+
 	
 	 
 
@@ -513,6 +733,16 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<DashBo
 	public void setServletResponse(HttpServletResponse servletResponse) {
 		this.servletResponse = servletResponse;
 
+	}
+
+
+	public String getResponsePai() {
+		return responsePai;
+	}
+
+
+	public void setResponsePai(String responsePai) {
+		this.responsePai = responsePai;
 	}
  
  

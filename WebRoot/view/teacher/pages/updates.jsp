@@ -35,7 +35,7 @@ var eventStatus=true;
                                 > Math.round(($(document).height()*.9)) && eventStatus) {
                                /*  $("#paginationContentId").append("<img src='view/helper/images/ajax-loader-large.gif' style='margin-left: 50%;' alt='loading please wait' id='loadingUpdateImgId'>"); */
                                 eventStatus=false;
-                                $("#loader").append("<div id='top'><img  style='margin:252px 0 0 259px;' width='160px' height='120px' src='view/helper/images/ajax-loader-large.gif'/></div>");
+                                $("#loader").append("<div id='top'><img  style='margin-left:48%;margin-top:50%;' height='100px' src='view/helper/images/ajax-loader-large.gif'/></div>");
                                 $.ajax({
 									url : "paginationUpdates",
 									data :{"offset":1},
@@ -615,12 +615,12 @@ function showSubComment(commentId){
                                   </s:iterator>
                                 </s:if>
                                 <s:else>
-                                <s:iterator value="#session.courseReportList">
+                                <s:iterator value="#session.courseReportList" var="cour">
                                     <li class="list-group-item paper-shadow">
                                         <div class="media v-middle">
 												<div class="left width_60p">
-													<%-- <a href="javaScript:;" onclick="getModules(<s:property value="courseId"/>)">
-													<h6 class=" color_blue bold link-text-color"><s:property value="courseName"/></h6></a> --%><s:property value="courseName"/> Started for <s:property value="schoolName"/> - <s:property value="className"/> - <s:property value="homeRoomName"/>
+													<%--  <a href="javaScript:;"  onclick="getModules(<s:property value="#cour.courseId"/>)"  > --%>
+													<h6 class="color_blue bold link-text-color"><s:property value="#cour.courseName"/> <s:property value="schoolName"/>  <s:property value="className"/>  <s:property value="homeRoomName"/></h6><!-- </a> -->
 													</div>
 												<s:if test="completedPerStatus == 100">
 												<div class="right">
@@ -658,7 +658,7 @@ function showSubComment(commentId){
                                     </li>
 							</s:if>
 							<s:else>
-									There is no course
+									<span style="margin-left: 41%;"> There is no Course</span>
 							</s:else>
                                 </ul>
                         </div>

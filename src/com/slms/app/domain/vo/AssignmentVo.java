@@ -8,6 +8,8 @@ public class AssignmentVo {
 	private int assignmentId;
 	private int courseId;
 	private int moduleId;
+	private int key;
+	private String value;
 	private String courseName;
 	private String moduleName;
 	private String assignmentName;
@@ -21,7 +23,9 @@ public class AssignmentVo {
 	private String assignmentDueDate;
 	private String assignmentSubmittedBy;
 	private ArrayList<CoursesVo> resourcesList;
-	private String[][] ratingParameter=null;
+	
+	private ArrayList<AssignmentVo> ratingParameter;
+	private ArrayList<AssignmentVo> ratingChildParameter;
 	
 	/**
 	 * @return the assignmentSubmittedBy
@@ -180,11 +184,30 @@ public class AssignmentVo {
 	public void setAssignmentDueDate(String assignmentDueDate) {
 		this.assignmentDueDate = assignmentDueDate;
 	}
-	public String[][] getRatingParameter() {
+	public int getKey() {
+		return key;
+	}
+	public void setKey(int key) {
+		this.key = key;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
+	public ArrayList<AssignmentVo> getRatingParameter() {
 		return ratingParameter;
 	}
-	public void setRatingParameter(String[][] ratingParameter) {
+	public void setRatingParameter(ArrayList<AssignmentVo> ratingParameter) {
 		this.ratingParameter = ratingParameter;
 	}
+	public ArrayList<AssignmentVo> getRatingChildParameter() {
+		return ratingChildParameter;
+	}
+	public void setRatingChildParameter(ArrayList<AssignmentVo> ratingChildParameter) {
+		this.ratingChildParameter = ratingChildParameter;
+	}
+	 
 
 }

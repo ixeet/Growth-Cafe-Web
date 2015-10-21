@@ -355,11 +355,15 @@ margin-top:10px;
     color:white;
 }
 
+.bold{
+	font-weight:bold !important;
+}
+
 .color_red{
 color:red !important;
 }
 .color_blue{
-color:#42a5f5 !important;
+color:#3b5998 !important;
 }
 .color_black{
 color:black!important;
@@ -851,6 +855,17 @@ table tr td.td_link:hover{
 	
 }
 
+
+
+.temp_link{
+	cursor: pointer; 
+	
+}
+.temp_link:hover{
+	background-color: rgb(247, 247, 247);
+	
+}
+
 .btn_mar_left{
 	float: left;
 	margin-top: 1px;
@@ -927,3 +942,53 @@ color:#3b5998 !important;
     list-style: initial !important;
     
 }
+
+
+
+.seeting_pic
+{
+display: block;
+    float: left;
+    margin-right: 10px;
+    margin-left: 0px;
+    padding-right: 0px;
+}
+img.setting_clicked.img-circle.width-60
+{
+cursor:pointer;
+}
+
+.seeting_pad{
+padding:5px 0px 0px 34px;
+    max-height: 300px;
+    overflow-y: auto !important;
+}
+
+.set_pic{
+box-shadow: 0 0 0 2pt #ba0032;
+}
+
+.text{
+display:none;
+}
+
+.text2{
+display:block;
+color:#ba0032;
+margin-top:-10px;
+margin-bottom: -3px;
+}
+.media-left.center.seeting_pic
+{
+    margin-bottom: 20px;
+	}
+	
+	
+	.auto_dots100 {
+    list-style: initial !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100px;
+}
+	

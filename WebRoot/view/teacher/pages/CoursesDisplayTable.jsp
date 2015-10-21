@@ -1,34 +1,137 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <s:if test="courseReportList!=null  && courseReportList.size()!=0">
-	<s:iterator value="courseReportList" var="parent">
-				<div class="col-md-12" style="padding: 0px;margin-top: 8px;">
-					<div class="panel panel-default curriculum paper-shadow"
-						data-z="0.5"  style="margin-top: -26px;">
-						<div class="panel-heading panel-collapse-trigger collapsed"
-							data-toggle="collapse"
-							data-target="#<s:property value="schoolId"/>-1-<s:property value="courseId"/>">
-							<div class="media">
-								
-								<div class="media-body">
-									 <p class="col-sm-2 col-xs-2 center">  <i class="fa fa-fw fa-institution"></i></br><span><s:property value="schoolName"/></span></p>
-                                          <p class="col-sm-2 col-xs-2 center"> <i class="fa fa-fw fa-cubes"></i></br><span><s:property value="className"/></span></p>
-										  <p class="col-sm-2 col-xs-2 center">  <i class="fa fa-fw fa-group"></i></br><span><s:property value="homeRoomName"/></span> </p>
-										 <p class="col-sm-2 col-xs-2 center"> <i class="fa fa-fw fa-mortar-board"></i></br><span><s:property value="courseName"/></span></p>
-										
-										<div class="col-sm-4  col-xs-4">	
-											<div class="progress_n2">
-														    <span class="progress-val_n2"><s:property value="completedPerStatus"/>%</span>
-														    <span class="progress-bar_n2"><span class="progress-in_n2" style="width:<s:property value="completedPerStatus"/>%;"></span></span>
-														  </div>
-										</div>
-								</div>
-								
-							</div>
+	<s:iterator value="courseReportList" var="schoolparent">
+		<div class="panel panel-default botm-none curriculum paper-shadow"
+			data-z="0.5" style="padding: 0px;margin-top: -18px;">
+			<div class="panel-heading panel-collapse-trigger collapsed pad-0"
+				data-toggle="collapse"
+				data-target="#<s:property value="#schoolparent.schoolId"/>-"
+				aria-expanded="false">
+				<div class="media">
+					<div class="media-body">
 
+						<div class="col-sm-3 col-xs-3 center">
+							<p class="col-sm-12 col-xs-12">
+								<i class="ass_font fa fa-fw fa-bank"></i>
+							</p>
+							<h5 class="col-sm-12 col-xs-12 txt-8px">
+								<s:property value="schoolName" />
+							</h5>
 						</div>
-						<div class="list-group collapse"
-							id="<s:property value="schoolId"/>-1-<s:property value="courseId"/>">
-							<div class="table-responsive">
+
+						<div class="col-sm-2 col-xs-2 center">
+							<p class="col-sm-12 col-xs-12 ass_font">
+								<s:property value="departSize" />
+							</p>
+							<h5 class="col-sm-12 col-xs-12 txt-8px">Departments</h5>
+						</div>
+						<div class="col-sm-2 col-xs-2 center">
+							<p class="col-sm-12 col-xs-12 ass_font">
+								<s:property value="homeRoomSize" />
+							</p>
+							<h5 class="col-sm-12 col-xs-12 txt-8px">Groups</h5>
+						</div>
+						<div class="col-sm-3 col-xs-3 center">
+							<p class="col-sm-12 col-xs-12 ass_font">
+								<s:property value="courseSize" />
+							</p>
+							<h5 class="col-sm-12 col-xs-12 txt-8px">Courses</h5>
+						</div>
+
+						<div class="col-sm-2  col-xs-2 center">
+												<div class="progress_n2" style="margin-left: 0px;">
+													<span class="progress-val_n2"> <s:property value="completedPerStatus" />%</span> <span
+														class="progress-bar_n2"><span 	class="progress-in_n2"
+														style="width:<s:property value="completedPerStatus"/>%;"></span>
+													</span>
+												</div>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="list-group collapse" id="<s:property value="#schoolparent.schoolId"/>-" aria-expanded="false" style="height: 0px;">
+				<s:if test="homeRoomList!=null && homeRoomList.size()>0">
+					<s:iterator value="homeRoomList" var="homelist">
+						<div class="panel panel-default botm-none curriculum paper-shadow" data-z="0.5">
+							<div class="panel-heading panel-collapse-trigger collapsed" data-toggle="collapse"
+								data-target="#<s:property value="#schoolparent.schoolId"/>--<s:property value="#homelist.homeRoomId"/>" aria-expanded="false">
+								<h5>
+									<s:property value="#homelist.className" />
+									->
+									<s:property value="#homelist.homeRoomName" />
+								</h5>
+							</div>
+							<div class="list-group collapse"
+								id="<s:property value="#schoolparent.schoolId"/>--<s:property value="#homelist.homeRoomId"/>" 	aria-expanded="false" style="height: 0px;">
+								 
+									
+									<s:if test="courseList!=null && courseList.size()>0">
+											<s:iterator value="courseList" var="coulist">
+											<div class="panel panel-default botm-none curriculum paper-shadow" data-z="0.5">
+											<div class="panel-heading panel-collapse-trigger collapsed pad-0" data-toggle="collapse"
+								 					data-target="#<s:property value="#schoolparent.schoolId"/>--<s:property value="#homelist.homeRoomId"/>-<s:property value="#coulist.courseId"/>" aria-expanded="false">
+									<div class="media">
+										<div class="media-body">
+										
+											<div class="col-sm-3 col-xs-3 center">
+												<p class="col-sm-12 col-xs-12">
+													<i class="ass_font fa fa-fw fa-mortar-board"></i>
+												</p>
+												<h5 class="col-sm-12 col-xs-12 txt-8px">
+													<s:property value="#coulist.courseName" />
+												</h5>
+											</div>
+											<div class="col-sm-3 col-xs-3">
+										</div>
+											<div class="col-sm-2 col-xs-2 ">
+											</div>
+											
+											<div class="col-sm-2  col-xs-2 center">
+												<div class="progress_n2" style="margin-left: 0px;">
+													<span class="progress-val_n2"> <s:property
+															value="completedPerStatus" />%</span> <span
+														class="progress-bar_n2"><span
+														class="progress-in_n2"
+														style="width:<s:property value="completedPerStatus"/>%;"></span>
+													</span>
+												</div>
+											</div>
+											
+											<s:if test="#coulist.completedStatus == 2">
+											<div class="col-sm-2 col-xs-2 center"><%-- 
+											<button class="btn-pad normalbutton btn-height" onclick="changeStatusCourseDetail(event)" data-toggle="tooltip" style="float: left; margin: 14px;"
+   													 data-placement="top" value="<s:property value="#coulist.courseSessionId" />" title="Start this Course">Start</button> --%>
+											
+											<h5 style="background-color: #c6c6c6;padding: 6px;color: white;"> 
+											No Course Started Yet</h5> 
+											</div>
+											</s:if>
+											<s:elseif test="#coulist.completedStatus==0">
+											<div class="col-sm-2 col-xs-2 center">
+											<%-- <button class="btn-pad normalbutton btn-height" onclick="changeStatusCourseDetail(event)" data-toggle="tooltip" style="float: left; margin: 14px;"
+   													 data-placement="top" value="<s:property value="#coulist.courseSessionId" />" title="Complete this Course">Complete</button>
+											 --%>
+											 <input data-placement="top"  data-toggle="tooltip" style="float: left; margin: 14px;" class="btn-pad normalbutton btn-height" type="button" id="btnShowSimple" value="Complete" />
+											
+											</div>
+											</s:elseif>
+											<s:elseif test="#coulist.completedStatus==1">
+											<div class="col-sm-2 col-xs-2 center">
+											</div>
+											</s:elseif>
+										</div>
+									</div>
+									</div>
+									
+									<div class="panel panel-default botm-none curriculum paper-shadow" data-z="0.5">
+								<div class="list-group collapse"
+												id="<s:property value="#schoolparent.schoolId"/>--<s:property value="#homelist.homeRoomId"/>-<s:property value="#coulist.courseId"/>" 	aria-expanded="false" style="height: 0px;">
+												
+									<s:if test="modulesList != null && modulesList.size()>0">
+										<div class="table-responsive">
 								<table class="table v-middle table-bordered" id="table_even">
 									<thead>
 										<tr>
@@ -45,17 +148,11 @@
 												<tr>
 													<td><span class="label" style="background-color: rgb(194, 194, 194);"><s:property value="%{#status.count}" /></span>
 													</td>
-													<td class="td_link" onclick="viewDetail('<s:property value="#parent.courseId" />','<s:property value="moduleId" />','<s:property value="#parent.schoolId"/>','<s:property value="#parent.classId"/>','<s:property value="#parent.homeRoomId"/>')"> <a href="javaScript:;" ><s:property value="#child.moduleName" /></a></td>
-													
-													
-												
+													<td class="td_link" onclick="return viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')"> <a href="javaScript:;" ><s:property value="#child.moduleName" /></a></td>
 													<td><s:property value="resourceSize" /></td>
 													<td>
 															<s:if test="completedPerStatus < 0">
-																<!-- <div class="progress-bar" role="progressbar"
-																	aria-valuenow="100" aria-valuemin="0"
-																	aria-valuemax="100" style="width: 80%;">Not Started
-																</div> -->
+																 
 															<div class="progress_n">
 														    <span class="progress-val_n"><s:property value="completedPerStatus"/>%</span>
 														    <span class="progress-bar_n"><span class="progress-in_n" style="width:<s:property value="completedPerStatus"/>%;"></span></span>
@@ -63,11 +160,6 @@
 															</s:if>
 
 															<s:elseif test="completedPerStatus == 100">
-																<!-- <div class="progress-bar" role="progressbar"
-																	aria-valuenow="100" aria-valuemin="0"
-																	aria-valuemax="100" style="width: 80%;">Completed
-																</div> -->
-																
 												<div class="progress_n">
 														    <span class="progress-val_n"><s:property value="completedPerStatus"/>%</span>
 														    <span class="progress-bar_n"><span class="progress-in_n" style="width:<s:property value="completedPerStatus"/>%;"></span></span>
@@ -81,44 +173,52 @@
 														    <span class="progress-bar_n"><span class="progress-in_n" style="width:<s:property value="completedPerStatus"/>%;"></span></span>
 																
 																</div>
-																<%-- 
-																<div class="progress-bar" role="progressbar"
-																	aria-valuenow="<s:property value='completedPerStatus'/>"
-																	aria-valuemin="0" aria-valuemax="100"
-																	style="width: 80%;">
-																	<s:property value="#child.completedPerStatus" />
-																	%
-																</div> --%>
 															</s:elseif>
 
 													</td>
-													<td class="text-right"><s:if test="moduleStatuId!=1">
+													<td class="text-right"><s:if test="moduleStatuId==0 ">
 															
+															<button  onclick="return viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')"
+																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
+																data-placement="top" title="View this module">View</button>
+															 
+																<button onclick="changeStatusDetail(event)"
+																class="btn-pad normalbutton btn-height" data-toggle="tooltip" value="<s:property value='ModuleSessionId'/>"
+																data-placement="top" style="float:left;" title="Complete this module">Complete</button>
+																
+																
+														</s:if> <s:elseif test="moduleStatuId==2">
 															<%-- <a href="javaScript:;"
-																onclick="viewDetail('<s:property value="#parent.courseId" />','<s:property value="moduleId" />','<s:property value="#parent.schoolId"/>','<s:property value="#parent.classId"/>','<s:property value="#parent.homeRoomId"/>')"
-																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
-																data-placement="top" title="View this module">View</a> --%>
-																<%-- <a href="javaScript:;"
-																onclick="changeStatusDetail('<s:property value='ModuleSessionId'/>','<s:property value='moduleStatuId'/>')"
-																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
-																data-placement="top" style="float:left;" title="Complete this module">Complete</a>
+																onclick="startModuleStatus('<s:property value='ModuleSessionId'/>','<s:property value='moduleStatuId'/>')"
+																class="btn-pad normalbutton btn-height"  style="float:left;" data-toggle="tooltip"
+																data-placement="top" title="Start this module">Start</a>
 																 --%>
 																
 																<button onclick="changeStatusDetail(event)"
 																class="btn-pad normalbutton btn-height" data-toggle="tooltip" value="<s:property value='ModuleSessionId'/>"
-																data-placement="top" title="Complete this module">Complete</button>
+																data-placement="top" style="float:left;" title="Start this module">Start</button>
 																
+																<div  data-toggle="tooltip"
+																data-placement="top" title="View this module" class="btn-pad normalbutton btn-height temp_link" onclick="viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')">
+																 View 
+																</div>
 																
-														</s:if> <%-- <s:elseif test="moduleStatuId==2">
-															<a href="javaScript:;"
+															<%-- <a href="javaScript:;"
+																onclick="viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')"
+																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
+																data-placement="top" title="View this module">View</a> --%>
+														</s:elseif>
+														
+														<s:elseif test="moduleStatuId==1">
+															<%-- <a href="javaScript:;"
 																onclick="changeStatusDetail('<s:property value='ModuleSessionId'/>','<s:property value='moduleStatuId'/>')"
-																class="btn btn-success btn-xs" data-toggle="tooltip"
-																data-placement="top" title="Start this module">Start</a>
-															<a href="javaScript:;"
-																onclick="viewDetail('<s:property value="#parent.courseId" />','<s:property value="moduleId" />','<s:property value="#parent.schoolId"/>','<s:property value="#parent.classId"/>','<s:property value="#parent.homeRoomId"/>')"
-																class="btn btn-danger btn-xs" data-toggle="tooltip"
-																data-placement="top" title="View this module">View</a>
-														</s:elseif> --%>
+																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
+																data-placement="top"  style="float:left;" title="Start this module">Start</a> --%>
+															<div  data-toggle="tooltip"
+																data-placement="top" title="View this module" class="btn-pad normalbutton btn-height temp_link" onclick="viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')">
+																 View 
+																</div>
+														</s:elseif>
 													</td>
 												</tr>
 											</s:iterator>
@@ -126,14 +226,31 @@
 									</tbody>
 								</table>
 							</div>
+									</s:if>
+								</div>
+								</div>
+									</div>
+									</s:iterator>
+									</s:if>
+							</div>
 						</div>
-					</div>
-				</div>
+					</s:iterator>
+				</s:if>
+			</div>
+
+		</div>
 	</s:iterator>
 </s:if>
 
+
+
+
+<!-- Modal -->
+
+
+
 <s:else>
-	<div class="panel panel-default curriculum paper-shadow" data-z="0.5"  style="margin-top: 27px;">
+	<div class="panel panel-default curriculum paper-shadow" data-z="0.5">
 		<div class="panel-heading">
 			<div class="media">
 
@@ -141,7 +258,7 @@
 
 					<div class="col-md-12">
 						<p align="center">
-							<span > No Data Found </span>
+							<span > There is no Course </span>
 						</p>
 					</div>
 

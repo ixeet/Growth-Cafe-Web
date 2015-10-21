@@ -1,6 +1,7 @@
 package com.slms.webapp.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,7 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 		return SUCCESS;
 	}
 
-
+	
 	public String courseDetail(){
 		
 		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
@@ -76,86 +77,144 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 				/*schoolNameList = courseReportDao.getSchoolNameList(dashBoardReportVo);*/
 				schoolNameList = (ArrayList<DashBoardReportVo>) request.getSession().getAttribute("schoolNameList");
 				
+				courseReportList= new ArrayList<DashBoardReportVo>();
+				
 				response = courseReportDao.getCourse(dashBoardReportVo);
 				System.out.println(response);
 				JSONObject jsonResObject = new JSONObject(response);
 				if(jsonResObject !=null && jsonResObject.getString("statusMessage").equalsIgnoreCase("success")){
-					JSONArray jsonCourseArray = jsonResObject.getJSONArray("courseList");
-					courseReportList= new ArrayList<DashBoardReportVo>();
-					
-					for(int i=0;i<jsonCourseArray.length();i++){
-						JSONObject jsonCourseObj = jsonCourseArray.getJSONObject(i);
-						DashBoardReportVo dashBoardReportVo = new DashBoardReportVo();
-						
-						dashBoardReportVo.setCourseName(jsonCourseObj.getString("courseName"));
-						dashBoardReportVo.setSchoolId(jsonCourseObj.getInt("schoolId"));
-						dashBoardReportVo.setSchoolName(jsonCourseObj.getString("schoolName"));
-						dashBoardReportVo.setClassId(jsonCourseObj.getInt("classId"));
-						dashBoardReportVo.setClassName(jsonCourseObj.getString("classeName"));
-						dashBoardReportVo.setHomeRoomId(jsonCourseObj.getInt("hrmId"));
-						dashBoardReportVo.setHomeRoomName(jsonCourseObj.getString("hrmName"));
-						
-						Double d = jsonCourseObj.getDouble("completedPercentStatus");
-						int completPer = d.intValue();
-						dashBoardReportVo.setCompletedPerStatus(""+completPer);
-						dashBoardReportVo.setCourseId(jsonCourseObj.getInt("courseId"));
-						JSONArray jsonModuleArr = jsonCourseObj.getJSONArray("moduleList");
-						ArrayList<DashBoardReportVo> modules = new ArrayList<DashBoardReportVo>();
-						if(jsonModuleArr.length()>0){
-							int check=jsonModuleArr.length();
-							for(int j=0;j<check;j++){
-								DashBoardReportVo module = new DashBoardReportVo();
-								JSONObject josnModuleObj = jsonModuleArr.getJSONObject(j);
-								JSONObject jsonresourceObj = jsonModuleArr.getJSONObject(j);
+					JSONArray jsonSchoolArray = jsonResObject.getJSONArray("schoolList");
+					if(jsonSchoolArray.length()>0){
+						ArrayList<DashBoardReportVo>	tempSchoolList = new ArrayList<DashBoardReportVo>();
+						for(int aa=0; aa<jsonSchoolArray.length(); aa++){
+							JSONObject jsonSchoolObj = jsonSchoolArray.getJSONObject(aa);
+							DashBoardReportVo dashSchoolVo = new DashBoardReportVo();
+							dashSchoolVo.setSchoolId(jsonSchoolObj.getInt("schoolId"));
+							dashSchoolVo.setSchoolName(jsonSchoolObj.getString("schoolName"));
+							
+							HashSet<Integer> temp=new HashSet<Integer>();
+							
+							JSONArray jsonHomeArray = jsonSchoolObj.getJSONArray("homeRoomList");
+							if(jsonHomeArray.length()>0){
 								
-								if(jsonresourceObj.length()>0){
+								ArrayList<DashBoardReportVo>	tempHomeList = new ArrayList<DashBoardReportVo>();
+								for(int ke=0;ke<jsonHomeArray.length(); ke++){
+									JSONObject jsonHomeObj = jsonHomeArray.getJSONObject(ke);
+									DashBoardReportVo dashHomeVo = new DashBoardReportVo();
+									dashHomeVo.setClassId(jsonHomeObj.getInt("classId"));
+									temp.add(jsonHomeObj.getInt("classId"));
+									dashHomeVo.setClassName(jsonHomeObj.getString("className"));
+									dashHomeVo.setHomeRoomId(jsonHomeObj.getInt("homeRoomId"));
+									dashHomeVo.setHomeRoomName(jsonHomeObj.getString("homeRoomName"));
 									
-									JSONArray jsonResouArr = jsonresourceObj.getJSONArray("resourceList");
-									int check1=jsonResouArr.length();
-									ArrayList<DashBoardReportVo> resoVo = new ArrayList<DashBoardReportVo>();
-									for(int k=0;k<check1;k++){
-										DashBoardReportVo resource = new DashBoardReportVo();
-										JSONObject josnResourObj = jsonResouArr.getJSONObject(k);
-										resource.setResourseName(josnResourObj.getString("resourceName"));
-										resource.setResourseDesc(josnResourObj.getString("resourceDesc"));
-										resource.setResourceUrl(josnResourObj.getString("resourceUrl"));
-										resource.setThumbImg(josnResourObj.getString("thumbImg"));
-										resource.setAuthorName(josnResourObj.getString("authorName"));
-										resource.setAuthorImage(josnResourObj.getString("authorImg"));
-										resource.setResourceId(josnResourObj.getInt("resourceId"));
-										resource.setTcsMainId(josnResourObj.getInt("resourceSessionId"));
-										resource.setCompletedStatus(josnResourObj.getInt("completedStatus"));
-										resoVo.add(resource);
-										//
-									}
-									module.setResourceList(resoVo);
-									}
-								
-								module.setModuleName(josnModuleObj.getString("moduleName"));
-								if(josnModuleObj.has("startedOn")){ 
-									String[] starton = josnModuleObj.getString("startedOn").split(" ");
-									if(Utility.isValidDate(starton[0])){
-										module.setStartedOn(Utility.getDisplayDate(starton[0]));
-									}
-								}
-								if(josnModuleObj.has("completedOn")){
-										String[] completeon = josnModuleObj.getString("completedOn").split(" ");
-										if(Utility.isValidDate(completeon[0])){
-											module.setCompletedOn(Utility.getDisplayDate(completeon[0]));
+									JSONArray jsonCourseArray = jsonHomeObj.getJSONArray("courseList");
+									if(jsonCourseArray.length()>0)
+									{
+										int totalper=0;
+										int countPer=0;
+										
+										ArrayList<DashBoardReportVo>	tempCourseList = new ArrayList<DashBoardReportVo>();
+									for(int i=0;i<jsonCourseArray.length();i++){
+										
+										JSONObject jsonCourseObj = jsonCourseArray.getJSONObject(i);
+										DashBoardReportVo dashCourseVo = new DashBoardReportVo();
+										
+										dashCourseVo.setCourseName(jsonCourseObj.getString("courseName"));
+										dashCourseVo.setCourseId(jsonCourseObj.getInt("courseId"));
+										dashCourseVo.setCourseSessionId(jsonCourseObj.getInt("courseSessionId"));
+										dashCourseVo.setCompletedStatus(jsonCourseObj.getInt("completedStatus"));
+										
+										
+										Double d = jsonCourseObj.getDouble("completedPercentStatus");
+										int completPer = d.intValue();
+										
+										dashCourseVo.setCompletedPerStatus(""+completPer);
+										dashCourseVo.setCourseId(jsonCourseObj.getInt("courseId"));
+										JSONArray jsonModuleArr = jsonCourseObj.getJSONArray("moduleList");
+										ArrayList<DashBoardReportVo> modules = new ArrayList<DashBoardReportVo>();
+										if(jsonModuleArr.length()>0){
+											int check=jsonModuleArr.length();
+											for(int j=0;j<check;j++){
+												DashBoardReportVo module = new DashBoardReportVo();
+												JSONObject josnModuleObj = jsonModuleArr.getJSONObject(j);
+												JSONObject jsonresourceObj = jsonModuleArr.getJSONObject(j);
+												
+												if(jsonresourceObj.length()>0){
+													
+													JSONArray jsonResouArr = jsonresourceObj.getJSONArray("resourceList");
+													int check1=jsonResouArr.length();
+													ArrayList<DashBoardReportVo> resoVo = new ArrayList<DashBoardReportVo>();
+													for(int k=0;k<check1;k++){
+														DashBoardReportVo resource = new DashBoardReportVo();
+														JSONObject josnResourObj = jsonResouArr.getJSONObject(k);
+														resource.setResourseName(josnResourObj.getString("resourceName"));
+														resource.setResourseDesc(josnResourObj.getString("resourceDesc"));
+														resource.setResourceUrl(josnResourObj.getString("resourceUrl"));
+														resource.setThumbImg(josnResourObj.getString("thumbImg"));
+														resource.setAuthorName(josnResourObj.getString("authorName"));
+														resource.setAuthorImage(josnResourObj.getString("authorImg"));
+														resource.setResourceId(josnResourObj.getInt("resourceId"));
+														resource.setTcsMainId(josnResourObj.getInt("resourceSessionId"));
+														resource.setCompletedStatus(josnResourObj.getInt("completedStatus"));
+														resoVo.add(resource);
+														//
+													}
+													module.setResourceList(resoVo);
+													}
+												
+												module.setModuleName(josnModuleObj.getString("moduleName"));
+												if(josnModuleObj.has("startedOn")){ 
+													String[] starton = josnModuleObj.getString("startedOn").split(" ");
+													if(Utility.isValidDate(starton[0])){
+														module.setStartedOn(Utility.getDisplayDate(starton[0]));
+													}
+												}
+												if(josnModuleObj.has("completedOn")){
+														String[] completeon = josnModuleObj.getString("completedOn").split(" ");
+														if(Utility.isValidDate(completeon[0])){
+															module.setCompletedOn(Utility.getDisplayDate(completeon[0]));
+														}
+												}
+												module.setModuleId(josnModuleObj.getInt("moduleId"));
+												module.setModuleStatuId(josnModuleObj.getInt("completedStatus"));
+												module.setModuleSessionId(josnModuleObj.getInt("moduleSessionId"));
+												if(josnModuleObj.getInt("assignmentEnableStatus")==0){
+												module.setAssignmentName("<p>Enter Date: <input class='dateTemp' type='text' onclick='showDp();' id='datepicker-3'></p><a href='javaScript:;'  onclick='return submitDate("+jsonSchoolObj.getInt("schoolId")+","+jsonHomeObj.getInt("classId")+","+jsonHomeObj.getInt("homeRoomId")+","+jsonCourseObj.getInt("courseId")+","+josnModuleObj.getInt("moduleId")+","+josnModuleObj.getInt("moduleSessionId")+");' class='btn-pad normalbutton btn-height'>Enable Assignments</a>");
+												}
+												else if(josnModuleObj.getInt("assignmentEnableStatus")==1){
+													module.setAssignmentName("<a href='javaScript:;'  onclick='return submitDate("+jsonSchoolObj.getInt("schoolId")+","+jsonHomeObj.getInt("classId")+","+jsonHomeObj.getInt("homeRoomId")+","+jsonCourseObj.getInt("courseId")+","+josnModuleObj.getInt("moduleId")+","+josnModuleObj.getInt("moduleSessionId")+");' class='btn-pad normalbutton btn-height'>Disable Assignments</a>");
+													
+												}
+												Double d1 = josnModuleObj.getDouble("completedPercentStatus");
+												int completPera = d1.intValue();
+												module.setCompletedPerStatus(""+completPera);
+												module.setResourceSize(module.getResourceList().size());
+												modules.add(module);
+											}
 										}
+										dashCourseVo.setModulesList(modules);
+										//courseReportList.add(dashCourseVo);
+										tempCourseList.add(dashCourseVo);
+										countPer = Integer.parseInt(dashCourseVo.getCompletedPerStatus());
+										
+										totalper = totalper+countPer;
+									}
+									
+									int perc= (totalper/tempCourseList.size());
+									dashSchoolVo.setCompletedPerStatus(""+perc);
+									dashHomeVo.setCourseList(tempCourseList);
+									dashSchoolVo.setCourseSize(tempCourseList.size());
+									
 								}
-								module.setModuleId(josnModuleObj.getInt("moduleId"));
-								module.setModuleStatuId(josnModuleObj.getInt("completedStatus"));
-								module.setModuleSessionId(josnModuleObj.getInt("moduleSessionId"));
-								Double d1 = josnModuleObj.getDouble("completedPercentStatus");
-								int completPera = d1.intValue();
-								module.setCompletedPerStatus(""+completPera);
-								module.setResourceSize(module.getResourceList().size());
-								modules.add(module);
+									tempHomeList.add(dashHomeVo);
+								}
+								dashSchoolVo.setHomeRoomList(tempHomeList);
+								dashSchoolVo.setDepartSize(temp.size());
+								dashSchoolVo.setHomeRoomSize(tempHomeList.size());
 							}
+							tempSchoolList.add(dashSchoolVo);
 						}
-						dashBoardReportVo.setModulesList(modules);
-						courseReportList.add(dashBoardReportVo);
+						courseReportList.addAll(tempSchoolList);
 					}
 				}
 				request.getSession().setAttribute("courseReportList", courseReportList);
@@ -288,122 +347,37 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 		HttpServletRequest request = ServletActionContext.getRequest();
 		try{
 			courseReportList = (List<DashBoardReportVo>) request.getSession().getAttribute("courseReportList");
+			if(courseReportList.size()>0){
 			for(int i=0;i<courseReportList.size();i++){
-				DashBoardReportVo course = courseReportList.get(i);
-				if(course.getCourseId()==dashBoardReportVo.getCourseId()){
-					for(int j=0;j<course.getModulesList().size();j++){
-						DashBoardReportVo module = course.getModulesList().get(j);
-						if(module.getModuleId()==dashBoardReportVo.getModuleId()){
-							selectResourceDetail = module.getResourceList();
-							dashBoardReportVo = module;
-							module.setCourseId(course.getCourseId());
-							break;
-						}
-					}
-					
-				}
-				
-			}
-			
-			/*if(loginTeacherDetail !=null){
-				int modId=dashBoardReportVo.getId();
-				int courId = dashBoardReportVo.getTcsMainId();
-				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
-				dashBoardReportVo.setCourseId(courId);
-			response = courseReportDao.getCourse(dashBoardReportVo);
-			
-			System.out.println(response);
-			JSONObject jsonResObject = new JSONObject(response);
-			if(jsonResObject !=null && jsonResObject.getString("statusMessage").equalsIgnoreCase("success")){
-				JSONArray jsonCourseArray = jsonResObject.getJSONArray("courseList");
-				courseReportList= new ArrayList<DashBoardReportVo>();
-				
-				for(int i=0;i<jsonCourseArray.length();i++){
-					JSONObject jsonCourseObj = jsonCourseArray.getJSONObject(i);
-					DashBoardReportVo dashBoardReportVo = new DashBoardReportVo();
-					selectResourceDetail= new ArrayList<DashBoardReportVo>();
-					if(jsonCourseObj.getInt("courseId")== courId){
-					
-					dashBoardReportVo.setCourseName(jsonCourseObj.getString("courseName"));
-					Double d = jsonCourseObj.getDouble("completedPercentStatus");
-					int completPer = d.intValue();
-					dashBoardReportVo.setCompletedPerStatus(""+completPer);
-					dashBoardReportVo.setCourseId(jsonCourseObj.getInt("courseId"));
-					JSONArray jsonModuleArr = jsonCourseObj.getJSONArray("moduleList");
-					
-					ArrayList<DashBoardReportVo> modules = new ArrayList<DashBoardReportVo>();
-					if(jsonModuleArr.length()>0){
-						int check=jsonModuleArr.length();
-						
-						for(int j=0;j<check;j++){
-							
-							DashBoardReportVo module = new DashBoardReportVo();
-							JSONObject josnModuleObj = jsonModuleArr.getJSONObject(j);
-							if(josnModuleObj.getInt("moduleId") == modId){
-							module.setModuleName(josnModuleObj.getString("moduleName"));
-							module.setModuleId(josnModuleObj.getInt("moduleId"));
-							module.setModuleStatuId(josnModuleObj.getInt("completedStatus"));
-							Double d1 = josnModuleObj.getDouble("completedPercentStatus");
-							int completPera = d1.intValue();
-							module.setCompletedPerStatus(""+completPera);
-							JSONObject jsonresourceObj = jsonModuleArr.getJSONObject(j);
-							if(jsonresourceObj.length()>0){
-							
-							JSONArray jsonResouArr = jsonresourceObj.getJSONArray("resourceList");
-							int check1=jsonResouArr.length();
-							ArrayList<DashBoardReportVo> resoVo = new ArrayList<DashBoardReportVo>();
-							for(int k=0;k<check1;k++){
-								DashBoardReportVo resource = new DashBoardReportVo();
-								JSONObject josnResourObj = jsonResouArr.getJSONObject(k);
-								resource.setResourseName(josnResourObj.getString("resourceName"));
-								resource.setResourseDesc(josnResourObj.getString("resourceDesc"));
-								resource.setResourceUrl(josnResourObj.getString("resourceUrl"));
-								resource.setThumbImg(josnResourObj.getString("thumbImg"));
-								resource.setAuthorName(josnResourObj.getString("authorName"));
-								resource.setAuthorImage(josnResourObj.getString("authorImg"));
-								if(josnResourObj.has("startedOn")){
-								resource.setStartedOn(Utility.getDisplayDate(josnResourObj.getString("startedOn")));
-								}else{
-									resource.setStartedOn("");
-								}
-								resource.setResourceId(josnResourObj.getInt("resourceId"));
-								resource.setCompletedStatus(josnResourObj.getInt("completedStatus"));
-								int statudIds = josnResourObj.getInt("completedStatus");
-								if(statudIds == 0){
-									resource.setStatus("In Process");
-								}
-								else if(statudIds == 1){
-									resource.setStatus("Complete");
-									if(josnResourObj.has("completedOn")){
-									resource.setCompletedOn(Utility.getDisplayDate(josnResourObj.getString("completedOn")));
-									}else{
-										resource.setCompletedOn("");
+				DashBoardReportVo schoolVo = courseReportList.get(i);
+				if(schoolVo.getSchoolId()==dashBoardReportVo.getSchoolId()){
+					for(int j=0; j<schoolVo.getHomeRoomList().size(); j++){
+					DashBoardReportVo classVo = schoolVo.getHomeRoomList().get(j);
+					if(classVo.getClassId()==dashBoardReportVo.getClassId() && classVo.getHomeRoomId()==dashBoardReportVo.getHomeRoomId()){
+						for(int k=0; k<classVo.getCourseList().size(); k++){
+							DashBoardReportVo course = classVo.getCourseList().get(k); 
+							if(course.getCourseId() == dashBoardReportVo.getCourseId()){
+								for(int l=0;l<course.getModulesList().size();l++){
+									DashBoardReportVo module = course.getModulesList().get(l);
+									if(module.getModuleId()==dashBoardReportVo.getModuleId()){
+										request.getSession().setAttribute("tempDetail", dashBoardReportVo);
+										selectResourceDetail = module.getResourceList();
+										request.setAttribute("resourceLinkId", selectResourceDetail.get(0).getResourceId()); 
+										dashBoardReportVo = module;
+										module.setCourseId(course.getCourseId());
+										
+										break;
 									}
 								}
-								else if(statudIds == 2){
-									resource.setStatus("Start");
-								}
-								resoVo.add(resource);
-								//
 							}
-							module.setResourceList(resoVo);
-							}
-							modules.add(module);
-							}
-							
 						}
-						//dashBoardReportVo.setResourceList(modules);
-						//
 					}
-					
-					dashBoardReportVo.setModulesList(modules);
-					selectResourceDetail.add(dashBoardReportVo);
-				}
 				}
 			}
 			
-			}*/
+			}
 			request.setAttribute("selectedTab", "coursesTabId"); 
+		}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -413,17 +387,26 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 	
 	public String changeWorkStatus(){
 		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+		DashBoardReportVo tempDetailUser = (DashBoardReportVo) request.getSession().getAttribute("tempDetail");
+		
+		
 		courseReportDao = new  CourseReportDaoImpl();
 				dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
 		try{
 			
 			//viewList = courseReportDao.getShowChangeStatus(dashBoardReportVo);
 			response = courseReportDao.getShowList(dashBoardReportVo);
-			DashBoardReportVo stateValue =dashBoardReportVo;
-			dashBoardReportVo = new DashBoardReportVo();
+			/*DashBoardReportVo stateValue =dashBoardReportVo;
+			dashBoardReportVo = new DashBoardReportVo();*/
 			courseDetail();
-			dashBoardReportVo =stateValue;
+			//dashBoardReportVo =stateValue;
+			dashBoardReportVo.setModuleId(tempDetailUser.getModuleId());
+			dashBoardReportVo.setSchoolId(tempDetailUser.getSchoolId());
+			dashBoardReportVo.setClassId(tempDetailUser.getClassId());
+			dashBoardReportVo.setHomeRoomId(tempDetailUser.getHomeRoomId());
+			dashBoardReportVo.setCourseId(tempDetailUser.getCourseId());
 			viewListDetail();
+			request.removeAttribute("tempDetailUser");
 			request.setAttribute("selectedTab", "coursesTabId"); 
 		}
 		catch (Exception e) {
@@ -438,20 +421,18 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 		dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
 			try{
 				if(loginTeacherDetail!=null){
-/*					if(dashBoardReportVo.getStatusCode()==0){
+					/*if(dashBoardReportVo.getStatusCode()==0){
 						dashBoardReportVo.setStatusCode(1);
 					}
 					else if(dashBoardReportVo.getStatusCode()==2){
 						dashBoardReportVo.setStatusCode(1);
 					}*/
-					if(dashBoardReportVo.getStatusCode()!=1){
-						dashBoardReportVo.setStatusCode(1);
-					}
+					 
 						dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());		
 					response = courseReportDao.getChangeStatus(dashBoardReportVo);
-					response = courseReportDao.getCourse(dashBoardReportVo);
+					/*response = courseReportDao.getCourse(dashBoardReportVo);*/
 					System.out.println(response);
-					JSONObject jsonResObject = new JSONObject(response);
+					/*JSONObject jsonResObject = new JSONObject(response);
 					if(jsonResObject !=null && jsonResObject.getString("statusMessage").equalsIgnoreCase("success")){
 						JSONArray jsonCourseArray = jsonResObject.getJSONArray("courseList");
 						courseReportList= new ArrayList<DashBoardReportVo>();
@@ -530,7 +511,7 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 							dashBoardReportVo.setModulesList(modules);
 							courseReportList.add(dashBoardReportVo);
 						}
-					}
+					}*/
 					
 					
 				request.setAttribute("selectedTab", "coursesTabId"); 
@@ -552,90 +533,134 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 				//schoolNameList = assignmentReportDao.getSchoolNameList(dashBoardReportVo);
 				//courseReportList = courseReportDao.getCourseDetailList(dashBoardReportVo);
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
-				
+				courseReportList = new ArrayList<DashBoardReportVo>();
 				response = courseReportDao.getCourse(dashBoardReportVo);
 								
 				System.out.println(response);
 				JSONObject jsonResObject = new JSONObject(response);
 				if(jsonResObject !=null && jsonResObject.getString("statusMessage").equalsIgnoreCase("success")){
-					JSONArray jsonCourseArray = jsonResObject.getJSONArray("courseList");
-					courseReportList= new ArrayList<DashBoardReportVo>();
-					
-					for(int i=0;i<jsonCourseArray.length();i++){
-						JSONObject jsonCourseObj = jsonCourseArray.getJSONObject(i);
-						DashBoardReportVo dashBoardReportVo = new DashBoardReportVo();
-						
-						dashBoardReportVo.setCourseName(jsonCourseObj.getString("courseName"));
-						dashBoardReportVo.setSchoolId(jsonCourseObj.getInt("schoolId"));
-						dashBoardReportVo.setSchoolName(jsonCourseObj.getString("schoolName"));
-						dashBoardReportVo.setClassId(jsonCourseObj.getInt("classId"));
-						dashBoardReportVo.setClassName(jsonCourseObj.getString("classeName"));
-						dashBoardReportVo.setHomeRoomId(jsonCourseObj.getInt("hrmId"));
-						dashBoardReportVo.setHomeRoomName(jsonCourseObj.getString("hrmName"));
-						
-						Double d = jsonCourseObj.getDouble("completedPercentStatus");
-						int completPer = d.intValue();
-						dashBoardReportVo.setCompletedPerStatus(""+completPer);
-						dashBoardReportVo.setCourseId(jsonCourseObj.getInt("courseId"));
-						JSONArray jsonModuleArr = jsonCourseObj.getJSONArray("moduleList");
-						ArrayList<DashBoardReportVo> modules = new ArrayList<DashBoardReportVo>();
-						if(jsonModuleArr.length()>0){
-							int check=jsonModuleArr.length();
-							for(int j=0;j<check;j++){
-								DashBoardReportVo module = new DashBoardReportVo();
-								JSONObject josnModuleObj = jsonModuleArr.getJSONObject(j);
-								JSONObject jsonresourceObj = jsonModuleArr.getJSONObject(j);
+					JSONArray jsonSchoolArray = jsonResObject.getJSONArray("schoolList");
+					if(jsonSchoolArray.length()>0){
+						ArrayList<DashBoardReportVo>	tempSchoolList = new ArrayList<DashBoardReportVo>();
+						for(int aa=0; aa<jsonSchoolArray.length(); aa++){
+							JSONObject jsonSchoolObj = jsonSchoolArray.getJSONObject(aa);
+							DashBoardReportVo dashSchoolVo = new DashBoardReportVo();
+							dashSchoolVo.setSchoolId(jsonSchoolObj.getInt("schoolId"));
+							dashSchoolVo.setSchoolName(jsonSchoolObj.getString("schoolName"));
+							
+							HashSet<Integer> temp=new HashSet<Integer>();
+							
+							JSONArray jsonHomeArray = jsonSchoolObj.getJSONArray("homeRoomList");
+							if(jsonHomeArray.length()>0){
 								
-								if(jsonresourceObj.length()>0){
+								ArrayList<DashBoardReportVo>	tempHomeList = new ArrayList<DashBoardReportVo>();
+								for(int ke=0;ke<jsonHomeArray.length(); ke++){
+									JSONObject jsonHomeObj = jsonHomeArray.getJSONObject(ke);
+									DashBoardReportVo dashHomeVo = new DashBoardReportVo();
+									dashHomeVo.setClassId(jsonHomeObj.getInt("classId"));
+									temp.add(jsonHomeObj.getInt("classId"));
+									dashHomeVo.setClassName(jsonHomeObj.getString("className"));
+									dashHomeVo.setHomeRoomId(jsonHomeObj.getInt("homeRoomId"));
+									dashHomeVo.setHomeRoomName(jsonHomeObj.getString("homeRoomName"));
 									
-									JSONArray jsonResouArr = jsonresourceObj.getJSONArray("resourceList");
-									int check1=jsonResouArr.length();
-									ArrayList<DashBoardReportVo> resoVo = new ArrayList<DashBoardReportVo>();
-									for(int k=0;k<check1;k++){
-										DashBoardReportVo resource = new DashBoardReportVo();
-										JSONObject josnResourObj = jsonResouArr.getJSONObject(k);
-										resource.setResourseName(josnResourObj.getString("resourceName"));
-										resource.setTcsMainId(josnResourObj.getInt("resourceSessionId"));
-										resource.setResourceId(josnResourObj.getInt("resourceId"));
-										resource.setResourseDesc(josnResourObj.getString("resourceDesc"));
-										resource.setResourceUrl(josnResourObj.getString("resourceUrl"));
-										resource.setThumbImg(josnResourObj.getString("thumbImg"));
-										resource.setAuthorName(josnResourObj.getString("authorName"));
-										resource.setAuthorImage(josnResourObj.getString("authorImg"));
-										resource.setCompletedStatus(josnResourObj.getInt("completedStatus"));
-										resoVo.add(resource);
-										//
-									}
-									module.setResourceList(resoVo);
-									}
-								
-								module.setModuleName(josnModuleObj.getString("moduleName"));
-								module.setModuleId(josnModuleObj.getInt("moduleId"));
-								module.setModuleSessionId(josnModuleObj.getInt("moduleSessionId"));
-								module.setModuleStatuId(josnModuleObj.getInt("completedStatus"));
-								Double d1 = josnModuleObj.getDouble("completedPercentStatus");
-								module.setModuleName(josnModuleObj.getString("moduleName"));
-								if(josnModuleObj.has("startedOn")){ 
-									String[] starton = josnModuleObj.getString("startedOn").split(" ");
-									if(Utility.isValidDate(starton[0])){
-										module.setStartedOn(Utility.getDisplayDate(starton[0]));
-									}
-								}
-								if(josnModuleObj.has("completedOn")){
-										String[] completeon = josnModuleObj.getString("completedOn").split(" ");
-										if(Utility.isValidDate(completeon[0])){
-											module.setCompletedOn(Utility.getDisplayDate(completeon[0]));
+									JSONArray jsonCourseArray = jsonHomeObj.getJSONArray("courseList");
+									if(jsonCourseArray.length()>0)
+									{
+										int totalper=0;
+										int countPer=0;
+										
+										ArrayList<DashBoardReportVo>	tempCourseList = new ArrayList<DashBoardReportVo>();
+									for(int i=0;i<jsonCourseArray.length();i++){
+										
+										JSONObject jsonCourseObj = jsonCourseArray.getJSONObject(i);
+										DashBoardReportVo dashCourseVo = new DashBoardReportVo();
+										
+										dashCourseVo.setCourseName(jsonCourseObj.getString("courseName"));
+										dashCourseVo.setCourseId(jsonCourseObj.getInt("courseId"));
+										
+										Double d = jsonCourseObj.getDouble("completedPercentStatus");
+										int completPer = d.intValue();
+										
+										dashCourseVo.setCompletedPerStatus(""+completPer);
+										dashCourseVo.setCourseId(jsonCourseObj.getInt("courseId"));
+										JSONArray jsonModuleArr = jsonCourseObj.getJSONArray("moduleList");
+										ArrayList<DashBoardReportVo> modules = new ArrayList<DashBoardReportVo>();
+										if(jsonModuleArr.length()>0){
+											int check=jsonModuleArr.length();
+											for(int j=0;j<check;j++){
+												DashBoardReportVo module = new DashBoardReportVo();
+												JSONObject josnModuleObj = jsonModuleArr.getJSONObject(j);
+												JSONObject jsonresourceObj = jsonModuleArr.getJSONObject(j);
+												
+												if(jsonresourceObj.length()>0){
+													
+													JSONArray jsonResouArr = jsonresourceObj.getJSONArray("resourceList");
+													int check1=jsonResouArr.length();
+													ArrayList<DashBoardReportVo> resoVo = new ArrayList<DashBoardReportVo>();
+													for(int k=0;k<check1;k++){
+														DashBoardReportVo resource = new DashBoardReportVo();
+														JSONObject josnResourObj = jsonResouArr.getJSONObject(k);
+														resource.setResourseName(josnResourObj.getString("resourceName"));
+														resource.setResourseDesc(josnResourObj.getString("resourceDesc"));
+														resource.setResourceUrl(josnResourObj.getString("resourceUrl"));
+														resource.setThumbImg(josnResourObj.getString("thumbImg"));
+														resource.setAuthorName(josnResourObj.getString("authorName"));
+														resource.setAuthorImage(josnResourObj.getString("authorImg"));
+														resource.setResourceId(josnResourObj.getInt("resourceId"));
+														resource.setTcsMainId(josnResourObj.getInt("resourceSessionId"));
+														resource.setCompletedStatus(josnResourObj.getInt("completedStatus"));
+														resoVo.add(resource);
+														//
+													}
+													module.setResourceList(resoVo);
+													}
+												
+												module.setModuleName(josnModuleObj.getString("moduleName"));
+												if(josnModuleObj.has("startedOn")){ 
+													String[] starton = josnModuleObj.getString("startedOn").split(" ");
+													if(Utility.isValidDate(starton[0])){
+														module.setStartedOn(Utility.getDisplayDate(starton[0]));
+													}
+												}
+												if(josnModuleObj.has("completedOn")){
+														String[] completeon = josnModuleObj.getString("completedOn").split(" ");
+														if(Utility.isValidDate(completeon[0])){
+															module.setCompletedOn(Utility.getDisplayDate(completeon[0]));
+														}
+												}
+												module.setModuleId(josnModuleObj.getInt("moduleId"));
+												module.setModuleStatuId(josnModuleObj.getInt("completedStatus"));
+												module.setModuleSessionId(josnModuleObj.getInt("moduleSessionId"));
+												Double d1 = josnModuleObj.getDouble("completedPercentStatus");
+												int completPera = d1.intValue();
+												module.setCompletedPerStatus(""+completPera);
+												module.setResourceSize(module.getResourceList().size());
+												modules.add(module);
+											}
 										}
+										dashCourseVo.setModulesList(modules);
+										//courseReportList.add(dashCourseVo);
+										tempCourseList.add(dashCourseVo);
+										countPer = Integer.parseInt(dashCourseVo.getCompletedPerStatus());
+										
+										totalper = totalper+countPer;
+									}
+									
+									int perc= (totalper/tempCourseList.size());
+									dashSchoolVo.setCompletedPerStatus(""+perc);
+									dashHomeVo.setCourseList(tempCourseList);
+									dashSchoolVo.setCourseSize(tempCourseList.size());
+									
 								}
-								int completPera = d1.intValue();
-								module.setCompletedPerStatus(""+completPera);
-								module.setResourceSize(module.getResourceList().size());
-								
-								modules.add(module);
+									tempHomeList.add(dashHomeVo);
+								}
+								dashSchoolVo.setHomeRoomList(tempHomeList);
+								dashSchoolVo.setDepartSize(temp.size());
+								dashSchoolVo.setHomeRoomSize(tempHomeList.size());
 							}
+							tempSchoolList.add(dashSchoolVo);
 						}
-						dashBoardReportVo.setModulesList(modules);
-						courseReportList.add(dashBoardReportVo);
+						courseReportList.addAll(tempSchoolList);
 					}
 				}
 				request.getSession().setAttribute("courseReportList", courseReportList);
@@ -673,7 +698,53 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 		}
 		return null;
 	}
+	
+	
+	public String changeCourseDetail(){
+		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+		courseReportDao = new  CourseReportDaoImpl();
+		dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
+			try{
+				if(loginTeacherDetail!=null){
+/*					if(dashBoardReportVo.getStatusCode()==0){
+						dashBoardReportVo.setStatusCode(1);
+					}
+					else if(dashBoardReportVo.getStatusCode()==2){
+						dashBoardReportVo.setStatusCode(1);
+					}*/
+					dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());		
+					response = courseReportDao.getChangeCourseStatus(dashBoardReportVo);
+					System.out.println(response);
+					//courseDetail();
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		return SUCCESS;
+	}
 
+	
+	public String assignmentStatusDate(){
+		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+		courseReportDao = new  CourseReportDaoImpl();
+		
+			try{
+				if(loginTeacherDetail!=null){
+					dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
+					dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
+					response = courseReportDao.getChangeAssignmentStatus(dashBoardReportVo);
+					System.out.println(response);
+					request.getSession().setAttribute("tempDetail", dashBoardReportVo);
+					changeWorkStatus();
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		return SUCCESS;
+	}
+	
 
 
 	@Override
@@ -843,6 +914,5 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 	}
 
 
-	 
 
 }

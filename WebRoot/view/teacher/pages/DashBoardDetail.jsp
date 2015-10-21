@@ -1,42 +1,85 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
+   
+
+
 
 <script type="text/javascript">
 
 
 $(document).ready(function(){
+$("#highcharts-0").removeClass("highcharts-button");
 	setTimeout("courseStatusPaiChart()", 3000);
 	setTimeout("assignmentStatusPaiChart()", 3000);
-	setTimeout("picode()", 3000);
+	setTimeout("columnChart()", 3000);
+
 	
 });
 
 
-var courseComplete = 20;
-var courseNotStart = 50;
-var courseInProgress = 30;
+	function columnChart(){
+	
+ $('#containerOne').highcharts({
+        title: {
+            text: 'Combination chart'
+        },
+        xAxis: {
+            categories: ['A', 'A+', 'B', 'B+', 'C','C+','D']
+        },
+        series: [{
+            type: 'column',
+            name: 'Grades',
+             data: [15, 22, 13, 10, 25,8,20]
+                  
+        }, {
+            type: 'pie',
+            name: 'Total consumption',
+           
+            center: [100, 80],
+            size: 100,
+            showInLegend: false,
+            dataLabels: {
+                enabled: false
+            }
+        }]
+    });
+ 
+	}
 
-var assignmentComplete = 40;
-var assignmentNotStart = 20;
-var assignmentInProgress = 40;
-
+ 
 function courseCompleteStatus(){
-	return courseComplete;
+var courseComplete = $("#courseCompleteId").val();
+var temp = parseInt(courseComplete);
+	return temp;
 }
 function courseNotStartStatus(){
-	return courseNotStart;
+var courseNotStart = $("#courseNotStartedId").val();
+var temp1 = parseInt(courseNotStart);
+	return temp1;
+	//return courseNotStart;
 }
 function courseInProgressStatus(){
-	return courseInProgress;
+var courseInProgress =$("#courseProgressId").val();
+var temp2 = parseInt(courseInProgress);
+	return temp2;
+	//return courseInProgress;
 }
 
+ 
+
 function assignmentCompleteStatus(){
-	return assignmentComplete;
+var assignmentId = $("#assignmentCompleteId").val();
+var assigStatus = parseInt(assignmentId);
+	return assigStatus;
 }
 function assignmentNotStartStatus(){
-	return assignmentNotStart;
+	var assignmentStatusId = $("#assignmentNotEnabledId").val();
+var assignStatus = parseInt(assignmentStatusId);
+	return assignStatus;
 }
 function assignmentInProgressStatus(){
-	return assignmentInProgress;
+	var assignmentStatusId = $("#assignmentOpenId").val();
+var assignmentssStatus = parseInt(assignmentStatusId);
+	return assignmentssStatus;
 }
 
 function assignmentStatusPaiChart(){
@@ -78,19 +121,66 @@ function assignmentStatusPaiChart(){
 			indexLabelFontColor: "MistyRose",       
 			indexLabelLineColor: "darkgrey", 
 			indexLabelPlacement: "inside", 
-			toolTipContent: "{name}: {y}%",
+			/* toolTipContent: "{name}: {y}%", */
+			toolTipContent: "{y}%",
 			showInLegend: true,
 			indexLabel: "#percent%", 
-			dataPoints: [
-				{  y: assignmentCompleteStatus(), name: "Submitted", legendMarkerType: "square"},
-				{  y: assignmentNotStartStatus(), name: "Not Submitted", legendMarkerType: "square"},
-				{  y: assignmentInProgressStatus(), name: "Reviewed", legendMarkerType: "square"}
-			]
+			dataPoints: asignmnt()
+			
+				/* {  y: assignmentCompleteStatus(), name: "Open", legendMarkerType: "square"},
+				{  y: assignmentNotStartStatus(), name: "Not Enabled", legendMarkerType: "square"},
+				{  y: assignmentInProgressStatus(), name: "Closed", legendMarkerType: "square"} */
+				
+			
 		}
 		]
 	});
 	$(".loadImg").hide();
 	chart.render();
+}
+
+
+function asignmnt(){
+//alert(assignmentCompleteStatus()+" "+ assignmentNotStartStatus()+" "+assignmentInProgressStatus());
+if(assignmentNotStartStatus() !=0){
+	if(assignmentInProgressStatus() !=0){
+		 if(assignmentCompleteStatus()!=0){
+			var values =[{y :assignmentNotStartStatus(),color:"#4F81BC"},{y:assignmentInProgressStatus(),color:"#C0504E"},{y :assignmentCompleteStatus(),color:"#9BBB58"}]
+	}
+	else  if(assignmentCompleteStatus()==0){
+			var values =[{y:assignmentInProgressStatus(),color:"#C0504E"},{y:assignmentNotStartStatus(),color:"#4F81BC"}]
+	}
+	}
+	else if(assignmentInProgressStatus() ==0){
+		 if(assignmentCompleteStatus()!=0){
+			var values =[{y :assignmentCompleteStatus(),color:"#9BBB58"},{y :assignmentNotStartStatus(),color:"#4F81BC"}]
+		}
+		else if(assignmentCompleteStatus()==0){
+			var values =[{y :assignmentNotStartStatus(),color:"#4F81BC"}]
+		}
+	}
+}
+
+else if(assignmentNotStartStatus() ==0){
+	if(assignmentInProgressStatus() !=0){
+		 if(assignmentCompleteStatus()!=0){
+			var values =[{y:assignmentInProgressStatus(),color:"#C0504E"},{y :assignmentCompleteStatus(),color:"#9BBB58"}]
+	}
+	else  if(assignmentCompleteStatus()==0){
+			var values =[{y:assignmentInProgressStatus(),color:"#C0504E"}]
+	}
+	}
+	else if(assignmentInProgressStatus() ==0){
+		 if(assignmentCompleteStatus()!=0){
+			var values =[{y :assignmentCompleteStatus(),color:"#9BBB58"}]
+		}
+		/* else if(assignmentCompleteStatus()==0){
+			var values =[{y :assignmentNotStartStatus()}]
+		} */
+	}
+}
+
+return values;
 }
 
 function courseStatusPaiChart(){
@@ -134,18 +224,13 @@ function courseStatusPaiChart(){
 			indexLabelFontColor: "MistyRose",       
 			indexLabelLineColor: "darkgrey", 
 			indexLabelPlacement: "inside", 
-			toolTipContent: "{name}: {y}%",
+			toolTipContent: 	"{y}%",
 			showInLegend: true,
 			indexLabel: "#percent%", 
 			 lineThickness: 1,
-			dataPoints: [
+			dataPoints:  aa()
 			
-			
-				{  y: courseCompleteStatus(), name: "Completed", legendMarkerType: "square"},
-				{  y: courseNotStartStatus(), name: "Not Started", legendMarkerType: "square"},
-				{  y: courseInProgressStatus(), name: "In Progress", legendMarkerType: "square"}
-			]
-		}
+			}
 		]
 		
 	});
@@ -153,12 +238,56 @@ function courseStatusPaiChart(){
 	chart.render();
 }
 
+
+function aa(){
+if(courseNotStartStatus() !=0){
+	if(courseInProgressStatus() !=0){
+		 if(courseCompleteStatus()!=0){
+			var val =[{y :courseNotStartStatus(),color:"#4F81BC"},{y:courseInProgressStatus(),color:"#C0504E"},{y :courseCompleteStatus(),color:"#9BBB58"}]
+	}
+	  if(courseCompleteStatus()==0){
+			var val =[{y:courseInProgressStatus(),color:"#C0504E"},{y:courseNotStartStatus(),color:"#4F81BC"}]
+	}
+	}
+	else if(courseInProgressStatus() ==0){
+		 if(courseCompleteStatus()!=0){
+			var val =[{y :courseCompleteStatus(),color:"#9BBB58"},{y :courseNotStartStatus(),color:"#4F81BC"}]
+		}
+		 if(courseCompleteStatus()==0){
+			var val =[{y :courseNotStartStatus(),color:"#4F81BC"}]
+		}
+	}
+}
+
+else if(courseNotStartStatus() ==0){
+	if(courseInProgressStatus() !=0){
+		 if(courseCompleteStatus()!=0){
+			var val =[{y:courseInProgressStatus(),color:"#C0504E"},{y :courseCompleteStatus(),color:"#9BBB58"}]
+	}
+	
+	else if(courseCompleteStatus()!=0){
+			var val =[{y:courseInProgressStatus(),color:"#C0504E"},{y :courseCompleteStatus(),color:"#9BBB58"}]
+	  
+	}
+	else if(courseCompleteStatus()==0){
+			var val =[{y:courseInProgressStatus(),color:"#C0504E"}]
+	
+	}
+	}
+	else if(courseInProgressStatus() ==0){
+		 if(courseCompleteStatus()!=0){
+			var val =[{y :courseCompleteStatus(),color:"#9BBB58"}]
+		}
+	}
+}
+return val;
+}
+
+
 function picode(){
  var chart = new CanvasJS.Chart("chartConta",
     {
-     /*  title:{
-        text: "Top Oil Reserves"    
-      }, */
+     
       axisY: {
         title: "Number of Student"
       },
@@ -166,6 +295,7 @@ function picode(){
         verticalAlign: "bottom",
         horizontalAlign: "center"
       },
+      
       data: [
 
       {        
@@ -275,7 +405,6 @@ function filterData(){
 		},
 		success		:	function(result){
 		$("#courseDetailDiv").html(result);
-		
 		},
 		complete		:	function(){
 		endwindowDisable();
@@ -284,10 +413,40 @@ function filterData(){
 		});
 	return false;
 	}
+	
+	
+	function filterData(){
+		var schoolId	=	$("#schoolIds").val();
+		var classId		=	$("#classIds").val();
+		var homeRoomId	=	$("#homeRoomIds").val();
+		var url="filterCourseData.action";
+		$.ajax({
+			type	:	"POST",
+			url		:	url,
+			data	:	{"schoolId":schoolId,"classId":classId, "homeRoomId":homeRoomId},
+			beforeSend	:	function(){
+			startwindowDisable();
+			},
+			success		:	function(result){
+			$("#dashBoardPieChartId").html(result);
+			courseStatusPaiChart();
+			assignmentStatusPaiChart();
+			
+		
+			
+			},
+			complete	:	function(){
+				endwindowDisable();
+			}
+		});		
+	return false;
+	}
+
+
 
 </script>
 
-<script type="text/javascript" src="view/helper/js/canvasjs.min.js"></script>
+
 
 <style>
 .loadImg{
@@ -297,6 +456,7 @@ function filterData(){
 <div class="container">
 
 <div class="row panel-default" >
+
 	<div class="col-md-7">
 	
 		<div class="col-md-3">
@@ -313,7 +473,6 @@ function filterData(){
 		</select>
 		</div>
 	</div>
-
 	<div class="col-md-3">
 		<div id="loadHomeRoomDetail">
 			<select class="form-control panel-default bgsize " name="homeRoomId"  >
@@ -322,15 +481,18 @@ function filterData(){
 		</div>
 	</div>
 	<div class="col-md-3 paper-shadow">
-		 <a class="pad4 normalbutton btn-height btn_mar_left" href="javaScript:;" onclick="" >Filter</a>
+		 <a class="pad4 normalbutton btn-height btn_mar_left" href="javaScript:;" onclick="return filterData();" >Filter</a>
 		</div>
-		
-		<div class="col-md-12" style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
 		<img  class="loadImg" src='view/helper/images/ajax-loader-large.gif'/>
+		<div class="col-md-12" style="background-color: white;height: 335px;padding: 0px;margin-top: 13px;">
 		<s:include value="PieChartReport.jsp"/>
 		</div>
-		<div class="col-md-12"  style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
-		<div id="chartConta" style="height: 300px; width: 100%;"></div>
+		<!-- <div class="col-md-12"  style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
+		<div id="containerOne" style="height: 300px; width: 100%;"></div>
+	</div> -->
+	
+	<div id="dashBoardPieChartId">
+	<s:include value="DashBoardPieChartDetail.jsp"/>
 	</div>
 	</div>
 	
@@ -338,5 +500,7 @@ function filterData(){
 		<s:include value="teacherRecentUpdates.jsp"/>
 	
 	</div>
+	
+	
 </div>
 </div>

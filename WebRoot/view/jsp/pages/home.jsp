@@ -31,7 +31,7 @@ function ValidateEmail(email) {
 
 function validPassword(password){
  var expr = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)|(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9-+_!@#$%^&*.,?]+)$/;
- return expr.test(password);
+	 return expr.test(password);
 }
 
 	function forgetPassword(){
@@ -210,7 +210,7 @@ function checkOrgAndDepart(){
 					else if(response.statusMessage=="success" && response.userType==3){
 							studentLogin();
 						}else{
-							showErrorMessage("Email and password doesn't match with database");
+							showErrorMessage(response.statusMessage);
 						}
 	        });
 		}
@@ -289,6 +289,7 @@ var title = $("#titleId").val();
 	
 	else if(!validPassword(userPassword)){
 		$("#lengthDivshow").show();
+		$(".msgShow").removeProperty("display");
 	}
 	
 	else if(validPassword(userPassword)){
@@ -807,7 +808,6 @@ select option:disabled {
 	color: white;
     font-family: helvetica;
     font-size: 12px;
-   	position:relative;
    	top : -10px;
     display:none;
 }

@@ -51,10 +51,13 @@ function setFollowerStatus(){
 			url : "setFollowerStatus",
 			data :{"followStatus":newStatus},
 			beforeSend :function(){
-				//showErrorMessage("newStatus");
+				startwindowDisable();
 			},
 			success : function(data){
 			},
+			complete		:	function(){
+				endwindowDisable();
+		}
         });
 	
 }
@@ -168,7 +171,7 @@ function setFeedAccessType(accessId){
 																	<s:else>
 																		<img src="view/helper/images/people/110/guy-3.jpg" onclick="follow(<s:property value='userId'/>);" alt="person" class="setting_clicked img-circle width-60 set_pic">
 																	</s:else>
-																	<h5 class="setting_h5"><s:property value="userName"/> </h5>
+																	<h5 class="setting_h5 auto_dots100"><s:property value="userName"/> </h5>
 																	<s:if test="isFollowUpAllowed == 1">
 																		<h6 class="text">unfollowed</h6>
 																	</s:if>
@@ -178,6 +181,7 @@ function setFeedAccessType(accessId){
 															</div>
 															</s:iterator>
 															</s:if>
+															<s:else>There is no data</s:else>
 														</div>
 												<a class="pad4 normalbutton btn-height btn_mar_left margin_top15" href="javaScript:;" onclick="setFollowerStatus();">Save</a>
 													</div>

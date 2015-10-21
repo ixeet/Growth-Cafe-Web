@@ -38,6 +38,7 @@ public class AssignmentServiceImpl implements AssignmentServiceIface{
 	public String assignments(RegistrationVo registrationVo) {
 		try {
 			String url=baseUrl+"rest/course/getAssignments";
+			System.out.println(url);
 			
 			JSONObject logingJsonObject = new JSONObject();
 			logingJsonObject.put("userId", registrationVo.getUserId());

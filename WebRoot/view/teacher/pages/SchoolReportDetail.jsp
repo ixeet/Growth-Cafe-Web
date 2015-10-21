@@ -93,11 +93,14 @@
 
 	<div class="row panel-default">
  
-		<%-- 	<div class="col-md-2 ">
-		<s:select list="schoolNameList" listValue="schoolName"
+			<div class="col-md-2 ">
+			<s:select list="schoolNameList" listValue="schoolName"
+			listKey="schoolId" headerKey="0" headerValue="ORGANIZATION (ALL)" cssClass="bgsize form-control panel-default bgsize"
+			name="schoolId" id="schoolIds"></s:select>
+		<%-- <s:select list="schoolNameList" listValue="schoolName"
 			listKey="schoolId" headerKey="0" headerValue="ORGANIZATION (ALL)" cssClass="bgsize form-control panel-default bgsize"
 			name="schoolId" id="schoolIds"
-			onchange="return loadClassMethodShow();"></s:select>
+			onchange="return loadClassMethodShow();"></s:select> --%>
 	</div>
 	<div class="col-md-2 ">
 		<div id="loadClassDetail">
@@ -120,9 +123,6 @@
 		 <a class="pad4 normalbutton btn-height btn_mar_left" href="javaScript:;" onclick="return filterData();">Filter</a>
 		</div>
 		</div>
-		 --%>
-		
-		
 		
 		
 	<div id="showDetailContainerId" class="col-md-12 col-sm-12 marg10">
