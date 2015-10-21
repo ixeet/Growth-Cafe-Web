@@ -11,7 +11,7 @@
 	<input  style="display: none;"  type="text" name="assignmentSubmittedById" value="<s:property value="#subchild.assignmentSubmittedById" />" >
 	
 	
-		<s:if test="ratingParameters!=null">
+		<s:if test="ratingParameters!=null && ratingParameters.size()>0" > 
 			<s:iterator value="ratingParameters" var="parent">
 				<b  style="font-size: 12px;"><s:property value="#parent.value" /></b>
 				<input style="display: none;" type="text" name="tempKey" value="<s:property value="#parent.key" />" >
@@ -32,11 +32,14 @@
 
 <s:if test="assignmentStatus == 3">
 	<div class="pad_l14"> 
-	<s:if test="ratingParameters!=null" > 
-			<s:iterator value="ratingParameters" var="parent">
-		<h5 style="font-size: 12px;"> <b><!-- Accuracy -->  <s:property value="#parent.tempKey" /> </b>: <s:property value="#parent.value" /></h5>
-	</s:iterator>
+	<s:if test="ratingParameters!=null && ratingParameters.size()>0" > 
+	<s:iterator value="ratingParameters" var="parent"> 
+				<s:if test="childs!=null"> 
+					<s:iterator value="childs" var="child">
+					<h5 style="font-size: 12px;"> <b><s:property value="#parent.value" /> </b>: <s:property value="#child.value" /></h5>
+					</s:iterator>
+				 </s:if>
+			</s:iterator>
 	</s:if>
-	
 	</div>
 </s:if>

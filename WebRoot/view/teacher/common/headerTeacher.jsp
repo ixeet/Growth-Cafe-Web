@@ -23,19 +23,40 @@ function clickableResource(id,type,key){
 }
 
 
+function categorySearch(){
+	var searchText =$("[name~=searchText]").val();
+	var tabId ='${selectedTab}';
+	if("updatesTabId"==tabId){
+		window.location="categorySearch?category=Update&searchText="+searchText;
+	}else if("coursesTabId"==tabId){
+		window.location="categorySearch?category=Course&searchText="+searchText;
+	}else if("assignmentsTabId"==tabId){
+		window.location="categorySearch?category=Assignment&searchText="+searchText;
+	}else{
+		window.location="categorySearch?category=People&searchText="+searchText;
+	}
+}
+
+function search(){
+		var searchText =$("[name~=searchText]").val();
+		window.location="categorySearchTeacher?searchText="+searchText;
+}
+
+
 function getNotificationDetail(feedId){
 	window.location="getNotificationDetail?feedId="+feedId;
 }
 
 function viewNotification(){
 		$.ajax({
-				url : "viewNotification",
+				url : "viewNotificationDetail",
 				type :"post",
 				dataType:"json",
 				beforeSend :function(){
 				},
 				success : function(data){
-					//var response = data.feedList;
+					var response = data.length;
+					if(response>0){
 					var contentElement = $("#notificatioDivId");
 					var notificationContent=" <ul class='dropdown-menu' role='notification'> <li class='dropdown-header'>Notifications</li>";
 						for(var i=0;i<data.length;i++){
@@ -58,6 +79,25 @@ function viewNotification(){
                             $("#notificatioDivId .dropdown-menu").show();
                              $("#notificatioDivId").show();
 				}
+				else{
+				var contentElement = $("#notificatioDivId");
+					var notificationContent=" <ul class='dropdown-menu' role='notification'> <li class='dropdown-header'>Notifications</li>";
+					notificationContent = notificationContent +"<li style='text-align: center;'>"+
+                                    "<div>"+
+                                       "<span>" +"There is no Notification"+"<span>"+
+                                    "</div>"+
+                                "</li>";
+					
+						  
+                             contentElement.html(notificationContent);	
+                             $("#notificatioDivId .dropdown-menu").show();
+                             $("#notificatioDivId").show();
+				}
+				
+				
+				}
+				
+				
 	        });
 	        var tabId ='${selectedTab}';
 			$("#"+tabId).parent().removeClass("active");
@@ -134,21 +174,22 @@ return false;
                         <img src="view/helper/images/logo5.png" id="image_logo1" />
                     </a>
                 </div>
-				<%-- <div class="col-sm-9 navtop-barn s_bar">
+				<div class="col-sm-12 navtop-barn s_bar">
                                         <div class="input-group search-bar-width">
-                                            <input type="text" class="form-control search_bar form-bar-control">
+                                            <input type="text" id="searchTextId" onkeydown="if (event.keyCode == 13)search();" class="form-control search_bar form-bar-control height23" name="searchText">
                                             <span class="input-group-btn"> 
-                                                <button class="btn btn-inverse search_button search_btn" type="button"><i class="fa fa-fw fa-search"></i></button>
+                                                <button onclick="search();"  class="btn btn-inverse search_button search_btn hw_23_47  pad_0 zindex_3" type="button"><i class="fa fa-fw fa-search "></i></button>
                                             </span>
                                         </div>
-                 </div> --%>
+                 </div>
+                 
+                
                         
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="main-nav">
             
             <ul class="nav navbar-nav navbar-nav-margin-left toggle-nav-margin">
-					
                     <li class="dropdown  dropdown_hover">
                         <a href="javaScript:;" id="dashboardTabId" onclick="return showDashboard();" class="dropdown-toggle dropdown_hover" data-toggle="dropdown">Dashboard</a>
                         
@@ -176,7 +217,7 @@ return false;
                 
                 <div class="navbar-right navbar-right-margin">
                      <ul class="nav navbar-nav navbar-nav-bordered navbar-nav-margin-right ul-navbar-right-margin">
-                      <!-- user --><li class="dropdown notifications updates">
+                        <!-- user --><li class="dropdown notifications updates">
                             <a id="notificationTabId" href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown" onclick="return viewNotification();">
                                 <i class="fa fa-bell-o"></i>
                                 <span class="badge badge-primary">4</span>

@@ -24993,9 +24993,9 @@ ul.img-grid li img {
 	display: table;
 	height: 100%;
 	vertical-align: middle;
-	margin: 0 auto;
+	margin: 80px auto;
 	transition: -webkit-transform .5s;
-	transition: transform .5s
+	transition: transform .5s.;
 }
 
 .modal.in {
@@ -25674,4 +25674,39 @@ ul.img-grid li img {
 
 .demo-icons-list span {
 	display: none
+}
+
+#sresult 
+{
+}
+
+#sresult img
+{
+	width:90px;
+	height:90px;
+	border:1px solid #ddd;
+	padding:2px;
+}
+
+#sresult .media-right
+{
+	float:right;
+}
+
+#sresult .media
+{
+	margin-bottom:20px;
+	padding:20px 10px;
+	border-bottom:1px solid #ddd;
+}
+
+#sresult .nav-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+
+}
+
+#sresult .fa
+{
+	margin-right:5px;
 }

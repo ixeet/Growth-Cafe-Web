@@ -5,7 +5,6 @@
     <!-- Separate Vendor Script Bundles -->
     
 <script type="text/javascript"  src="view/helper/js/jquery-1.9.1.js"></script>
-
     
     <script src="view/helper/js/vendor-core.min.js"></script>
     <script src="view/helper/js/vendor-countdown.min.js"></script>

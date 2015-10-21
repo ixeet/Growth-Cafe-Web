@@ -1,6 +1,11 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script type="text/javascript">
+function completeMsg(){
+$(".panel-heading panel-collapse-trigger pad-0").removeClass("collapsed");
+alert("Please Complete All Module of this Course");
+return false;
+}
 
 	function loadClassMethodShow(){
 		var schoolId=$("#schoolIds").val();
@@ -177,16 +182,52 @@ function filterData(){
 
 
 function viewDetail(courseId,moduleId,schoolId,classId,homeRoomId){
+$.ajax({
+	type	:	"",
+	url		:	"",
+	data	:	"",
+beforeSend	:	function(){
+},
+success		:	function(result){
+	//$("#courseDetailDiv").html(result);
+	
+	},
+	complete		:	function(){
+	 window.location="viewListDetail?courseId="+courseId+"&moduleId="+moduleId+"&schoolId="+schoolId+"&classId="+classId+"&homeRoomId="+homeRoomId;
+	}
+});
+return false;
+ }
 
-window.location="viewListDetail?courseId="+courseId+"&moduleId="+moduleId+"&schoolId="+schoolId+"&classId="+classId+"&homeRoomId="+homeRoomId;
-}
+
+
 
 function changeStatusDetail(event){
 var sessionId=$(event.currentTarget).val();
 var testValue = $(event.currentTarget).text();
-if(testValue == "Complete"){
+if(testValue == "Start"){
 	var status=0;
+	/* window.location="changeCourseDetail?courseSessionId="+sessionId+"&statusCode="+status; */
+	 var url = "changeDetailTeach.action";
+	$.ajax({
+	type		:	"POST",
+	url			:	url,
+	data		:	{"moduleSessionId":sessionId, "statusCode":status},
+	beforeSend		:	function(){
+			startwindowDisable();
+	},
+	success		:	function(result){
+	//$("#courseDetailDiv").html(result);
+	},
+	complete		:	function(){
+		window.location="courseDetail";
+	}
+	});
 }
+
+else if(testValue == "Complete"){
+	var status=1;
+	/* window.location="changeCourseDetail?courseSessionId="+sessionId+"&statusCode="+status; */
 
   var url = "changeDetailTeach.action";
 	$.ajax({
@@ -197,18 +238,68 @@ if(testValue == "Complete"){
 			startwindowDisable();
 	},
 	success		:	function(result){
-	$("#courseDetailDiv").html(result);
+	//$("#courseDetailDiv").html(result);
 	},
 	complete		:	function(){
-		endwindowDisable();
+		window.location="courseDetail";
 	}
 	});
-
+}
 return false; 
 }
- /* $("#courseDetailDiv").html(result); */
- </script>
 
+function changeStatusCourseDetail(event){
+ 
+	var sessionId=$(event.currentTarget).val();
+	var testValue = $(event.currentTarget).text();
+	if(testValue == "Start"){
+	event.stopPropagation();
+		var status=0;
+	  var url = "changeCourseDetail.action";
+		$.ajax({
+		type		:	"POST",
+		url			:	url,
+		data		:	{"courseSessionId":sessionId, "statusCode":status},
+		beforeSend		:	function(){
+				startwindowDisable();
+		},
+		success		:	function(result){
+		/* $("#courseDetailDiv").html(result); */
+		},
+		complete		:	function(){
+			/* endwindowDisable(); */
+			window.location="courseDetail";
+		}
+		});
+		
+	/* 	window.location="changeCourseDetail?courseSessionId="+sessionId+"&statusCode="+status; */
+	}
+	else if(testValue == "Complete"){
+	event.stopPropagation();
+	
+	$("#myModalAlert").modal("show");
+	/* alert("Please Complete All Module"); */
+		/* var status=0;
+		 var url = "changeCourseDetail.action";
+		$.ajax({
+		type		:	"POST",
+		url			:	url,
+		data		:	{"courseSessionId":sessionId, "statusCode":status},
+		beforeSend		:	function(){
+				startwindowDisable();
+		},
+		success		:	function(result){
+		$("#courseDetailDiv").html(result);
+		},
+		complete		:	function(){
+			endwindowDisable();
+		}
+		}); */
+		}
+	
+return false; 
+}
+ </script>
 
  <div class="container">
 <div class="row panel-default" >
@@ -216,10 +307,13 @@ return false;
 		<div class="list-group-item active">Course Console</div>
 	</div> -->
 			<div class="col-md-2 ">
-		<s:select list="schoolNameList" listValue="schoolName"
+				<s:select list="schoolNameList" listValue="schoolName"
+			listKey="schoolId" headerKey="0" headerValue="ORGANIZATION (ALL)" cssClass="bgsize form-control panel-default bgsize"
+			name="schoolId" id="schoolIds"></s:select>
+	<%-- 	<s:select list="schoolNameList" listValue="schoolName"
 			listKey="schoolId" headerKey="0" headerValue="ORGANIZATION (ALL)" cssClass="bgsize form-control panel-default bgsize"
 			name="schoolId" id="schoolIds"
-			onchange="return loadClassMethodShow();"></s:select>
+			onchange="return loadClassMethodShow();"></s:select> --%>
 	</div>
 	<%-- <div class="col-md-2 ">
 		<div id="loadClassDetail">
@@ -258,3 +352,124 @@ return false;
 </div>
 
 </div>
+
+
+    <style type="text/css">
+        .web_dialog_overlay
+        {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: #000000;
+            opacity: .15;
+            filter: alpha(opacity=15);
+            -moz-opacity: .15;
+            z-index: 101;
+            display: none;
+        }
+        .web_dialog
+        {
+            display: none;
+            position: fixed;
+            width: 380px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            margin-left: -190px;
+            margin-top: -100px;
+            background-color: #c6c6c6;
+            border: 2px solid #BA0032;
+            padding: 0px;
+            z-index: 102;
+            font-family: Verdana;
+            font-size: 12pt;
+            color:white;
+            font-weight: 800;
+        }
+        .web_dialog_title
+        {
+            border-bottom: solid 2px #BA0032;
+            background-color: #BA0032;
+            padding: 4px;
+            color: White;
+            font-weight:bold;
+        }
+        .web_dialog_title a
+        {
+            color: White;
+            text-decoration: none;
+        }
+        .align_right
+        {
+            text-align: right;
+        }
+         
+    </style>
+    <script type="text/javascript">
+
+        $(document).ready(function ()
+        {
+            $("#btnShowSimple").click(function (e)
+            {
+            e.stopPropagation();
+                ShowDialog(false);
+                e.preventDefault();
+            });
+
+            $("#btnClose").click(function (e)
+            {
+                HideDialog();
+                e.preventDefault();
+            });
+
+            
+        });
+
+        function ShowDialog(modal)
+        {
+            $("#overlay").show();
+            $("#dialog").fadeIn(300);
+
+                $("#overlay").click(function (e)
+                {
+                    HideDialog();
+                });
+        }
+
+        function HideDialog()
+        {
+            $("#overlay").hide();
+            $("#dialog").fadeOut(300);
+        } 
+        
+    </script>
+
+ 
+<div id="overlay" class="web_dialog_overlay"></div>
+<div id="dialog" class="web_dialog">
+        <table style="width: 100%;" >
+            <tr>
+                <td class="web_dialog_title">Alert Message</td>
+                <td class="web_dialog_title align_right">
+                    <a href="javascript:;" id="btnClose">Close</a>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding: 4px 0px 0px 8px;">
+                    <span>Hey, <br>There are some modules so you Can't mark the Course as Completed 
+        GO TO modules to Complete Them.</span>
+                </td>
+            </tr>
+            
+        </table>
+    </div>

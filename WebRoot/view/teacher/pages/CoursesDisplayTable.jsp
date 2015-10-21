@@ -86,8 +86,9 @@
 											</div>
 											<div class="col-sm-3 col-xs-3">
 										</div>
-											<div class="col-sm-4 col-xs-4 center">
+											<div class="col-sm-2 col-xs-2 ">
 											</div>
+											
 											<div class="col-sm-2  col-xs-2 center">
 												<div class="progress_n2" style="margin-left: 0px;">
 													<span class="progress-val_n2"> <s:property
@@ -99,7 +100,28 @@
 												</div>
 											</div>
 											
+											<s:if test="#coulist.completedStatus == 2">
+											<div class="col-sm-2 col-xs-2 center"><%-- 
+											<button class="btn-pad normalbutton btn-height" onclick="changeStatusCourseDetail(event)" data-toggle="tooltip" style="float: left; margin: 14px;"
+   													 data-placement="top" value="<s:property value="#coulist.courseSessionId" />" title="Start this Course">Start</button> --%>
 											
+											<h5 style="background-color: #c6c6c6;padding: 6px;color: white;"> 
+											No Course Started Yet</h5> 
+											</div>
+											</s:if>
+											<s:elseif test="#coulist.completedStatus==0">
+											<div class="col-sm-2 col-xs-2 center">
+											<%-- <button class="btn-pad normalbutton btn-height" onclick="changeStatusCourseDetail(event)" data-toggle="tooltip" style="float: left; margin: 14px;"
+   													 data-placement="top" value="<s:property value="#coulist.courseSessionId" />" title="Complete this Course">Complete</button>
+											 --%>
+											 <input data-placement="top"  data-toggle="tooltip" style="float: left; margin: 14px;" class="btn-pad normalbutton btn-height" type="button" id="btnShowSimple" value="Complete" />
+											
+											</div>
+											</s:elseif>
+											<s:elseif test="#coulist.completedStatus==1">
+											<div class="col-sm-2 col-xs-2 center">
+											</div>
+											</s:elseif>
 										</div>
 									</div>
 									</div>
@@ -126,7 +148,7 @@
 												<tr>
 													<td><span class="label" style="background-color: rgb(194, 194, 194);"><s:property value="%{#status.count}" /></span>
 													</td>
-													<td class="td_link" onclick="viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')"> <a href="javaScript:;" ><s:property value="#child.moduleName" /></a></td>
+													<td class="td_link" onclick="return viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')"> <a href="javaScript:;" ><s:property value="#child.moduleName" /></a></td>
 													<td><s:property value="resourceSize" /></td>
 													<td>
 															<s:if test="completedPerStatus < 0">
@@ -151,18 +173,14 @@
 														    <span class="progress-bar_n"><span class="progress-in_n" style="width:<s:property value="completedPerStatus"/>%;"></span></span>
 																
 																</div>
-																
-																 
 															</s:elseif>
 
 													</td>
-													<td class="text-right"><s:if test="moduleStatuId!=1">
+													<td class="text-right"><s:if test="moduleStatuId==0 ">
 															
-															<a href="javaScript:;"
-																onclick="viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')"
+															<button  onclick="return viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')"
 																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
-																data-placement="top" title="View this module">View</a>
-																
+																data-placement="top" title="View this module">View</button>
 															 
 																<button onclick="changeStatusDetail(event)"
 																class="btn-pad normalbutton btn-height" data-toggle="tooltip" value="<s:property value='ModuleSessionId'/>"
@@ -170,14 +188,36 @@
 																
 																
 														</s:if> <s:elseif test="moduleStatuId==2">
-															<a href="javaScript:;"
-																onclick="changeStatusDetail('<s:property value='ModuleSessionId'/>','<s:property value='moduleStatuId'/>')"
-																class="btn btn-success btn-xs" data-toggle="tooltip"
+															<%-- <a href="javaScript:;"
+																onclick="startModuleStatus('<s:property value='ModuleSessionId'/>','<s:property value='moduleStatuId'/>')"
+																class="btn-pad normalbutton btn-height"  style="float:left;" data-toggle="tooltip"
 																data-placement="top" title="Start this module">Start</a>
-															<a href="javaScript:;"
+																 --%>
+																
+																<button onclick="changeStatusDetail(event)"
+																class="btn-pad normalbutton btn-height" data-toggle="tooltip" value="<s:property value='ModuleSessionId'/>"
+																data-placement="top" style="float:left;" title="Start this module">Start</button>
+																
+																<div  data-toggle="tooltip"
+																data-placement="top" title="View this module" class="btn-pad normalbutton btn-height temp_link" onclick="viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')">
+																 View 
+																</div>
+																
+															<%-- <a href="javaScript:;"
 																onclick="viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')"
-																class="btn btn-danger btn-xs" data-toggle="tooltip"
-																data-placement="top" title="View this module">View</a>
+																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
+																data-placement="top" title="View this module">View</a> --%>
+														</s:elseif>
+														
+														<s:elseif test="moduleStatuId==1">
+															<%-- <a href="javaScript:;"
+																onclick="changeStatusDetail('<s:property value='ModuleSessionId'/>','<s:property value='moduleStatuId'/>')"
+																class="btn-pad normalbutton btn-height" data-toggle="tooltip"
+																data-placement="top"  style="float:left;" title="Start this module">Start</a> --%>
+															<div  data-toggle="tooltip"
+																data-placement="top" title="View this module" class="btn-pad normalbutton btn-height temp_link" onclick="viewDetail('<s:property value="#coulist.courseId" />','<s:property value="moduleId" />','<s:property value="#schoolparent.schoolId"/>','<s:property value="#homelist.classId"/>','<s:property value="#homelist.homeRoomId"/>')">
+																 View 
+																</div>
 														</s:elseif>
 													</td>
 												</tr>
@@ -189,15 +229,9 @@
 									</s:if>
 								</div>
 								</div>
-									
-									
 									</div>
 									</s:iterator>
 									</s:if>
-									
-									
-								
-								
 							</div>
 						</div>
 					</s:iterator>
@@ -207,9 +241,16 @@
 		</div>
 	</s:iterator>
 </s:if>
-<%-- 
+
+
+
+
+<!-- Modal -->
+
+
+
 <s:else>
-	<div class="panel panel-default curriculum paper-shadow" data-z="0.5"  style="margin-top: 27px;">
+	<div class="panel panel-default curriculum paper-shadow" data-z="0.5">
 		<div class="panel-heading">
 			<div class="media">
 
@@ -217,7 +258,7 @@
 
 					<div class="col-md-12">
 						<p align="center">
-							<span > No Data Found </span>
+							<span > There is no Course </span>
 						</p>
 					</div>
 
@@ -227,4 +268,3 @@
 	</div>
 
 </s:else>
- --%>

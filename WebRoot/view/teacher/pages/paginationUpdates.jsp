@@ -378,7 +378,7 @@
                 
               </s:if>
               <s:else>
-              <div id="noMoreUpdateDivId">
+              <div id="noMoreUpdateDivId"  style="height: 50px;">
               There are no more updates
               </div>
               

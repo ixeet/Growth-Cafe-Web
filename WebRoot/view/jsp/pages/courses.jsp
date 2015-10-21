@@ -84,6 +84,27 @@ function getModules(courseId){
                         </div><!-- course ends-->
                         </s:iterator>
 						</s:if>
+						
+						
+<s:else>
+	<div class="panel panel-default botm-none  curriculum paper-shadow" data-z="0.5">
+		<div class="panel-heading">
+			<div class="media">
+
+				<div class="media-body">
+
+					<div class="col-md-12">
+						<p align="center">
+							<span> There is no Course. </span>
+						</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</s:else>
 					</div>
 					</div>
 					

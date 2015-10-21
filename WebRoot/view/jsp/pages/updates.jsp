@@ -35,7 +35,7 @@ var eventStatus=true;
                                 > Math.round(($(document).height()*.9)) && eventStatus) {
                                /*  $("#paginationContentId").append("<img src='view/helper/images/animatedLoading.gif' style='margin-left: 50%;' alt='loading please wait' id='loadingUpdateImgId'>"); */
                                 eventStatus=false;
-                                $("#loader").append("<div id='top'><img  style='margin:252px 0 0 259px;' width='160px' height='120px' src='view/helper/images/animatedLoading.gif'/></div>");
+                                $("#loader").append("<div id='top'><img  style='margin-left: 48%;margin-top: 50%;' height='100px' src='view/helper/images/ajax-loader-large.gif'/></div>");
                                 $.ajax({
 									url : "paginationUpdates",
 									data :{"offset":1},
@@ -174,17 +174,7 @@ function showSubComment(commentId){
 
 </script>
 
-    
-    
-    <div class="container margin_topm22">
-        <div class="page-section">
-            <div class="row">
-            
-             <div class="col-xs-12 col-md-7 col-lg-7">
-              <div class="row" data-toggle="isotope">
-             <s:iterator value="feedList">
-             
-             <script type="text/javascript">
+    <script type="text/javascript">
 					$(document).ready(function(){
 					$('#share_button${feedId}').on('click', function(e){
 					e.preventDefault();
@@ -213,7 +203,18 @@ function showSubComment(commentId){
 		  height: 95%;
 		  background-color: white;
 		}
-    </style>        
+    </style> 
+    
+    <div class="container margin_topm22">
+        <div class="page-section">
+            <div class="row">
+            
+             <div class="col-xs-12 col-md-7 col-lg-7">
+              <div class="row" data-toggle="isotope">
+              <s:if test="feedList!= null && feedList.size()>0">
+             <s:iterator value="feedList">
+             
+                    
              
              
              
@@ -558,6 +559,26 @@ function showSubComment(commentId){
 				</div>
               </div>
                 </s:iterator>
+                </s:if>
+                
+                
+<s:else>
+	<div class="panel panel-default botm-none  curriculum paper-shadow" data-z="0.5">
+		<div class="panel-heading">
+			<div class="media">
+
+				<div class="media-body">
+
+					<div class="col-md-12">
+						<p align="center">There is no Update.</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</s:else>
               
               </div>
               <div class="row" data-toggle="isotope">
@@ -658,7 +679,8 @@ function showSubComment(commentId){
                                     </li>
 									</s:if>
 									<s:else>
-										There is no course
+										
+										<p align="center">There is no course.</p>
 									</s:else>
                                 </ul>
                         </div>
@@ -810,7 +832,7 @@ function showSubComment(commentId){
 	                                    </li>
 									</s:if>
 									<s:else>
-											There is no assignment
+											<p align="center">There is no Assignment.</p>
 									</s:else>
                                 </ul>
                         </div>

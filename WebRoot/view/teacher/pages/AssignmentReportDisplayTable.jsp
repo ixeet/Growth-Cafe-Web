@@ -73,7 +73,7 @@
 
 								<div class="panel panel-default botm-none  curriculum paper-shadow"
 									data-z="0.5">
-									<div class="panel-heading panel-collapse-trigger collapsed pad-0"
+									<div class="panel-heading panel-collapse-trigger collapsed pad-0" style="border-bottom: none;"
 										data-toggle="collapse"
 										data-target="#<s:property value="#courseDtl.schoolId"/>--<s:property value="#courseDtl.classId"/>--<s:property value="#courseDtl.homeRoomId"/>--<s:property value="#courseDtl.courseId"/>--<s:property value="#module.moduleId"/>"
 										aria-expanded="false">
@@ -113,7 +113,7 @@
 
 												<div class="panel panel-default botm-none  curriculum paper-shadow"
 													data-z="0.5">
-													<div class="panel-heading panel-collapse-trigger collapsed pad-0"
+													<div class="panel-heading panel-collapse-trigger collapsed pad-0" style="border-bottom: none;"
 														data-toggle="collapse"
 														data-target="#<s:property value="#courseDtl.schoolId"/>--<s:property value="#courseDtl.classId"/>--<s:property value="#courseDtl.homeRoomId"/>-<s:property value="#module.moduleId"/>-<s:property value="#courseDtl.courseId"/>-<s:property value="#assignment.assignmentId"/>"
 														aria-expanded="false">
@@ -213,13 +213,10 @@
 																												class="fa fa-fw fa-check-square-o"></i>View</a>
 																										</td>
 																									</s:if>
-
 																								</tr>
 																							</s:if>
 																						</s:iterator>
 																					</s:if>
-
-
 																				</tbody>
 																			</table>
 																		</div>
@@ -239,20 +236,20 @@
 																					</tr>
 																				</thead>
 																				<tbody id="responsive-table-body">
-
-																					<s:iterator value="studentList" status="counterNo">
-																						<s:if test="assignmentStatus==1">
-
-																							<tr>
-																								<td><span class="label"
-																									style="background-color: rgb(194, 194, 194);">
-																										<s:property	value="%{#counterNo.index+1}" /> </span></td>
-																								<td><s:property value="studentName" />
-																								</td>
-																							</tr>
-
+																						<s:if test="studentList!= null && studentList.size()>0">
+																						<%int temp=1; %>
+																							<s:iterator value="studentList"  status="status">
+																								<s:if test="assignmentStatus==1"  >
+																									<tr>
+																										<td><span class="label"
+																											style="background-color: rgb(194, 194, 194);">
+																												<%=temp++ %></span></td>
+																										<td><s:property value="studentName" />
+																										</td>
+																									</tr>
+																								</s:if>
+																							</s:iterator>
 																						</s:if>
-																					</s:iterator>
 
 																				</tbody>
 																			</table>
@@ -261,27 +258,23 @@
 																	<!-- ends tabs-->
 																</div>
 															</div>
-														
-													 
 											</div>
 									</div>
-
 										</s:iterator>
-
 									</s:if>
 									</div>
 									
 									</div>
 							</s:iterator>
 						</s:if>
-						<s:else>
-							<div class="list-group collapse"
-								id="<s:property value="#courseDtl.schoolId"/>--<s:property value="#courseDtl.classId"/>--<s:property value="#courseDtl.homeRoomId"/>--<s:property value="#courseDtl.courseId"/>--<s:property value="#module.moduleId"/>"
-								aria-expanded="false" style="height: 0px;">
-								<h4 align="center">THERE IS NO ASSIGNMENT</h4>
-
-							</div>
-						</s:else>
+							<s:else>
+								<div class="list-group collapse"
+									id="<s:property value="#courseDtl.schoolId"/>--<s:property value="#courseDtl.classId"/>--<s:property value="#courseDtl.homeRoomId"/>--<s:property value="#courseDtl.courseId"/>--<s:property value="#module.moduleId"/>"
+									aria-expanded="false" style="height: 0px;">
+									<h4 align="center">THERE IS NO ASSIGNMENT</h4>
+	
+								</div>
+							</s:else>
 					</div>
 				</div>
 			</div>
@@ -293,7 +286,7 @@
 
 
 
-<%-- 
+
 <s:else>
 	<div class="panel panel-default botm-none  curriculum paper-shadow" data-z="0.5">
 		<div class="panel-heading">
@@ -303,7 +296,7 @@
 
 					<div class="col-md-12">
 						<p align="center">
-							<span> No Data Found </span>
+							<span> There is no Assignment. </span>
 						</p>
 					</div>
 
@@ -314,4 +307,3 @@
 
 </s:else>
 
- --%>

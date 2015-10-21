@@ -106,7 +106,7 @@ public class DashBoardMasterDaoImpl extends LmsDaoAbstract implements DashBoardM
 			String url=baseUrl+"rest/common/getFeeds";
 			
 			JSONObject regJsonObject = new JSONObject();
-			regJsonObject.put("userId", 22);
+			regJsonObject.put("userId", loginDetail.getUserId());
 			regJsonObject.put("searchText", "");
 			regJsonObject.put("offset", offset);
 			regJsonObject.put("noOfRecords", 10);

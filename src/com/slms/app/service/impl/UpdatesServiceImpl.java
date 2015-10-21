@@ -20,6 +20,7 @@ public class UpdatesServiceImpl implements UpdatesServiceIface{
 	public String updates(RegistrationVo loginDetail , int offset) {
 		try {
 			String url=baseUrl+"rest/common/getFeeds";
+			System.out.println(url);
 			
 			JSONObject regJsonObject = new JSONObject();
 			regJsonObject.put("userId", loginDetail.getUserId());

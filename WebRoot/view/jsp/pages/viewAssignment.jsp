@@ -100,14 +100,14 @@
 									</div>
 								<div class="panel-body">
 									
-									<div class="expandable expandable-indicator-white expandable-trigger">
+									<div class="">
 										<div class="expandable-content text_default">
 										  <!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Last date of submission"></i> -->Due Date :&nbsp; ${assignmentVo.assignmentDueDate}<br>
 										  	<s:if test="assignmentVo.assignmentDueDate !=null">
 										<!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Last date of submission"></i> -->Submitted On :&nbsp; ${assignmentVo.assignmentSubmittedDate}<br>
 										</s:if>
 											<h5>${assignmentVo.assignmentDesc}</h5>
-										<div class="expandable-indicator"><i></i></div></div>
+										<div class=""></div></div>
 									</div>
 								</div>
 							</div>
@@ -120,11 +120,11 @@
 								</div>
 								<div class="panel-body">
 									<p class="text-caption text_default">
-									
-										<div>${assignmentVo.ratingParameter[0][0]} : ${assignmentVo.ratingParameter[0][1]}</div>
-					                    <div>${assignmentVo.ratingParameter[1][0]} : ${assignmentVo.ratingParameter[1][1]}</div>
-					                     <div>${assignmentVo.ratingParameter[2][0]} : ${assignmentVo.ratingParameter[2][1]}</div>
-					                  
+								<s:iterator value="assignmentVo.ratingParameter" var="par">
+									<s:iterator value="ratingChildParameter" var="chil">
+										<div><s:property value="#par.value"/> : <s:property value="#chil.value"/> </div>
+									</s:iterator>
+								</s:iterator>
 									</p>
 								</div>
 								<hr class="margin-none">

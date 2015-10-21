@@ -44,5 +44,9 @@ public interface CourseReportDao {
 
 	public String getShowFilterData(DashBoardReportVo dashBoardReportVo);
 
+	public String getChangeCourseStatus(DashBoardReportVo dashBoardReportVo);
+
+	public String getChangeAssignmentStatus(DashBoardReportVo dashBoardReportVo);
+
 
 }

@@ -355,11 +355,15 @@ margin-top:10px;
     color:white;
 }
 
+.bold{
+	font-weight:bold !important;
+}
+
 .color_red{
 color:red !important;
 }
 .color_blue{
-color:#42a5f5 !important;
+color:#3b5998 !important;
 }
 .color_black{
 color:black!important;
@@ -847,6 +851,17 @@ table tr td.td_link{
 	
 }
 table tr td.td_link:hover{
+	background-color: rgb(247, 247, 247);
+	
+}
+
+
+
+.temp_link{
+	cursor: pointer; 
+	
+}
+.temp_link:hover{
 	background-color: rgb(247, 247, 247);
 	
 }

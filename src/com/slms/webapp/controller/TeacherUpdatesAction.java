@@ -57,6 +57,9 @@ public class TeacherUpdatesAction  extends ActionSupport implements ServletRespo
 	ArrayList<CoursesVo> coursesList;
 	ArrayList<AssignmentVo> assignmentsList;
 	CoursesVo moduleDescription;
+	
+	
+	
 	public String execute() {
 		
 		HttpServletRequest request = ServletActionContext.getRequest();

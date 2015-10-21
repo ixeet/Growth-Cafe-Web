@@ -51,6 +51,10 @@
 	  <put-attribute name="body" value="/view/jsp/pages/courses.jsp" /> 
 	</definition>
 	
+	 <definition name="/search" extends="HomeLayout">
+	  <put-attribute name="body" value="/view/jsp/pages/search.jsp" /> 
+	</definition>
+	
 	<definition name="/getModule" extends="HomeLayout">
 	  <put-attribute name="body" value="/view/jsp/pages/modules.jsp" /> 
 	</definition>
@@ -114,6 +118,11 @@
 	  	<put-attribute name="body" value="/view/teacher/pages/AssignmentResourseDetail.jsp" /> 
 	</definition>
 	
+	<definition name="/teacherSearch" extends="DashBoardLayout">
+		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
+	  	<put-attribute name="body" value="/view/teacher/pages/teacherSearch.jsp" /> 
+	</definition>
+	
 	
 	<definition name="/schoolDetail" extends="DashBoardLayout">
 		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
@@ -152,5 +161,10 @@
 	<definition name="/teacherSetting" extends="DashBoardLayout">
 		<put-attribute name="header" value="/view/teacher/common/headerTeacher.jsp"/>
 	  	<put-attribute name="body" value="/view/teacher/pages/teacherSetting.jsp" /> 
+	</definition>
+	
+	
+	 <definition name="/teacherSearch" extends="DashBoardLayout">
+	  <put-attribute name="body" value="/view/teacher/pages/teacherSearch.jsp" /> 
 	</definition>
 </tiles-definitions>

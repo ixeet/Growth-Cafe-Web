@@ -121,19 +121,66 @@ function assignmentStatusPaiChart(){
 			indexLabelFontColor: "MistyRose",       
 			indexLabelLineColor: "darkgrey", 
 			indexLabelPlacement: "inside", 
-			toolTipContent: "{name}: {y}%",
+			/* toolTipContent: "{name}: {y}%", */
+			toolTipContent: "{y}%",
 			showInLegend: true,
 			indexLabel: "#percent%", 
-			dataPoints: [
-				{  y: assignmentCompleteStatus(), name: "Open", legendMarkerType: "square"},
+			dataPoints: asignmnt()
+			
+				/* {  y: assignmentCompleteStatus(), name: "Open", legendMarkerType: "square"},
 				{  y: assignmentNotStartStatus(), name: "Not Enabled", legendMarkerType: "square"},
-				{  y: assignmentInProgressStatus(), name: "Closed", legendMarkerType: "square"}
-			]
+				{  y: assignmentInProgressStatus(), name: "Closed", legendMarkerType: "square"} */
+				
+			
 		}
 		]
 	});
 	$(".loadImg").hide();
 	chart.render();
+}
+
+
+function asignmnt(){
+//alert(assignmentCompleteStatus()+" "+ assignmentNotStartStatus()+" "+assignmentInProgressStatus());
+if(assignmentNotStartStatus() !=0){
+	if(assignmentInProgressStatus() !=0){
+		 if(assignmentCompleteStatus()!=0){
+			var values =[{y :assignmentNotStartStatus(),color:"#4F81BC"},{y:assignmentInProgressStatus(),color:"#C0504E"},{y :assignmentCompleteStatus(),color:"#9BBB58"}]
+	}
+	else  if(assignmentCompleteStatus()==0){
+			var values =[{y:assignmentInProgressStatus(),color:"#C0504E"},{y:assignmentNotStartStatus(),color:"#4F81BC"}]
+	}
+	}
+	else if(assignmentInProgressStatus() ==0){
+		 if(assignmentCompleteStatus()!=0){
+			var values =[{y :assignmentCompleteStatus(),color:"#9BBB58"},{y :assignmentNotStartStatus(),color:"#4F81BC"}]
+		}
+		else if(assignmentCompleteStatus()==0){
+			var values =[{y :assignmentNotStartStatus(),color:"#4F81BC"}]
+		}
+	}
+}
+
+else if(assignmentNotStartStatus() ==0){
+	if(assignmentInProgressStatus() !=0){
+		 if(assignmentCompleteStatus()!=0){
+			var values =[{y:assignmentInProgressStatus(),color:"#C0504E"},{y :assignmentCompleteStatus(),color:"#9BBB58"}]
+	}
+	else  if(assignmentCompleteStatus()==0){
+			var values =[{y:assignmentInProgressStatus(),color:"#C0504E"}]
+	}
+	}
+	else if(assignmentInProgressStatus() ==0){
+		 if(assignmentCompleteStatus()!=0){
+			var values =[{y :assignmentCompleteStatus(),color:"#9BBB58"}]
+		}
+		/* else if(assignmentCompleteStatus()==0){
+			var values =[{y :assignmentNotStartStatus()}]
+		} */
+	}
+}
+
+return values;
 }
 
 function courseStatusPaiChart(){
@@ -177,25 +224,65 @@ function courseStatusPaiChart(){
 			indexLabelFontColor: "MistyRose",       
 			indexLabelLineColor: "darkgrey", 
 			indexLabelPlacement: "inside", 
-			toolTipContent: "{name}: {y}%",
+			toolTipContent: 	"{y}%",
 			showInLegend: true,
 			indexLabel: "#percent%", 
 			 lineThickness: 1,
-			dataPoints: [
+			dataPoints:  aa()
 			
-			
-				
-				{  y: courseNotStartStatus(), name: "In Progress", legendMarkerType: "square"},
-				{  y: courseInProgressStatus(), name: "Not Started", legendMarkerType: "square"},
-				{  y: courseCompleteStatus(), name: "Completed", legendMarkerType: "square"}
-			]
-		}
+			}
 		]
 		
 	});
 	$(".loadImg").hide();
 	chart.render();
 }
+
+
+function aa(){
+if(courseNotStartStatus() !=0){
+	if(courseInProgressStatus() !=0){
+		 if(courseCompleteStatus()!=0){
+			var val =[{y :courseNotStartStatus(),color:"#4F81BC"},{y:courseInProgressStatus(),color:"#C0504E"},{y :courseCompleteStatus(),color:"#9BBB58"}]
+	}
+	  if(courseCompleteStatus()==0){
+			var val =[{y:courseInProgressStatus(),color:"#C0504E"},{y:courseNotStartStatus(),color:"#4F81BC"}]
+	}
+	}
+	else if(courseInProgressStatus() ==0){
+		 if(courseCompleteStatus()!=0){
+			var val =[{y :courseCompleteStatus(),color:"#9BBB58"},{y :courseNotStartStatus(),color:"#4F81BC"}]
+		}
+		 if(courseCompleteStatus()==0){
+			var val =[{y :courseNotStartStatus(),color:"#4F81BC"}]
+		}
+	}
+}
+
+else if(courseNotStartStatus() ==0){
+	if(courseInProgressStatus() !=0){
+		 if(courseCompleteStatus()!=0){
+			var val =[{y:courseInProgressStatus(),color:"#C0504E"},{y :courseCompleteStatus(),color:"#9BBB58"}]
+	}
+	
+	else if(courseCompleteStatus()!=0){
+			var val =[{y:courseInProgressStatus(),color:"#C0504E"},{y :courseCompleteStatus(),color:"#9BBB58"}]
+	  
+	}
+	else if(courseCompleteStatus()==0){
+			var val =[{y:courseInProgressStatus(),color:"#C0504E"}]
+	
+	}
+	}
+	else if(courseInProgressStatus() ==0){
+		 if(courseCompleteStatus()!=0){
+			var val =[{y :courseCompleteStatus(),color:"#9BBB58"}]
+		}
+	}
+}
+return val;
+}
+
 
 function picode(){
  var chart = new CanvasJS.Chart("chartConta",
@@ -369,6 +456,7 @@ function filterData(){
 <div class="container">
 
 <div class="row panel-default" >
+
 	<div class="col-md-7">
 	
 		<div class="col-md-3">
@@ -385,7 +473,6 @@ function filterData(){
 		</select>
 		</div>
 	</div>
-
 	<div class="col-md-3">
 		<div id="loadHomeRoomDetail">
 			<select class="form-control panel-default bgsize " name="homeRoomId"  >
@@ -397,7 +484,7 @@ function filterData(){
 		 <a class="pad4 normalbutton btn-height btn_mar_left" href="javaScript:;" onclick="return filterData();" >Filter</a>
 		</div>
 		<img  class="loadImg" src='view/helper/images/ajax-loader-large.gif'/>
-		<div class="col-md-12" style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">
+		<div class="col-md-12" style="background-color: white;height: 335px;padding: 0px;margin-top: 13px;">
 		<s:include value="PieChartReport.jsp"/>
 		</div>
 		<!-- <div class="col-md-12"  style="background-color: white;height: 320px;padding: 0px;margin-top: 13px;">

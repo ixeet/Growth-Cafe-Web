@@ -104,8 +104,6 @@ public class CoursesAction extends ActionSupport implements ModelDriven<CoursesV
 								int days = Utility.timeDifference(starton[0], completeon[0]);
 								module.setTimeDuration(days);
 								}
-								
-								
 								modules.add(module);
 							}
 						}

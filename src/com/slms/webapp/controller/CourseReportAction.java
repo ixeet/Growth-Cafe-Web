@@ -57,7 +57,7 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 		return SUCCESS;
 	}
 
-
+	
 	public String courseDetail(){
 		
 		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
@@ -121,6 +121,9 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 										
 										dashCourseVo.setCourseName(jsonCourseObj.getString("courseName"));
 										dashCourseVo.setCourseId(jsonCourseObj.getInt("courseId"));
+										dashCourseVo.setCourseSessionId(jsonCourseObj.getInt("courseSessionId"));
+										dashCourseVo.setCompletedStatus(jsonCourseObj.getInt("completedStatus"));
+										
 										
 										Double d = jsonCourseObj.getDouble("completedPercentStatus");
 										int completPer = d.intValue();
@@ -175,6 +178,13 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 												module.setModuleId(josnModuleObj.getInt("moduleId"));
 												module.setModuleStatuId(josnModuleObj.getInt("completedStatus"));
 												module.setModuleSessionId(josnModuleObj.getInt("moduleSessionId"));
+												if(josnModuleObj.getInt("assignmentEnableStatus")==0){
+												module.setAssignmentName("<p>Enter Date: <input class='dateTemp' type='text' onclick='showDp();' id='datepicker-3'></p><a href='javaScript:;'  onclick='return submitDate("+jsonSchoolObj.getInt("schoolId")+","+jsonHomeObj.getInt("classId")+","+jsonHomeObj.getInt("homeRoomId")+","+jsonCourseObj.getInt("courseId")+","+josnModuleObj.getInt("moduleId")+","+josnModuleObj.getInt("moduleSessionId")+");' class='btn-pad normalbutton btn-height'>Enable Assignments</a>");
+												}
+												else if(josnModuleObj.getInt("assignmentEnableStatus")==1){
+													module.setAssignmentName("<a href='javaScript:;'  onclick='return submitDate("+jsonSchoolObj.getInt("schoolId")+","+jsonHomeObj.getInt("classId")+","+jsonHomeObj.getInt("homeRoomId")+","+jsonCourseObj.getInt("courseId")+","+josnModuleObj.getInt("moduleId")+","+josnModuleObj.getInt("moduleSessionId")+");' class='btn-pad normalbutton btn-height'>Disable Assignments</a>");
+													
+												}
 												Double d1 = josnModuleObj.getDouble("completedPercentStatus");
 												int completPera = d1.intValue();
 												module.setCompletedPerStatus(""+completPera);
@@ -352,6 +362,7 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 									if(module.getModuleId()==dashBoardReportVo.getModuleId()){
 										request.getSession().setAttribute("tempDetail", dashBoardReportVo);
 										selectResourceDetail = module.getResourceList();
+										request.setAttribute("resourceLinkId", selectResourceDetail.get(0).getResourceId()); 
 										dashBoardReportVo = module;
 										module.setCourseId(course.getCourseId());
 										
@@ -410,20 +421,18 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 		dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
 			try{
 				if(loginTeacherDetail!=null){
-/*					if(dashBoardReportVo.getStatusCode()==0){
+					/*if(dashBoardReportVo.getStatusCode()==0){
 						dashBoardReportVo.setStatusCode(1);
 					}
 					else if(dashBoardReportVo.getStatusCode()==2){
 						dashBoardReportVo.setStatusCode(1);
 					}*/
-					if(dashBoardReportVo.getStatusCode()!=1){
-						dashBoardReportVo.setStatusCode(1);
-					}
+					 
 						dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());		
 					response = courseReportDao.getChangeStatus(dashBoardReportVo);
-					response = courseReportDao.getCourse(dashBoardReportVo);
+					/*response = courseReportDao.getCourse(dashBoardReportVo);*/
 					System.out.println(response);
-					JSONObject jsonResObject = new JSONObject(response);
+					/*JSONObject jsonResObject = new JSONObject(response);
 					if(jsonResObject !=null && jsonResObject.getString("statusMessage").equalsIgnoreCase("success")){
 						JSONArray jsonCourseArray = jsonResObject.getJSONArray("courseList");
 						courseReportList= new ArrayList<DashBoardReportVo>();
@@ -502,7 +511,7 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 							dashBoardReportVo.setModulesList(modules);
 							courseReportList.add(dashBoardReportVo);
 						}
-					}
+					}*/
 					
 					
 				request.setAttribute("selectedTab", "coursesTabId"); 
@@ -689,7 +698,53 @@ public class CourseReportAction extends ActionSupport implements ModelDriven<Das
 		}
 		return null;
 	}
+	
+	
+	public String changeCourseDetail(){
+		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+		courseReportDao = new  CourseReportDaoImpl();
+		dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
+			try{
+				if(loginTeacherDetail!=null){
+/*					if(dashBoardReportVo.getStatusCode()==0){
+						dashBoardReportVo.setStatusCode(1);
+					}
+					else if(dashBoardReportVo.getStatusCode()==2){
+						dashBoardReportVo.setStatusCode(1);
+					}*/
+					dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());		
+					response = courseReportDao.getChangeCourseStatus(dashBoardReportVo);
+					System.out.println(response);
+					//courseDetail();
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		return SUCCESS;
+	}
 
+	
+	public String assignmentStatusDate(){
+		RegistrationVo loginTeacherDetail = (RegistrationVo) request.getSession().getAttribute("teacherloginDetail");
+		courseReportDao = new  CourseReportDaoImpl();
+		
+			try{
+				if(loginTeacherDetail!=null){
+					dashBoardReportVo.setUserName(loginTeacherDetail.getUserName());
+					dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
+					response = courseReportDao.getChangeAssignmentStatus(dashBoardReportVo);
+					System.out.println(response);
+					request.getSession().setAttribute("tempDetail", dashBoardReportVo);
+					changeWorkStatus();
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		return SUCCESS;
+	}
+	
 
 
 	@Override

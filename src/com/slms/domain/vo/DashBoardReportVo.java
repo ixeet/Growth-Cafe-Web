@@ -27,6 +27,7 @@ public class DashBoardReportVo {
 	private int attendance;
 	private int totalPoints;
 	private int id;
+	private int courseSessionId;
 	private int userId;
 	private int tcsMainId;
 	private String userName;
@@ -49,6 +50,7 @@ public class DashBoardReportVo {
 	private int resourceSessionId;
 	private int statusId;
 	private String completedPerStatus;
+	private String asignmentEnableStatus;
 	private int moduleStatuId;
 	private int assignmentId;
 	private int assignmentStatus;
@@ -61,12 +63,13 @@ public class DashBoardReportVo {
 	private String value;
 	private int key;
 	
-	private int courseComplete;
-	private int courseProgress;
-	private int courseNotStarted;
-	private int assignmentComplete;
-	private int assignmentOpen;
-	private int assignmentNotEnabled;
+	private String courseComplete;
+	private String courseProgress;
+	private String courseNotStarted;
+	private String assignmentComplete;
+	private String assignmentOpen;
+	private String assignmentNotEnabled;
+	
 	private int totalStudent;
 	private int reviewPending;
 	private int assignPending;
@@ -669,70 +672,7 @@ public class DashBoardReportVo {
 		this.tempValue = tempValue;
 	}
 
-	public int getCourseComplete() {
-		return courseComplete;
-	}
-
-	public void setCourseComplete(int courseComplete) {
-		this.courseComplete = courseComplete;
-	}
-
-	public int getCourseProgress() {
-		return courseProgress;
-	}
-
-	public void setCourseProgress(int courseProgress) {
-		this.courseProgress = courseProgress;
-	}
-
-	public int getCourseNotStarted() {
-		return courseNotStarted;
-	}
-
-	public void setCourseNotStarted(int courseNotStarted) {
-		this.courseNotStarted = courseNotStarted;
-	}
-
-	public ArrayList<DashBoardReportVo> getPercentage() {
-		return percentage;
-	}
-
-	public void setPercentage(ArrayList<DashBoardReportVo> percentage) {
-		this.percentage = percentage;
-	}
-
-	public int getAssignmentComplete() {
-		return assignmentComplete;
-	}
-
-	public void setAssignmentComplete(int assignmentComplete) {
-		this.assignmentComplete = assignmentComplete;
-	}
-
-	public int getAssignmentOpen() {
-		return assignmentOpen;
-	}
-
-	public void setAssignmentOpen(int assignmentOpen) {
-		this.assignmentOpen = assignmentOpen;
-	}
-
-	public int getAssignmentNotEnabled() {
-		return assignmentNotEnabled;
-	}
-
-	public void setAssignmentNotEnabled(int assignmentNotEnabled) {
-		this.assignmentNotEnabled = assignmentNotEnabled;
-	}
-
-	public ArrayList<DashBoardReportVo> getStudentList() {
-		return studentList;
-	}
-
-	public void setStudentList(ArrayList<DashBoardReportVo> studentList) {
-		this.studentList = studentList;
-	}
-
+	
 	public int getTotalStudent() {
 		return totalStudent;
 	}
@@ -779,6 +719,86 @@ public class DashBoardReportVo {
 
 	public void setDepartSize(int departSize) {
 		this.departSize = departSize;
+	}
+
+	public int getCourseSessionId() {
+		return courseSessionId;
+	}
+
+	public void setCourseSessionId(int courseSessionId) {
+		this.courseSessionId = courseSessionId;
+	}
+
+	public String getCourseProgress() {
+		return courseProgress;
+	}
+
+	public void setCourseProgress(String courseProgress) {
+		this.courseProgress = courseProgress;
+	}
+
+	public String getCourseComplete() {
+		return courseComplete;
+	}
+
+	public void setCourseComplete(String courseComplete) {
+		this.courseComplete = courseComplete;
+	}
+
+	public String getCourseNotStarted() {
+		return courseNotStarted;
+	}
+
+	public void setCourseNotStarted(String courseNotStarted) {
+		this.courseNotStarted = courseNotStarted;
+	}
+
+	public String getAssignmentComplete() {
+		return assignmentComplete;
+	}
+
+	public void setAssignmentComplete(String assignmentComplete) {
+		this.assignmentComplete = assignmentComplete;
+	}
+
+	public String getAssignmentOpen() {
+		return assignmentOpen;
+	}
+
+	public void setAssignmentOpen(String assignmentOpen) {
+		this.assignmentOpen = assignmentOpen;
+	}
+
+	public String getAssignmentNotEnabled() {
+		return assignmentNotEnabled;
+	}
+
+	public void setAssignmentNotEnabled(String assignmentNotEnabled) {
+		this.assignmentNotEnabled = assignmentNotEnabled;
+	}
+
+	public ArrayList<DashBoardReportVo> getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(ArrayList<DashBoardReportVo> percentage) {
+		this.percentage = percentage;
+	}
+
+	public ArrayList<DashBoardReportVo> getStudentList() {
+		return studentList;
+	}
+
+	public void setStudentList(ArrayList<DashBoardReportVo> studentList) {
+		this.studentList = studentList;
+	}
+
+	public String getAsignmentEnableStatus() {
+		return asignmentEnableStatus;
+	}
+
+	public void setAsignmentEnableStatus(String asignmentEnableStatus) {
+		this.asignmentEnableStatus = asignmentEnableStatus;
 	}
 
 	 

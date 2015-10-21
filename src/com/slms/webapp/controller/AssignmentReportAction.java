@@ -336,7 +336,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 													assignListRes.setAssignmentSubmittedById(jsonStudentObj.getInt("assignmentSubmittedById"));
 													
 													assignListRes.setAssignmentResourceTxnId(jsonStudentObj.getInt("assignmentResourceTxnId"));
-													assignListRes.setAssignmentDueDate(Utility.getDisplayDate(jsonStudentObj.getString("assignmentDueDate")));
+													//assignListRes.setAssignmentDueDate(Utility.getDisplayDate(jsonStudentObj.getString("assignmentDueDate")));
 													assignListRes.setAssignmentSubmittedDate(Utility.getDisplayDate(jsonStudentObj.getString("assignmentSubmittedDate")));
 													JSONArray attachedResourcesObj=jsonStudentObj.getJSONArray("attachedResources");
 													
@@ -387,15 +387,28 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 														JSONArray jasonAttchResoArray = jsonStudentObj.getJSONArray("ratingParameters");
 														if(jasonAttchResoArray.length()>0){
 															ArrayList<DashBoardReportVo> attachResList = new  ArrayList<DashBoardReportVo>();
-														for(int ml=0; ml<jasonAttchResoArray.length(); ml++){
-															JSONObject attachObj = jasonAttchResoArray.getJSONObject(ml);
+														for(int mm=0; mm<jasonAttchResoArray.length(); mm++){
+															JSONObject attachObj = jasonAttchResoArray.getJSONObject(mm);
 															DashBoardReportVo attachRes= new DashBoardReportVo();
-															attachRes.setTempKey(attachObj.getString("key"));
+															attachRes.setKey(attachObj.getInt("key"));
 															attachRes.setValue(attachObj.getString("value"));
+															
+															JSONArray childArray = attachObj.getJSONArray("childs");
+															ArrayList<DashBoardReportVo> childObjList = new  ArrayList<DashBoardReportVo>();
+															if(childArray.length()>0){
+																for(int n=0; n<childArray.length(); n++){
+																	DashBoardReportVo childRes= new DashBoardReportVo();
+																	JSONObject childObj = childArray.getJSONObject(n);
+																	childRes.setKey(childObj.getInt("key"));
+																	childRes.setValue(childObj.getString("value"));
+																	childObjList.add(childRes);
+																}
+															}
+															attachRes.setChilds(childObjList);
 															attachResList.add(attachRes);
 														}
-														assignListRes.setRatingParameters(attachResList);
-														}
+															assignListRes.setRatingParameters(attachResList);
+													}
 														}
 													assignListSubmit.add(assignListRes);
 													}
@@ -412,6 +425,8 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 					}
 					courseListDetails.addAll(course);
 				}
+				
+				
 				request.setAttribute("selectedTab", "assignmentTabId");
 				
 			}
@@ -432,6 +447,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 			if(loginTeacherDetail!=null){
 				dashBoardReportVo.setUserId(loginTeacherDetail.getUserId());
 				response = assignmentReportDao.getRateAssignment(dashBoardReportVo);
+				
 					 ratingParameters = new ArrayList<DashBoardReportVo>();
 					response = assignmentReportDao.getShowFilterData(dashBoardReportVo);
 					JSONObject jsonResponseObj= new JSONObject(response);
@@ -491,7 +507,7 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 															assignListRes.setAssignmentSubmittedById(jsonStudentObj.getInt("assignmentSubmittedById"));
 															//assignListRes.setAssignmentDesc(jsonStudentObj.getString("assignmentDesc"));
 															assignListRes.setAssignmentResourceTxnId(jsonStudentObj.getInt("assignmentResourceTxnId"));
-															assignListRes.setAssignmentDueDate(Utility.getDisplayDate(jsonStudentObj.getString("assignmentDueDate")));
+														//	assignListRes.setAssignmentDueDate(Utility.getDisplayDate(jsonStudentObj.getString("assignmentDueDate")));
 															assignListRes.setAssignmentSubmittedDate(Utility.getDisplayDate(jsonStudentObj.getString("assignmentSubmittedDate")));
 															JSONArray attachedResourcesObj=jsonStudentObj.getJSONArray("attachedResources");
 															dashBoardReportVo.setAssignmentStatus(jsonStudentObj.getInt("assignmentStatus"));
@@ -542,15 +558,29 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 																JSONArray jasonAttchResoArray = jsonStudentObj.getJSONArray("ratingParameters");
 																if(jasonAttchResoArray.length()>0){
 																	ArrayList<DashBoardReportVo> attachResList = new  ArrayList<DashBoardReportVo>();
-																for(int ml=0; ml<jasonAttchResoArray.length(); ml++){
-																	JSONObject attachObj = jasonAttchResoArray.getJSONObject(ml);
+																for(int mm=0; mm<jasonAttchResoArray.length(); mm++){
+																	JSONObject attachObj = jasonAttchResoArray.getJSONObject(mm);
 																	DashBoardReportVo attachRes= new DashBoardReportVo();
-																	attachRes.setTempKey(attachObj.getString("key"));
+																	attachRes.setKey(attachObj.getInt("key"));
 																	attachRes.setValue(attachObj.getString("value"));
+																	
+																	JSONArray childArray = attachObj.getJSONArray("childs");
+																	ArrayList<DashBoardReportVo> childObjList = new  ArrayList<DashBoardReportVo>();
+																	if(childArray.length()>0){
+																		for(int n=0; n<childArray.length(); n++){
+																			DashBoardReportVo childRes= new DashBoardReportVo();
+																			JSONObject childObj = childArray.getJSONObject(n);
+																			childRes.setKey(childObj.getInt("key"));
+																			childRes.setValue(childObj.getString("value"));
+																			childObjList.add(childRes);
+																		}
+																	}
+																	attachRes.setChilds(childObjList);
 																	attachResList.add(attachRes);
 																}
 																dashBoardReportVo.setRatingParameters(attachResList);
-																}
+																ratingParameters.addAll(attachResList);
+															}
 																}
 															
 															}
@@ -558,9 +588,6 @@ public class AssignmentReportAction extends ActionSupport implements ModelDriven
 															
 														}
 													}
-													
-													
-													
 													
 													
 												}

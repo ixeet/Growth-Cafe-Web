@@ -21,6 +21,8 @@ function submitResponzeByTeacher(){
 return false;
 }
 
+
+
 </script>
 
 
@@ -152,14 +154,12 @@ return false;
 															<%--   <s:if test="#child.timeDuration !=null">  --%>
 															<!-- <i data-toggle="tooltip" title="" class="fa fa-clock-o fa-fw" data-original-title="Time duration"></i> -->
 															<%-- Module Duration :&nbsp; ${moduleDetail.timeDuration} days &nbsp;<br></s:if> --%>
-															<s:if test="#child.startedOn !=null">
-																<!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Start Date"></i> -->Scheduled Start :&nbsp; <s:property
+															<%-- <s:if test="#child.startedOn !=null">
 																	value="#child.startedOn" />  &nbsp;<br>
 															</s:if>
 															<s:if test="#child.completedOn !=null">
-																<!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Complete Date"></i> -->Scheduled End : &nbsp; <s:property
 																	value="#child.completedOn" />
-															</s:if>
+															</s:if> --%>
 															<!-- <br>
 										<!-- <i data-toggle="tooltip" title="" class="fa fa-user fa-fw" data-original-title="Author"></i> Adrian Demian
 										<br> -->
@@ -182,14 +182,13 @@ return false;
 
 															<div class="expandable-content">
 																<!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Last date of submission"></i> -->
+																<%-- Due Date :&nbsp;
+																<s:property value="assignmentDueDate" />
+																<br> --%>
 																Submitted On :&nbsp;
 																<s:property value="assignmentSubmittedDate" />
 																<br>
 																<!-- <i data-toggle="tooltip" title="" class="fa fa-calendar fa-fw" data-original-title="Last date of submission"></i> -->
-																Due Date :&nbsp;
-																<s:property value="assignmentDueDate" />
-																<br>
-
 																<h5>
 																	<s:property value="assignmentDesc" />
 																</h5>
@@ -245,7 +244,9 @@ return false;
 
 			</div>
 			<!-- Recent Updates Jsp Included -->
+			<div id="recentUpId">
 			<s:include value="TeacherResourseRecentUpdates.jsp"/>
 			<!-- Recent Updates Jsp Included -->
+			</div>
 		</div>
 	</div>

@@ -2716,7 +2716,7 @@ output {
 	background-color: #f7f7f7;
 	background-image: none;
 	border: 1px solid #efefef;
-	border-radius: 6px;
+	border-radius: 2px;
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
 }
@@ -5949,8 +5949,8 @@ button.close {
 	background-color: #fff;
 	border: 1px solid #999;
 	border: 1px solid rgba(0, 0, 0, .2);
-	border-radius: 6px;
-	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	border-radius: 0px;
+	box-shadow: 0 5px 9px rgba(0, 0, 0, .5);
 	background-clip: padding-box;
 	outline: 0
 }
@@ -5976,7 +5976,8 @@ button.close {
 .modal-header {
 	padding: 15px;
 	border-bottom: 1px solid #e5e5e5;
-	min-height: 16.43px
+	min-height: 16.43px;
+	background:#FAE1E1 !important;
 }
 
 .modal-header .close {
@@ -9730,4 +9731,15 @@ option {
 
 .pad-0{
 	padding: 0px;
+}
+
+
+.height23 {
+    height: 23px !important;
+     padding: 0 12px;
+}
+
+.hw_23_47 {
+    height: 23px !important;
+    width: 47px !important;
 }

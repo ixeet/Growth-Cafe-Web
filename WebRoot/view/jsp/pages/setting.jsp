@@ -51,10 +51,13 @@ function setFollowerStatus(){
 			url : "setFollowerStatus",
 			data :{"followStatus":newStatus},
 			beforeSend :function(){
-				//showErrorMessage("newStatus");
+				startwindowDisable();
 			},
 			success : function(data){
 			},
+			complete		:	function(){
+				endwindowDisable();
+		}
         });
 	
 }
